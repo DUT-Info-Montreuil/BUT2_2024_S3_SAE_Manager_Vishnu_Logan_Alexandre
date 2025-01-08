@@ -1,3 +1,14 @@
+
+
+
+    <?php
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+
+    // Ensuite, votre inclusion
+    include_once 'head.php';
+    ?>
 <?php
     // Activer l'affichage des erreurs pour le débogage
     /*ini_set('display_errors', 1);
@@ -8,7 +19,7 @@
 
     // Inclure les fichiers nécessaires
     include_once 'connexion.php';
-    include_once 'Modules/Mod_joueurs/mod_joueurs.php'; 
+    include_once 'Modules/Mod_accueil/ModAccueil.php'; 
     include_once 'Modules/Mod_connexion/mod_connexion.php';
     include_once 'Comp/menu/cont_menu.php';
 
@@ -20,11 +31,11 @@
     $action = isset($_GET['action']) ? htmlspecialchars(strip_tags($_GET['action'])) : 'connexion';
 
     try {
-        $modulesValides = ['joueurs', 'connexion'];
+        $modulesValides = ['accueil', 'connexion'];
         if (in_array($module, $modulesValides)) {
             switch ($module) {
-                case 'joueurs':
-                    $mod = new ModJoueurs();
+                case 'accueil':
+                    $mod = new ModAccueil();
                     break;
                 case 'connexion':
                     $modConnexion = new ModConnexion();
@@ -38,25 +49,10 @@
         echo "Erreur : " . $e->getMessage();
     }
 ?>
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<body class="<?php echo $module; ?>">
     
-</head>
-<body class="index">
-    <header>
-        <?php
-        if (isset($_SESSION['login'])) {
-            $login = htmlspecialchars($_SESSION['login'], ENT_QUOTES, 'UTF-8');
-            echo "<p>Vous êtes connecté sous l'identifiant $login</p>";
-            echo '<a href="index.php?module=connexion&action=deconnexion">Déconnexion</a>';
-        }
-        ?>
-    </header>
-
-   
 </body>
-</html>
+
+
+
+

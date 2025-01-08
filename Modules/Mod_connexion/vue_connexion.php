@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion</title>
-    <link rel="stylesheet" href="style.css">
-</head>
 
 <?php
 require_once 'vue_generique.php';
@@ -21,7 +13,7 @@ class VueConnexion extends VueGenerique {
     public function form_inscription() {
         $csrf_token = $this->getCSRFToken();
         echo "
-        <body class='inscription'>
+
         <div class='login-container'>
             <form class='login-form' action='index.php?module=connexion&action=connexion' method='post'>
                 <input type='hidden' name='csrf_token' value='$csrf_token'>
@@ -47,7 +39,6 @@ class VueConnexion extends VueGenerique {
     public function form_connexion() {
         $csrf_token = $this->getCSRFToken();
         echo "
-        <body class='connexion'>
         <div class='login-container'>
             <form class='login-form' action='index.php?module=connexion&action=connexion' method='post'>
                 <input type='hidden' name='csrf_token' value='$csrf_token'>
@@ -55,10 +46,10 @@ class VueConnexion extends VueGenerique {
                     <h1>Connexion</h1>
 
                     <div class='input-group'>
-                        <input type='text' name='username' placeholder='Nom d’utilisateur' required>
+                        <input type='text' name='login' placeholder='Nom d’utilisateur' required>
                     </div>
                     <div class='input-group'>
-                        <input type='password' name='password' placeholder='Mot de passe' required>
+                        <input type='password' name='mot_de_passe' placeholder='Mot de passe' required>
                     </div>
                     
                     <div class='remember-me'>

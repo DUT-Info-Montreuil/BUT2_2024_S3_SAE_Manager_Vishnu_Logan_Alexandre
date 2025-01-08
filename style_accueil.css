@@ -1,0 +1,88 @@
+html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f1f1f1;
+}
+
+.accueil {
+    display: flex;
+    height: 100vh;
+}
+
+/* Barre de navigation verticale */
+.nav {
+    background-color: #000080; /* Couleur bleu marine */
+    width: 80px; /* Ajustement pour un design plus compact */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+    color: #f1f1f1;
+}
+
+.nav img {
+    width: 40px; /* Taille des icônes */
+    height: 40px;
+    margin: 20px 0;
+    cursor: pointer;
+}
+
+.nav a {
+    text-decoration: none;
+    color: #f1f1f1;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Header horizontal */
+.header {
+    background-color: #ffffff; /* Bleu marine */
+    color: #000000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 10vh; /* Taille proportionnelle */
+    width: calc(100% - 80px); /* Reste de la largeur */
+    position: fixed; /* Fixé en haut */
+    top: 0;
+    left: 80px; /* Ajustement pour la barre de navigation */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Ombre subtile */
+}
+
+.header h1 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.header button {
+    background-color: #007BFF; /* Bleu clair pour les boutons */
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.header button:hover {
+    background-color: #0056b3; /* Variation plus sombre au survol */
+}
+
+.nav img {
+    width: 30px; /* Taille des icônes */
+    height: 30px;
+    cursor: pointer;
+}
+#listeIcones{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}

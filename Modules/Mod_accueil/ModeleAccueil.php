@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Connexion.php';
+require_once 'connexion.php';
 class ModeleAccueil extends Connexion {
 
    

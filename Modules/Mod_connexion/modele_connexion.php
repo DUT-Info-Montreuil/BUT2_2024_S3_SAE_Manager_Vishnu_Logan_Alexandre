@@ -16,9 +16,7 @@ class ModeleConnexion extends Connexion {
             if ($user && password_verify($motDePasse, $user['motDePasse'])) {
                 $_SESSION['login'] = $login;
                 return true;
-            } else {
-                echo "Erreur de login ou mot de passe.";
-            }
+            } 
         }
 
         return false;

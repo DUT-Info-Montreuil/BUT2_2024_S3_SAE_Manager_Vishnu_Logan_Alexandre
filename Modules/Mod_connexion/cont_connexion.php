@@ -34,8 +34,13 @@ class ContConnexion {
     private function connexion() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($this->modele->connexion()) {
-                header("Location: index.php?module=joueurs");
-            } 
+                header("Location: index.php?module=accueil&action=accueil");
+                exit;
+            } else {
+                $this->vue->form_connexion();
+                echo "<script>alert('Identifiants incorrects.');</script>";
+                
+            }
         } else {
             $this->vue->form_connexion();
         }
