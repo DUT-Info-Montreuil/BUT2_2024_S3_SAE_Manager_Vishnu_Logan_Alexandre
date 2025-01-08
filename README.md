@@ -1,1 +1,0 @@
-# BUT2_2024_S3_SAE_Manager_Vishnu_Logan_Alexandre
