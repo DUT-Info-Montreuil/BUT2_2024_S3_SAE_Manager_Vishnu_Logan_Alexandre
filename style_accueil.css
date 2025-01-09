@@ -86,3 +86,26 @@ body {
     padding: 0;
     margin: 0;
 }
+.btn-to-sae {
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #007BFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+}
+
+.btn-to-sae a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-to-sae:hover {
+    background-color: #0056b3;
+}
