@@ -1,0 +1,140 @@
+-- Script SQL pour la création des tables nécessaires à la gestion des SAE
+
+-- Création de la table des utilisateurs
+CREATE TABLE utilisateurs (
+    id SERIAL PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    prenom VARCHAR(100) NOT NULL,
+    login VARCHAR(150) UNIQUE NOT NULL,
+    mot_de_passe VARCHAR(255) NOT NULL,
+    role ENUM('enseignant', 'etudiant', 'intervenant') NOT NULL,
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Création de la table des années universitaires
+CREATE TABLE annees_universitaires (
+    id SERIAL PRIMARY KEY,
+    annee_debut INT NOT NULL,
+    annee_fin INT NOT NULL,
+    UNIQUE(annee_debut, annee_fin)
+);
+
+-- Création de la table des semestres
+CREATE TABLE semestres (
+    id SERIAL PRIMARY KEY,
+    nom VARCHAR(50) NOT NULL,
+    annee_id INT NOT NULL REFERENCES annees_universitaires(id) ON DELETE CASCADE
+);
+
+-- Création de la table des projets
+CREATE TABLE projets (
+    id SERIAL PRIMARY KEY,
+    titre VARCHAR(200) NOT NULL,
+    description TEXT,
+    responsable_id INT NOT NULL REFERENCES utilisateurs(id) ON DELETE CASCADE,
+    semestre_id INT NOT NULL REFERENCES semestres(id) ON DELETE CASCADE,
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Création de la table des co-responsables et intervenants
+CREATE TABLE projet_membres (
+    id SERIAL PRIMARY KEY,
+    projet_id INT NOT NULL REFERENCES projets(id) ON DELETE CASCADE,
+    utilisateur_id INT NOT NULL REFERENCES utilisateurs(id) ON DELETE CASCADE,
+    role ENUM('co-responsable', 'intervenant') NOT NULL,
+    UNIQUE(projet_id, utilisateur_id)
+);
+
+-- Création de la table des groupes
+CREATE TABLE groupes (
+    id SERIAL PRIMARY KEY,
+    projet_id INT NOT NULL REFERENCES projets(id) ON DELETE CASCADE,
+    nom VARCHAR(100) NOT NULL,
+    image_titre TEXT,
+    nom_modifiable BOOLEAN DEFAULT TRUE,
+    image_modifiable BOOLEAN DEFAULT TRUE,
+    UNIQUE(projet_id, nom)
+);
+
+-- Création de la table des étudiants dans les groupes
+CREATE TABLE groupe_etudiants (
+    id SERIAL PRIMARY KEY,
+    groupe_id INT NOT NULL REFERENCES groupes(id) ON DELETE CASCADE,
+    etudiant_id INT NOT NULL REFERENCES utilisateurs(id) ON DELETE CASCADE,
+    UNIQUE(groupe_id, etudiant_id)
+);
+
+-- Création de la table des champs personnalisés des projets
+CREATE TABLE champs_personnalises (
+    id SERIAL PRIMARY KEY,
+    projet_id INT NOT NULL REFERENCES projets(id) ON DELETE CASCADE,
+    nom VARCHAR(100) NOT NULL,
+    valeur TEXT,
+    rempli_par ENUM('responsable', 'etudiant') NOT NULL,
+    UNIQUE(projet_id, nom)
+);
+
+-- Création de la table des rendus
+CREATE TABLE rendus (
+    id SERIAL PRIMARY KEY,
+    projet_id INT NOT NULL REFERENCES projets(id) ON DELETE CASCADE,
+    titre VARCHAR(200) NOT NULL,
+    description TEXT,
+    date_limite TIMESTAMP NOT NULL,
+    type ENUM('groupe', 'individuel') NOT NULL
+);
+
+-- Création de la table des fichiers de rendus
+CREATE TABLE fichiers_rendus (
+    id SERIAL PRIMARY KEY,
+    rendu_id INT NOT NULL REFERENCES rendus(id) ON DELETE CASCADE,
+    groupe_id INT REFERENCES groupes(id) ON DELETE CASCADE,
+    etudiant_id INT REFERENCES utilisateurs(id) ON DELETE CASCADE,
+    fichier_url TEXT NOT NULL,
+    date_soumission TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Création de la table des évaluations
+CREATE TABLE evaluations (
+    id SERIAL PRIMARY KEY,
+    rendu_id INT NOT NULL REFERENCES rendus(id) ON DELETE CASCADE,
+    evaluateur_id INT NOT NULL REFERENCES utilisateurs(id) ON DELETE CASCADE,
+    groupe_id INT REFERENCES groupes(id) ON DELETE CASCADE,
+    etudiant_id INT REFERENCES utilisateurs(id) ON DELETE CASCADE,
+    note DECIMAL(5, 2),
+    commentaire TEXT,
+    date_evaluation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Création de la table des ressources
+CREATE TABLE ressources (
+    id SERIAL PRIMARY KEY,
+    projet_id INT NOT NULL REFERENCES projets(id) ON DELETE CASCADE,
+    titre VARCHAR(200) NOT NULL,
+    description TEXT,
+    url TEXT NOT NULL,
+    mise_en_avant BOOLEAN DEFAULT FALSE
+);
+
+-- Création de la table des soutenances
+CREATE TABLE soutenances (
+    id SERIAL PRIMARY KEY,
+    projet_id INT NOT NULL REFERENCES projets(id) ON DELETE CASCADE,
+    titre VARCHAR(200) NOT NULL,
+    description TEXT,
+    date TIMESTAMP NOT NULL
+);
+
+-- Création de la table des évaluations des soutenances
+CREATE TABLE evaluation_soutenances (
+    id SERIAL PRIMARY KEY,
+    soutenance_id INT NOT NULL REFERENCES soutenances(id) ON DELETE CASCADE,
+    evaluateur_id INT NOT NULL REFERENCES utilisateurs(id) ON DELETE CASCADE,
+    groupe_id INT REFERENCES groupes(id) ON DELETE CASCADE,
+    etudiant_id INT REFERENCES utilisateurs(id) ON DELETE CASCADE,
+    note DECIMAL(5, 2),
+    commentaire TEXT,
+    date_evaluation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+

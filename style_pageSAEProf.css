@@ -1,5 +1,5 @@
 .main-content {
-    padding: 5%;
+
     margin: 10vh auto 5vh auto;
     background-color: #fff;
     border-radius: 8px;
@@ -63,8 +63,8 @@
 
     position:absolute ;
     width: 95%;
-    top: 20px;
-    left: 10px;
+    top: 60%;
+    left: 10%;
 }
 .description-header {
     display: flex;

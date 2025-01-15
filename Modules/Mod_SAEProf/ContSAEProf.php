@@ -17,7 +17,9 @@ class ContSAEProf {
 
         switch ($action) {
             case 'afficher':
-                $this->vue->afficher_sae($id_projet);
+                $projet=$this->modele->getProjet($id_projet);
+                
+                $this->vue->afficher_sae($projet);
                 break;
             case 'updateDescription':
                 $newDescription = isset($_POST['description']) ? htmlspecialchars($_POST['description']) : '';

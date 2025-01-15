@@ -5,6 +5,7 @@ include_once __DIR__ . '/../Mod_accueil/VueAccueil.php';
 
 class VueSAEProf extends VueGenerique {
     private $vue;
+    
 
     public function __construct() {
         parent::__construct();
@@ -12,13 +13,10 @@ class VueSAEProf extends VueGenerique {
 
     }
 
-    public function afficher_sae() {
+    public function afficher_sae($projet) {
         $this->vue->afficherAccueil();
-        if ($projet) {
-            $description = $projet['description'];
-        } else {
-            $description = "Description non trouvée.";
-        }
+        $description = $projet['description'];
+        $id_projet=$projet['id'];
 
         echo "
         <div class='sae-container'>
