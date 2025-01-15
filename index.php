@@ -24,7 +24,7 @@
     $action = isset($_GET['action']) ? htmlspecialchars(strip_tags($_GET['action'])) : 'connexion';
 
     try {
-        $modulesValides = ['accueil', 'connexion'];
+        $modulesValides = ['accueil', 'connexion','sae'];
         if (in_array($module, $modulesValides)) {
             switch ($module) {
                 case 'accueil':
@@ -33,7 +33,7 @@
                 case 'connexion':
                     $modConnexion = new ModConnexion();
                     break;
-                case 'SAE' : 
+                case 'sae' : 
                         $sae = new ModSAEProf();
                         break;
             }

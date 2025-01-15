@@ -18,6 +18,10 @@
             echo "<title>Connexion</title>";
             echo '<link rel="stylesheet" href="style.css">';
             break;
+        case 'sae':
+            echo '<link rel="stylesheet" href="style_pageSAEProf.css">';
+            echo '<link rel="stylesheet" href="style_accueil.css">';
+
         default:
             echo "<title>Mon Application</title>";
             echo '<link rel="stylesheet" href="styles.css">';

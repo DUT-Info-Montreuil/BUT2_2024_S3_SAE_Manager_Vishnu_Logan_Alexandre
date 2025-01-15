@@ -5,7 +5,7 @@ class ModSAEProf {
     private $controleur;
 
     public function __construct() {
-        $this->controleur = new ContSae();
+        $this->controleur = new ContSAEProf();
         $this->controleur->action();
     }
 }
