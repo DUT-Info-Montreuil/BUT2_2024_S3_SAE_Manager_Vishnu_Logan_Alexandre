@@ -5,7 +5,6 @@
             echo "
             <div>
                 <p>Vous êtes connecté sous l'identifiant $login</p>
-                <a href='index.php?module=connexion&action=deconnexion'>Déconnexion</a>
             </div>";
         }
     ?>

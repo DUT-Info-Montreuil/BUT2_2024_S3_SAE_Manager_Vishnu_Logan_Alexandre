@@ -49,7 +49,7 @@ class ContConnexion {
     private function inscription() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($this->modele->ajoutUtilisateur()) {
-                header("Location: index.php?module=joueurs");
+                header("Location: index.php?module=accueil&action=accueil");
             }
             else{
                 

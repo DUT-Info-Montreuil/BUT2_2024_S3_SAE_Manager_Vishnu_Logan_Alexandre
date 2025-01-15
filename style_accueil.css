@@ -17,20 +17,39 @@ body {
 
 /* Barre de navigation verticale */
 .nav {
+    position: fixed;
+    top: 0;
     background-color: #000080; /* Couleur bleu marine */
-    width: 80px; /* Ajustement pour un design plus compact */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 5%; /* Ajustement pour un design plus compact */
     padding: 10px 0;
     color: #f1f1f1;
+    height: 100vh; /* S'assure que la barre occupe toute la hauteur de la fenêtre */
+    display: flex;
+    justify-content: center; /* Centrer horizontalement */
+    flex-wrap: wrap; /* Permet de passer à la ligne sur petits écrans */
+    gap: 10px; 
+    
 }
 
 .nav img {
-    width: 40px; /* Taille des icônes */
-    height: 40px;
-    margin: 20px 0;
+
     cursor: pointer;
+    filter:invert(10);
+    width: 50%;
+
+}
+.nav li{
+    
+    display: flex;
+    object-fit: contain;
+    box-sizing: border-box;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    
+
 }
 
 .nav a {
@@ -48,12 +67,12 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+
     height: 10vh; /* Taille proportionnelle */
-    width: calc(100% - 80px); /* Reste de la largeur */
+    width: 95%; /* Reste de la largeur */
     position: fixed; /* Fixé en haut */
     top: 0;
-    left: 80px; /* Ajustement pour la barre de navigation */
+    right: 0;   
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Ombre subtile */
 }
 
@@ -76,13 +95,110 @@ body {
     background-color: #0056b3; /* Variation plus sombre au survol */
 }
 
-.nav img {
-    width: 30px; /* Taille des icônes */
-    height: 30px;
+
+#listeIcones {
+    list-style: none; /* Supprime les puces par défaut */
+    padding: 0; /* Supprime le padding par défaut */
+    display: flex; /* Permet d'aligner les éléments en flexbox */
+    flex-direction: column; /* Aligne les éléments verticalement */
+    align-items: center; /* Centre les éléments horizontalement */
+}
+
+#listeIcones li {
+    margin: 10px 0; /* Marge de 10px en haut et en bas de chaque élément */
+}
+
+
+
+#decoIcon {
+    display: flex;
+    flex-direction: column; /* Organisation verticale */
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+
+}
+
+
+  
+  .menu-container {
+    position: absolute;
+    width: 600px;
+    left: 10%;
+    top: 100px;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  
+  .year,
+  .semester {
+    margin: 10px 0;
+  }
+  
+  button {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 5px 10px;
     cursor: pointer;
-}
-#listeIcones{
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
+  }
+  
+  button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .toggle-year,
+  .toggle-semester {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  .semesters,
+  .subjects {
+    margin-left: 20px;
+    display: none;
+  }
+  
+  .subject {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+  }
+  
+  .edit,
+  .delete {
+    background-color: #4285F4;
+    color: white;
+    border: none;
+    margin-left: 5px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .delete {
+    background-color: #FF5252;
+  }
+  
+  .edit:hover,
+  .delete:hover {
+    opacity: 0.8;
+  }
+  
+
+  #test {
+    position: absolute;
+    top: 500px;
+    left: 500px;
+  }
+
+  #test2 {
+    position: absolute;
+    top: 500px;
+    left: 650px;
+  }
