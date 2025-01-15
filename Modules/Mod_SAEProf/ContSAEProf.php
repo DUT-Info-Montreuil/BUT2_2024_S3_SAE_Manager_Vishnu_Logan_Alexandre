@@ -17,17 +17,30 @@ class ContSAEProf {
 
         switch ($action) {
             case 'afficher':
-                $projet=$this->modele->getProjet($id_projet);
-                
-                $this->vue->afficher_sae($projet);
+                $projet = $this->modele->getProjet($id_projet);
+                $ressources = $this->modele->getRessources($id_projet);
+                $this->vue->afficher_sae($projet, $ressources);
                 break;
-            case 'updateDescription':
+
+            case 'majDescription':
                 $newDescription = isset($_POST['description']) ? htmlspecialchars($_POST['description']) : '';
-                $this->modele->updateDescription($id_projet, $newDescription);
-                $this->vue->afficher_sae($id_projet);
+                $this->modele->majDescription($id_projet, $newDescription);
+                $projet = $this->modele->getProjet($id_projet);
+                $this->vue->afficher_sae($projet,$ressources);
                 break;
+            case 'ajouterRessource':
+                $titre = isset($_POST['titre']) ? htmlspecialchars($_POST['titre']) : '';
+                $description = isset($_POST['description']) ? htmlspecialchars($_POST['description']) : '';
+                $url = isset($_POST['url']) ? htmlspecialchars($_POST['url']) : '';
+                $this->modele->ajouterRessource($id_projet, $titre, $description, $url);
+                $projet = $this->modele->getProjet($id_projet);
+                $ressources = $this->modele->getRessources($id_projet);
+                $this->vue->afficher_sae($projet,$ressources);
+                break;
+    
             default:
-                $this->vue->afficher_sae($id_projet);
+                $projet = $this->modele->getProjet($id_projet);
+                $this->vue->afficher_sae($projet,$ressources);
                 break;
         }
     }
