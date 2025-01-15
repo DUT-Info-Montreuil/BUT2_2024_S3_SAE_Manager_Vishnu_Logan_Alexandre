@@ -20,7 +20,6 @@ class Cont_Groupe {
                 $this->afficherFormulaire();
                 break;
             case 'creer':
-                $this->creerGroupe();
                 break;
 
                 
@@ -32,7 +31,8 @@ class Cont_Groupe {
         $etudiants = $this->model->getEtudiants();
         $this->vue->afficherFormulaire($etudiants); 
 
-    } 
+    }
+    
 
 
     public function creerGroupe() {

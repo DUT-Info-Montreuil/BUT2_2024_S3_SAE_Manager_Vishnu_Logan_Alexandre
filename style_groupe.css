@@ -1,8 +1,24 @@
-.create-group-container{
+.group-container{
+    margin: 20px 0;
     position: absolute;
-    top:10%;
-    left: 20%;
+    top:300px;
+    left:300px;
 }
+
+.prev-group {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.liste-eleve p.eleve {
+    margin: 5px 0;
+    padding: 5px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
 
 .custom-dropdown {
     position: relative;
@@ -28,7 +44,7 @@
     max-height: 200px;
     overflow-y: auto;
     width: 100%;
-    z-index: 1;
+    z-index: 99;
 }
 
 .dropdown-content label {
@@ -39,4 +55,10 @@
 
 .dropdown-content label:hover {
     background-color: #f0f0f0;
+}
+
+.eleve{
+    display: block;
+    position:  relative;
+
 }

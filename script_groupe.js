@@ -13,3 +13,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+document.getElementById('ajouterEleveBtn').addEventListener('click', function () {
+    const checkboxes = document.querySelectorAll('.etudiant-checkbox:checked');
+    const listePrevisu = document.getElementById('listePrevisu');
+
+    listePrevisu.innerHTML = '';
+
+    checkboxes.forEach(function (checkbox) {
+        const nom = checkbox.dataset.nom;
+        const prenom = checkbox.dataset.prenom;
+        const id = checkbox.value;
+
+        const p = document.createElement('p');
+        p.className = 'eleve';
+        p.textContent = `${nom} ${prenom} (ID: ${id})`;
+
+        listePrevisu.appendChild(p);
+
+        let inputHidden = document.createElement('input');
+        inputHidden.type = 'hidden';
+        inputHidden.name = 'etudiants[]';
+        inputHidden.value = id;
+
+        document.getElementById('formGroupe').appendChild(inputHidden);
+    });
+});
