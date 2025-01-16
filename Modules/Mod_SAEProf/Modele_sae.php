@@ -49,7 +49,42 @@ class Modele_sae extends Connexion{
 		$pdo_req->execute();
 		return $pdo_req->fetchAll();
 
-    
     }
-}
+    
+
+        public function getRendus($id_projet) {
+            $pdo_req = self::getBdd()->prepare("SELECT * FROM rendus WHERE projet_id = :projet_id");
+            $pdo_req->bindParam(':projet_id', $id_projet);
+            $pdo_req->execute();
+            return $pdo_req->fetchAll();
+        }
+        
+        public function ajouterRendu($id_projet, $titre, $description, $date_limite, $type) {
+            $pdo_req = self::getBdd()->prepare("
+                INSERT INTO rendus (projet_id, titre, description, date_limite, type)
+                VALUES (:projet_id, :titre, :description, :date_limite, :type)
+            ");
+            $pdo_req->bindParam(':projet_id', $id_projet);
+            $pdo_req->bindParam(':titre', $titre);
+            $pdo_req->bindParam(':description', $description);
+            $pdo_req->bindParam(':date_limite', $date_limite);
+            $pdo_req->bindParam(':type', $type);
+            $pdo_req->execute();
+        }
+        
+        public function modifierRendu($id_rendu, $titre, $description, $date_limite, $type) {
+            $pdo_req = self::getBdd()->prepare("
+                UPDATE rendus
+                SET titre = :titre, description = :description, date_limite = :date_limite, type = :type
+                WHERE id = :id
+            ");
+            $pdo_req->bindParam(':titre', $titre);
+            $pdo_req->bindParam(':description', $description);
+            $pdo_req->bindParam(':date_limite', $date_limite);
+            $pdo_req->bindParam(':type', $type);
+            $pdo_req->bindParam(':id', $id_rendu);
+            $pdo_req->execute();
+        }
+        
+    }
 ?>
