@@ -8,13 +8,14 @@ class ModeleConnexion extends Connexion {
             $login = htmlspecialchars(strip_tags($_POST['login']));
             $motDePasse = $_POST['mot_de_passe'];
 
-            $query = self::getBdd()->prepare("SELECT login, mot_de_passe FROM utilisateurs WHERE login = :login");
+            $query = self::getBdd()->prepare("SELECT login, mot_de_passe, role FROM utilisateurs WHERE login = :login");
             $query->execute([':login' => $login]);
 
             $user = $query->fetch();
 
             if ($user && password_verify($motDePasse, $user['mot_de_passe'])) {
                 $_SESSION['login'] = $login;
+                $_SESSION['role'] = $user['role'];
                 return true;
             } 
         }
@@ -31,13 +32,11 @@ class ModeleConnexion extends Connexion {
             $confirmMotDePasse = $_POST['confirm_mot_de_passe'];
             $role = htmlspecialchars(strip_tags($_POST['role']));
     
-            // Vérifier si les mots de passe correspondent
             if ($motDePasse !== $confirmMotDePasse) {
                 echo "<p>Les mots de passe ne correspondent pas.</p>";
                 return false;
             }
     
-            // Vérifier si le login existe déjà
             $query = self::getBdd()->prepare("SELECT login FROM utilisateurs WHERE login = :login");
             $query->execute([':login' => $login]);
     
@@ -46,7 +45,6 @@ class ModeleConnexion extends Connexion {
                 return false;
             }
     
-            // Insérer l'utilisateur dans la base de données
             $sth = self::getBdd()->prepare("INSERT INTO utilisateurs (nom, prenom, login, mot_de_passe, role) 
                                             VALUES (:nom, :prenom, :login, :motDePasse, :role)");
             $sth->execute([
@@ -57,7 +55,6 @@ class ModeleConnexion extends Connexion {
                 ':role' => $role
             ]);
     
-            // Sauvegarder la session utilisateur
             $_SESSION['login'] = $login;
             return true;
         } else {

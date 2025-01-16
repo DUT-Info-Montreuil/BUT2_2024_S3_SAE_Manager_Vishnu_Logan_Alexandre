@@ -79,21 +79,37 @@ class VueSAEProf extends VueGenerique {
                             $titre = htmlspecialchars($rendu['titre']);
                             $description = htmlspecialchars($rendu['description']);
                             $date_limite = htmlspecialchars($rendu['date_limite']);
-                            $type = isset($rendu['type']);
+                            $type = !empty($rendu['type']) ? htmlspecialchars($rendu['type']) : 'Type non défini';
+                    
                             echo "
-                            <a href='index.php?module=sae&action=afficherDepot&id_rendu=$id_rendu'>
-                                <div class='deposit-item'>
+                            <div class='deposit-item'>
+                                <a href='index.php?module=sae&action=afficherDepot&id_rendu=$id_rendu' class='rendu-link'>
                                     <p><strong>$titre</strong></p>
                                     <p>Description : $description</p>
                                     <p>Date limite : $date_limite</p>
                                     <p>Type : $type</p>
-                                </div>
-                            </a>";
-                            
+                                </a>
+                                <button onclick='toggleEditRenduForm($id_rendu)'>Modifier</button>
+                            </div>
+                            <form id='edit-rendu-form-$id_rendu' style='display: none;' method='POST' action='index.php?module=sae&action=modifierRendu&id=$id_rendu'>
+                                <input type='text' name='titre' value='$titre' required>
+                                <textarea name='description' rows='3'>$description</textarea>
+                                <input type='datetime-local' name='date_limite' value='" . date('Y-m-d\TH:i', strtotime($date_limite)) . "' required>
+                                <select name='type'>
+                                    <option value='groupe' " . ($type === 'groupe' ? 'selected' : '') . ">Groupe</option>
+                                    <option value='individuel' " . ($type === 'individuel' ? 'selected' : '') . ">Individuel</option>
+                                </select>
+                                <button type='submit'>Enregistrer</button>
+                                <button type='button' onclick='toggleEditRenduForm($id_rendu)'>Annuler</button>
+                            </form>";
                         }
+                    
+                    
+
                     } else {
                         echo "<p>Aucun dépôt trouvé pour ce projet.</p>";
                     }
+                    
         echo "
                 </div>
 
@@ -134,7 +150,7 @@ class VueSAEProf extends VueGenerique {
         $titre = htmlspecialchars($rendu['titre']);
         $description = htmlspecialchars($rendu['description']);
         $date_limite = htmlspecialchars($rendu['date_limite']);
-$type = !empty($rendu['type']) ? htmlspecialchars($rendu['type']) : 'Type non défini';
+    $type = !empty($rendu['type']) ? htmlspecialchars($rendu['type']) : 'Type non défini';
     
         echo "
         <div class='depot-container'>

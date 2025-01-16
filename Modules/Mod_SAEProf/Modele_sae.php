@@ -37,9 +37,9 @@ class Modele_sae extends Connexion{
 
     public function getProjet($id_Projet){
         $pdo_req = self::getBdd()->prepare("SELECT * FROM projets WHERE id = :id");
-		$pdo_req->bindParam(":id", $id_Projet, PDO::PARAM_INT);
+		$pdo_req->bindParam(":id", $id_Projet);
 		$pdo_req->execute();
-		return $pdo_req->fetch(PDO::FETCH_ASSOC);
+		return $pdo_req->fetch();
     
     }
 
@@ -98,19 +98,29 @@ class Modele_sae extends Connexion{
             $pdo_req->execute();
         }
 
-        public function getGroupesAvecFichiers($id_rendu) {
-            $pdo_req = self::getBdd()->prepare("
-                SELECT g.nom AS groupe_nom, f.fichier_url, f.date_soumission, f.id AS fichier_id, e.note
-                FROM groupes g
-                LEFT JOIN fichiers_rendus f ON f.groupe_id = g.id
-                LEFT JOIN evaluations e ON e.rendu_id = f.rendu_id AND e.groupe_id = g.id
-                WHERE f.rendu_id = :id_rendu
-                ORDER BY g.nom
-            ");
-            $pdo_req->bindParam(':id_rendu', $id_rendu);
-            $pdo_req->execute();
-            return $pdo_req->fetchAll();
+
+            public function getGroupesAvecFichiers($id_rendu) {
+                $pdo_req = self::getBdd()->prepare("
+                    SELECT 
+                        g.nom AS groupe_nom, 
+                        f.fichier_url, 
+                        f.date_soumission, 
+                        f.id AS fichier_id, 
+                        e.note,
+                        e.commentaire
+                    FROM groupes g
+                    LEFT JOIN fichiers_rendus f ON f.groupe_id = g.id
+                    LEFT JOIN evaluations e ON e.groupe_id = g.id
+                    WHERE f.rendu_id = :id_rendu
+                    ORDER BY g.nom
+                ");
+                $pdo_req->bindParam(':id_rendu', $id_rendu);
+                $pdo_req->execute();
+                return $pdo_req->fetchAll();
+        
+            
         }
+        
         
         
     }
