@@ -58,6 +58,18 @@ class Modele_sae extends Connexion{
             $pdo_req->execute();
             return $pdo_req->fetchAll();
         }
+
+        public function getRendu($id_rendu) {
+            try {
+                $pdo_req = self::getBdd()->prepare("SELECT * FROM rendus WHERE id = :id_rendu");
+                $pdo_req->bindParam(':id_rendu', $id_rendu);
+                $pdo_req->execute();
+                return $pdo_req->fetch();
+            } catch (Exception $e) {
+                die('Erreur : ' . $e->getMessage());
+            }
+        }
+        
         
         public function ajouterRendu($id_projet, $titre, $description, $date_limite, $type) {
             $pdo_req = self::getBdd()->prepare("
@@ -85,6 +97,21 @@ class Modele_sae extends Connexion{
             $pdo_req->bindParam(':id', $id_rendu);
             $pdo_req->execute();
         }
+
+        public function getGroupesAvecFichiers($id_rendu) {
+            $pdo_req = self::getBdd()->prepare("
+                SELECT g.nom AS groupe_nom, f.fichier_url, f.date_soumission, f.id AS fichier_id, e.note
+                FROM groupes g
+                LEFT JOIN fichiers_rendus f ON f.groupe_id = g.id
+                LEFT JOIN evaluations e ON e.rendu_id = f.rendu_id AND e.groupe_id = g.id
+                WHERE f.rendu_id = :id_rendu
+                ORDER BY g.nom
+            ");
+            $pdo_req->bindParam(':id_rendu', $id_rendu);
+            $pdo_req->execute();
+            return $pdo_req->fetchAll();
+        }
+        
         
     }
 ?>

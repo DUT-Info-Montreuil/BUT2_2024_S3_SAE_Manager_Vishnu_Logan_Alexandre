@@ -81,25 +81,15 @@ class VueSAEProf extends VueGenerique {
                             $date_limite = htmlspecialchars($rendu['date_limite']);
                             $type = isset($rendu['type']);
                             echo "
-                            <div class='deposit-item'>
-                                <p><strong>$titre</strong></p>
-                                <p>Description : $description</p>
-                                <p>Date limite : $date_limite</p>
-                                <p>Type : $type</p>
-                                <img src='Modules/Mod_SAEProf/imgSAEProf/modification.png' alt='Modifier' class='icon-modify' onclick='toggleEditRenduForm($id_rendu)'>
-                                <form id='edit-rendu-form-$id_rendu' style='display: none;' method='POST' action='index.php?module=sae&action=modifierRendu&id=$id_projet'>
-                                    <input type='hidden' name='id_rendu' value='$id_rendu'>
-                                    <input type='text' name='titre' value='$titre' required>
-                                    <textarea name='description' rows='3'>$description</textarea>
-                                    <input type='datetime-local' name='date_limite' value='$date_limite' required>
-                                    <select name='type'>
-                                        <option value='groupe' ".($type === 'groupe' ? 'selected' : '').">Groupe</option>
-                                        <option value='individuel' ".($type === 'individuel' ? 'selected' : '').">Individuel</option>
-                                    </select>
-                                    <button type='submit'>Modifier</button>
-                                    <button type='button' onclick='toggleEditRenduForm($id_rendu)'>Annuler</button>
-                                </form>
-                            </div>";
+                            <a href='index.php?module=sae&action=afficherDepot&id_rendu=$id_rendu'>
+                                <div class='deposit-item'>
+                                    <p><strong>$titre</strong></p>
+                                    <p>Description : $description</p>
+                                    <p>Date limite : $date_limite</p>
+                                    <p>Type : $type</p>
+                                </div>
+                            </a>";
+                            
                         }
                     } else {
                         echo "<p>Aucun dépôt trouvé pour ce projet.</p>";
@@ -140,5 +130,65 @@ class VueSAEProf extends VueGenerique {
             }
         </script>";
     }
+    public function afficherDepot($rendu, $groupes) {
+        $titre = htmlspecialchars($rendu['titre']);
+        $description = htmlspecialchars($rendu['description']);
+        $date_limite = htmlspecialchars($rendu['date_limite']);
+$type = !empty($rendu['type']) ? htmlspecialchars($rendu['type']) : 'Type non défini';
+    
+        echo "
+        <div class='depot-container'>
+            <h1>$titre</h1>
+            <div class='depot-header'>
+                <p>Dépôt de $type</p>
+                <p>Date limite : $date_limite</p>
+                <p>$description</p>
+            </div>
+            <table class='depot-table'>
+                <thead>
+                    <tr>
+                        <th>Nom du groupe</th>
+                        <th>Fichiers déposés</th>
+                        <th>Note</th>
+                    </tr>
+                </thead>
+                <tbody>";
+                    if (!empty($groupes)) {
+                        foreach ($groupes as $groupe) {
+                            $groupe_nom = htmlspecialchars($groupe['groupe_nom']);
+                            $fichier_url = htmlspecialchars($groupe['fichier_url']);
+                            $note = $groupe['note'] !== null ? htmlspecialchars($groupe['note']) : '--';
+                            $fichierId = isset($groupe['fichier_id']) ? $groupe['fichier_id'] : 0;
+                            echo "
+                            <tr>
+                                <td>$groupe_nom</td>
+                                <td>
+                                    <a href='$fichier_url' target='_blank'>Télécharger le fichier</a>
+                                </td>
+                                <td>
+                                    $note / 20
+                                    <button onclick='ajouterNote($groupe[fichier_id])'>Ajouter une note</button>
+                                </td>
+                            </tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='3'>Aucun fichier trouvé pour ce dépôt.</td></tr>";
+                    }
+        echo "
+                </tbody>
+            </table>
+        </div>
+    
+        <script>
+            function ajouterNote(fichierId) {
+                const note = prompt('Entrez une note sur 20 :');
+                if (note) {
+                    window.location.href = `index.php?module=sae&action=ajouterNote&id_fichier=${fichierId}&note=${note}`;
+                }
+            }
+        </script>
+        ";
+    }
+    
 }
 ?>

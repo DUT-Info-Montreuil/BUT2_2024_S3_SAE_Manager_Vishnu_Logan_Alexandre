@@ -41,7 +41,7 @@ class ContSAEProf {
                 $this->vue->afficher_sae($projet,$ressources,$rendus);
                 break;
             case 'ajouterRessource':
-                $titre = isset($_POST['titre']) ? htmlspecialchars($_POST['titre']) : '';
+                $type = isset($rendu['type']) ? htmlspecialchars($rendu['type']) : 'indéfini';
                 $description = isset($_POST['description']) ? htmlspecialchars($_POST['description']) : '';
                 $url = isset($_POST['url']) ? htmlspecialchars($_POST['url']) : '';
                 $projet = $this->modele->getProjet($id_projet);
@@ -72,7 +72,7 @@ class ContSAEProf {
                     $titre = isset($_POST['titre']) ? htmlspecialchars($_POST['titre']) : '';
                     $description = isset($_POST['description']) ? htmlspecialchars($_POST['description']) : '';
                     $date_limite = isset($_POST['date_limite']) ? htmlspecialchars($_POST['date_limite']) : '';
-                    $type = isset($_POST['type']) ? htmlspecialchars($_POST['type']) : '';
+                    $type = isset($_POST['type']) ? htmlspecialchars($_POST['type']) : 'indéfini';//erreur sur cette ligne
                     $projet = $this->modele->getProjet($id_projet);
                     $rendus = $this->modele->getRendus($id_projet);
             
@@ -81,6 +81,18 @@ class ContSAEProf {
                     $this->modele->modifierRendu($id_rendu, $titre, $description, $date_limite, $type);
                     $this->vue->afficher_sae($projet, $ressources, $rendus);
                     break;
+                    case 'afficherDepot':
+                        $id_rendu = isset($_GET['id_rendu']) ? intval($_GET['id_rendu']) : 0;
+                    
+                        if ($id_rendu > 0) {
+                            $rendu = $this->modele->getRendu($id_rendu);
+                            $groupes = $this->modele->getGroupesAvecFichiers($id_rendu);
+                            $this->vue->afficherDepot($rendu, $groupes);
+                        } else {
+                            header('Location: index.php?module=sae&action=afficher&id=' . $id_projet);
+                        }
+                        break;
+                    
                 
     
             default:
