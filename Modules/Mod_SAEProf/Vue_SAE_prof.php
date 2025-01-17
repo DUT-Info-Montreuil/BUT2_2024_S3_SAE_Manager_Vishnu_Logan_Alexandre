@@ -8,10 +8,11 @@ class VueSAEProf extends VueGenerique {
     public function __construct() {
         parent::__construct();
         $this->vue = new VueAccueil();
+        $this->vue->afficherAccueil();
     }
 
     public function afficher_sae($projet, $ressource) {
-        $this->vue->afficherAccueil();
+        
         $description = htmlspecialchars($projet['description']);
 
 

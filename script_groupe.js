@@ -14,28 +14,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-document.getElementById('ajouterEleveBtn').addEventListener('click', function () {
-    const checkboxes = document.querySelectorAll('.etudiant-checkbox:checked');
-    const listePrevisu = document.getElementById('listePrevisu');
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById('ajouterEleveBtn').addEventListener('click', function () {
+        const checkboxes = document.querySelectorAll('.etudiant-checkbox:checked');
+        const listePrevisu = document.getElementById('listePrevisu');
+        const formGroupe = document.getElementById('formGroupe');
 
-    listePrevisu.innerHTML = '';
+        if (checkboxes.length === 0) {
+            listePrevisu.innerHTML = "<p style='color:red;'>Aucun étudiant sélectionné.</p>";
+            return;
+        }
 
-    checkboxes.forEach(function (checkbox) {
-        const nom = checkbox.dataset.nom;
-        const prenom = checkbox.dataset.prenom;
-        const id = checkbox.value;
+        listePrevisu.innerHTML = '';
+        document.querySelectorAll('input[name="etudiants[]"]').forEach(input => input.remove());
 
-        const p = document.createElement('p');
-        p.className = 'eleve';
-        p.textContent = `${nom} ${prenom} (ID: ${id})`;
+        checkboxes.forEach(function (checkbox) {
+            const nom = checkbox.dataset.nom;
+            const prenom = checkbox.dataset.prenom;
+            const id = checkbox.value;
 
-        listePrevisu.appendChild(p);
+            const p = document.createElement('p');
+            p.className = 'eleve';
+            p.textContent = `${nom} ${prenom} (ID: ${id})`;
+            listePrevisu.appendChild(p);
 
-        let inputHidden = document.createElement('input');
-        inputHidden.type = 'hidden';
-        inputHidden.name = 'etudiants[]';
-        inputHidden.value = id;
+            const inputHidden = document.createElement('input');
+            inputHidden.type = 'hidden';
+            inputHidden.name = 'etudiants[]';
+            inputHidden.value = id;
+            formGroupe.appendChild(inputHidden);
+        });
 
-        document.getElementById('formGroupe').appendChild(inputHidden);
     });
 });
+
+
+

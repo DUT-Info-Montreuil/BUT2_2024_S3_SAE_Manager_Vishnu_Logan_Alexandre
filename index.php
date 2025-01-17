@@ -21,7 +21,8 @@
     include_once 'Modules/Mod_connexion/mod_connexion.php';
     include_once 'Comp/menu/cont_menu.php';
     include_once 'Modules/Mod_Menu_Accueil/ModMenuAccueil.php';
-    include_once 'Modules/Mod_Groupe/ModGroupe.php';
+    include_once 'Modules/Mod_Groupe_Eleve/ModGroupe.php';
+    include_once 'Modules/Mod_Groupe_Prof/ModGroupeProf.php';
 
     Connexion::initConnexion();
 
@@ -29,7 +30,7 @@
     $action = isset($_GET['action']) ? htmlspecialchars(strip_tags($_GET['action'])) : 'connexion';
 
     try {
-        $modulesValides = ['accueil', 'connexion','mod','groupe','sae'];
+        $modulesValides = ['accueil', 'connexion','menuAccueil','groupe','groupeProf','sae'];
         if (in_array($module, $modulesValides)) {
             switch ($module) {
                 case 'accueil':
@@ -47,11 +48,14 @@
                 case 'sae' : 
                         $sae = new ModSAEProf();
                         break;
-                case 'mod':
+                case 'menuAccueil':
                     $mod=new ModMenuAccueil();
                     break;
                 case 'groupe':
                     $modGroupe = new ModGroupe();
+                    break;
+                case 'groupeProf':
+                    $modGroupeProf= new ModGroupeProf();
                     break;
             }
         } else {

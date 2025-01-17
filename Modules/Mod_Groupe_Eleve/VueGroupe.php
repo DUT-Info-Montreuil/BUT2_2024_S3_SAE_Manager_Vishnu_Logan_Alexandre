@@ -7,7 +7,7 @@ class Vue_Groupe extends VueGenerique {
     public function __construct() {
         parent::__construct();
         $this->vueAccueil = new VueAccueil();
-        $this->vueAccueil->afficherAccueil();
+        $this->vueAccueil->afficherAccueil();   
     }
 
     public function afficherFormulaire($etudiants) {
@@ -35,7 +35,7 @@ class Vue_Groupe extends VueGenerique {
                 </div>
                 
                 <button type="button" id="ajouterEleveBtn" class="btn">Ajouter Élève</button>
-                <button type="submit" class="btn">Créer le groupe</button>
+                
             </form>
 
             <div class="prev-group">
@@ -46,33 +46,6 @@ class Vue_Groupe extends VueGenerique {
             </div>
         </div>
 
-        <script>
-            document.getElementById('ajouterEleveBtn').addEventListener('click', function () {
-                const checkboxes = document.querySelectorAll('.etudiant-checkbox:checked');
-                const listePrevisu = document.getElementById('listePrevisu');
-
-                listePrevisu.innerHTML = '';
-
-                checkboxes.forEach(function (checkbox) {
-                    const nom = checkbox.dataset.nom;
-                    const prenom = checkbox.dataset.prenom;
-                    const id = checkbox.value;
-
-                    const p = document.createElement('p');
-                    p.className = 'eleve';
-                    p.textContent = `${nom} ${prenom} (ID: ${id})`;
-
-                    listePrevisu.appendChild(p);
-
-                    let inputHidden = document.createElement('input');
-                    inputHidden.type = 'hidden';
-                    inputHidden.name = 'etudiants[]';
-                    inputHidden.value = id;
-
-                    document.getElementById('formGroupe').appendChild(inputHidden);
-                });
-            });
-        </script>
 
         <?php
     }

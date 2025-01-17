@@ -6,14 +6,14 @@ require_once 'connexion.php';
 class Modele_Groupe extends Connexion {
 
     public function getEtudiants() {
-        $stmt = self::getBdd()->prepare("SELECT id, nom, prenom FROM utilisateurs WHERE role = 'etudiant'");
+        $stmt = self::getBdd()->prepare("SELECT id, nom, prenom,semestre_id FROM utilisateurs JOIN etudiants using(id) WHERE role = 'etudiant'");
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
-    public function getGroupes($id){
-        $stmt = self::getBdd()->prepare("SELECT * FROM groupes WHERE id=:id");
-        $stmt->execute([':id' => $id]);
+    public function getGroupes($id,$projetId){
+        $stmt = self::getBdd()->prepare("SELECT * FROM groupes WHERE id=:id AND projet_id=:projetId");
+        $stmt->execute([':id' => $id,':projetId'=>$projetId]);
         return $stmt->fetchAll();
     }
 

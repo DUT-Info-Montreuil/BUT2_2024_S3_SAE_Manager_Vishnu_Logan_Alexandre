@@ -29,6 +29,7 @@ class Cont_Groupe {
 
     public function afficherFormulaire() {
         $etudiants = $this->model->getEtudiants();
+        
         $this->vue->afficherFormulaire($etudiants); 
 
     }

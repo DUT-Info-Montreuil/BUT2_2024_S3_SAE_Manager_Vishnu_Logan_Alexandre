@@ -25,8 +25,8 @@ class VueAccueil extends VueGenerique {
                 </div>
             </nav>
 
-            <a id = "test" href='index.php?module=mod&action=mod'>Afficher Menu</a>
-            <a id = "test2" href='index.php?module=groupe&action=formulaire'>test2</a>
+            <a id = "test" href='index.php?module=menuAccueil&action=menuAccueil'>Afficher Menu</a>
+            <a id = "test2" href='index.php?module=groupeProf&action=formulaire'>test2</a>
             
         <?php
     }

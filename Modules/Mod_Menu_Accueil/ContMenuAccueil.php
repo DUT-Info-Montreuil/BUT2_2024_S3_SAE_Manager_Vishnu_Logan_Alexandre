@@ -18,7 +18,7 @@ class ContMenuAccueil {
 
     public function action() {
 
-        $action = isset($_GET['action']) ? htmlspecialchars(strip_tags($_GET['action'])) : 'mod';
+        $action = isset($_GET['action']) ? htmlspecialchars(strip_tags($_GET['action'])) : 'menuAccueil';
 
         switch ($action) {
             case 'connexion':
