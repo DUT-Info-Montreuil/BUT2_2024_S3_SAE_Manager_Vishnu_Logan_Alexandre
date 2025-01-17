@@ -14,10 +14,15 @@ class Vue_SAE_etudiant extends VueGenerique {
 
     public function afficher_sae_etudiant($projet, $ressource, $rendus) {
         $this->vue->afficherAccueil();
-
+    
+        if (!$projet) {
+            echo "<p>Projet introuvable</p>";
+            return;
+        }
+    
         $description = htmlspecialchars($projet['description']);
         $id_projet = $projet['id'];
-
+    
         echo "
         <div class='sae-container'>
             <div class='main-content'>
@@ -29,7 +34,7 @@ class Vue_SAE_etudiant extends VueGenerique {
                         <p>$description</p>
                     </div>
                 </div>
-
+    
                 <div class='resources'>
                     <div class='description-ressource'>
                         <h2>Ressources</h2>
@@ -44,7 +49,7 @@ class Vue_SAE_etudiant extends VueGenerique {
                     <div class='description-depot'>
                         <h2>Dépôts</h2>
                     </div>";
-
+    
                     if (!empty($rendus) && is_array($rendus)) {
                         foreach ($rendus as $rendu) {
                             $id_rendu = $rendu['id'];
@@ -52,12 +57,19 @@ class Vue_SAE_etudiant extends VueGenerique {
                             $description = htmlspecialchars($rendu['description']);
                             $date_limite = htmlspecialchars($rendu['date_limite']);
                             $type = isset($rendu['type']) ? htmlspecialchars($rendu['type']) : 'Type non défini';
+                    
                             echo "
                             <div class='deposit-item'>
                                 <p><strong>$titre</strong></p>
                                 <p>Description : $description</p>
                                 <p>Date limite : $date_limite</p>
                                 <p>Type : $type</p>
+                                <!-- Formulaire pour rendre un fichier -->
+                                <form method='POST' action='index.php?module=sae&action=rendreFichier&id_rendu=$id_rendu&id_projet=$id_projet' enctype='multipart/form-data'>
+                                    <label for='fichier-$id_rendu'>Déposer un fichier :</label>
+                                    <input type='file' name='fichier' id='fichier-$id_rendu' required>
+                                    <button type='submit'>Rendre</button>
+                                </form>
                             </div>";
                         }
                     } else {
@@ -67,6 +79,6 @@ class Vue_SAE_etudiant extends VueGenerique {
                 </div>
             </div>
         </div>";
-    }
+       }
 }
 ?>

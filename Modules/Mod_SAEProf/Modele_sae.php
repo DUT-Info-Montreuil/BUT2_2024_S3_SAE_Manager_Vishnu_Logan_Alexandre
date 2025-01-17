@@ -7,8 +7,8 @@ class Modele_sae extends Connexion{
             try {
 
                 $stmt = self::getBdd()->prepare("UPDATE projets SET description = :description WHERE id = :id");
-                $stmt->bindParam(':description', $newDescription, PDO::PARAM_STR);
-                $stmt->bindParam(':id', $id_projet, PDO::PARAM_INT);
+                $stmt->bindParam(':description', $newDescription);
+                $stmt->bindParam(':id', $id_projet);
                 $stmt->execute();
             } catch (Exception $e) {
                 die('Erreur : ' . $e->getMessage());
@@ -37,11 +37,17 @@ class Modele_sae extends Connexion{
 
     public function getProjet($id_Projet){
         $pdo_req = self::getBdd()->prepare("SELECT * FROM projets WHERE id = :id");
-		$pdo_req->bindParam(":id", $id_Projet);
-		$pdo_req->execute();
-		return $pdo_req->fetch();
+        $pdo_req->bindParam(":id", $id_Projet);
+        $pdo_req->execute();
+        $projet = $pdo_req->fetch();
     
+        if (!$projet) {
+            return false;
+        }
+    
+        return $projet;
     }
+    
 
     public function getRessources($id_Projet){
         $pdo_req = self::getBdd()->prepare("SELECT * FROM ressources WHERE projet_id = :projet_id");
@@ -53,9 +59,8 @@ class Modele_sae extends Connexion{
     
 
         public function getRendus($id_projet) {
-            $pdo_req = self::getBdd()->prepare("SELECT * FROM rendus WHERE projet_id = :projet_id");
-            $pdo_req->bindParam(':projet_id', $id_projet);
-            $pdo_req->execute();
+            $pdo_req = self::getBdd()->prepare("SELECT * FROM rendus WHERE projet_id = ?");
+            $pdo_req->execute([$id_projet]);
             return $pdo_req->fetchAll();
         }
 
@@ -117,10 +122,34 @@ class Modele_sae extends Connexion{
                 $pdo_req->bindParam(':id_rendu', $id_rendu);
                 $pdo_req->execute();
                 return $pdo_req->fetchAll();
-        
-            
         }
         
+        public function getGroupeEtudiant($id_rendu, $etudiant_id) {
+            $pdo_req = self::getBdd()->prepare("
+                SELECT g.id 
+                FROM groupes g
+                JOIN groupe_etudiants ge ON ge.groupe_id = g.id
+                WHERE g.projet_id = (SELECT projet_id FROM rendus WHERE id = :id_rendu)
+                AND ge.etudiant_id = :etudiant_id
+            ");
+            $pdo_req->bindParam(':id_rendu', $id_rendu);
+            $pdo_req->bindParam(':etudiant_id', $etudiant_id);
+            $pdo_req->execute();
+            return $pdo_req->fetchColumn();
+        }
+        
+
+        public function ajouterFichierRendu($id_rendu, $groupe_id, $etudiant_id, $fichier_url) {
+            $pdo_req = self::getBdd()->prepare("
+                INSERT INTO fichiers_rendus (rendu_id, groupe_id, etudiant_id, fichier_url)
+                VALUES (:rendu_id, :groupe_id, :etudiant_id, :fichier_url)
+            ");
+            $pdo_req->bindParam(':rendu_id', $id_rendu);
+            $pdo_req->bindParam(':groupe_id', $groupe_id);
+            $pdo_req->bindParam(':etudiant_id', $etudiant_id);
+            $pdo_req->bindParam(':fichier_url', $fichier_url);
+            $pdo_req->execute();
+        }
         
         
     }

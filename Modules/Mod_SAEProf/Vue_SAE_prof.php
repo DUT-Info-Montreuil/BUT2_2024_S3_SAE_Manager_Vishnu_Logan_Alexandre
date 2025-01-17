@@ -40,9 +40,11 @@ class VueSAEProf extends VueGenerique {
                         <img src='Modules/Mod_SAEProf/imgSAEProf/ajouter.png' alt='Ajouter' class='icon-ajouter' onclick='toggleAddResourceForm()'> 
                     </div>";
                     foreach ($ressource as $ress) {
-                        $titre = htmlspecialchars($ress['titre']);
-                        echo "<p>$titre</p>";
+                        $titre = $ress['titre'];
+                        $url = $ress['url'];
+                        echo "<p><a href='$url' target='_blank'>$titre</a></p>";
                     }
+                    
                     echo "
                     <form id='add-resource-form' style='display: none;' method='POST' action='index.php?module=sae&action=ajouterRessource&id=$id_projet'>
                         <input type='text' name='titre' placeholder='Titre de la ressource' required>
@@ -79,19 +81,20 @@ class VueSAEProf extends VueGenerique {
                             $titre = htmlspecialchars($rendu['titre']);
                             $description = htmlspecialchars($rendu['description']);
                             $date_limite = htmlspecialchars($rendu['date_limite']);
-                            $type = !empty($rendu['type']) ? htmlspecialchars($rendu['type']) : 'Type non défini';
+                            $type =$rendu['TYPE'];
                     
                             echo "
                             <div class='deposit-item'>
                                 <a href='index.php?module=sae&action=afficherDepot&id_rendu=$id_rendu' class='rendu-link'>
                                     <p><strong>$titre</strong></p>
                                     <p>Description : $description</p>
-                                    <p>Date limite : $date_limite</p>
+                                    <p>Date limite : $date_limite</p> 
                                     <p>Type : $type</p>
                                 </a>
                                 <button onclick='toggleEditRenduForm($id_rendu)'>Modifier</button>
                             </div>
                             <form id='edit-rendu-form-$id_rendu' style='display: none;' method='POST' action='index.php?module=sae&action=modifierRendu&id=$id_rendu'>
+                                <input type='hidden' name='projet_id' value='$id_projet'>    
                                 <input type='text' name='titre' value='$titre' required>
                                 <textarea name='description' rows='3'>$description</textarea>
                                 <input type='datetime-local' name='date_limite' value='" . date('Y-m-d\TH:i', strtotime($date_limite)) . "' required>
@@ -147,10 +150,10 @@ class VueSAEProf extends VueGenerique {
         </script>";
     }
     public function afficherDepot($rendu, $groupes) {
-        $titre = htmlspecialchars($rendu['titre']);
-        $description = htmlspecialchars($rendu['description']);
-        $date_limite = htmlspecialchars($rendu['date_limite']);
-    $type = !empty($rendu['type']) ? htmlspecialchars($rendu['type']) : 'Type non défini';
+        $titre = $rendu['titre'];
+        $description = $rendu['description'];
+        $date_limite =$rendu['date_limite'];
+    $type = $rendu['TYPE'];
     
         echo "
         <div class='depot-container'>
@@ -190,20 +193,6 @@ class VueSAEProf extends VueGenerique {
                     } else {
                         echo "<tr><td colspan='3'>Aucun fichier trouvé pour ce dépôt.</td></tr>";
                     }
-        echo "
-                </tbody>
-            </table>
-        </div>
-    
-        <script>
-            function ajouterNote(fichierId) {
-                const note = prompt('Entrez une note sur 20 :');
-                if (note) {
-                    window.location.href = `index.php?module=sae&action=ajouterNote&id_fichier=${fichierId}&note=${note}`;
-                }
-            }
-        </script>
-        ";
     }
     
 }
