@@ -24,9 +24,9 @@ class VueAccueil extends VueGenerique {
                     <a href='index.php?module=connexion&action=deconnexion'><img src="Modules/Mod_accueil/imgAccueil/se-deconnecter.png" alt="Deconnexion Icon"></a>    
                 </div>
             </nav>
-
+        
             <a id = "test" href='index.php?module=menuAccueil&action=menuAccueil'>Afficher Menu</a>
-            <a id = "test2" href='index.php?module=groupeProf&action=formulaire'>test2</a>
+            <a id = "test2" href='index.php?module=groupe&action=formulaire'>test2</a>
             
         <?php
     }

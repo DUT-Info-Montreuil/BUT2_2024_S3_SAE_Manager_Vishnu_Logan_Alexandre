@@ -21,23 +21,27 @@
             break;
         case 'menuAccueil':
             echo "<title>Accueil</title>";
+            echo '<link rel="stylesheet" href="style_accueil.css">';
             echo '<link rel="stylesheet" href="style_menu_accueil.css">';
             echo '<script src="script.js"></script>';
+            break;
         case 'groupe':
             echo "<title>Groupe</title>";
             echo '<link rel="stylesheet" href="style_accueil.css">';
             echo '<link rel="stylesheet" href="style_groupe.css">';
             echo '<script src="script_groupe.js"></script>';
+            break;
         case 'groupeProf':
             echo "<title>Groupe</title>";
             echo '<link rel="stylesheet" href="style_accueil.css">';
             echo '<link rel="stylesheet" href="style_groupe_prof.css">';
             echo '<script src="script_groupe_prof.js"></script>';
+            break;
 
         case 'sae':
             echo '<link rel="stylesheet" href="style_pageSAEProf.css">';
             echo '<link rel="stylesheet" href="style_accueil.css">';
-
+            break;
        
         
     }

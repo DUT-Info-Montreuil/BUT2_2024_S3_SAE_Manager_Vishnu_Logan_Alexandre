@@ -48,5 +48,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+document.querySelector('.custom-dropdown .dropdown-btn').addEventListener('click', function() {
+    const dropdown = this.closest('.custom-dropdown');
+    dropdown.classList.toggle('open');
+});
+
+
 
 

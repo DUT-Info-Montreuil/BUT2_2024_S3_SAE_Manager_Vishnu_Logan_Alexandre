@@ -1,64 +1,129 @@
-.group-container{
-    margin: 20px 0;
+#groupe-container{
     position: absolute;
-    top:300px;
-    left:300px;
+    top: 50%;
+    left: 50%;
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+.titre-groupe {
+    font-size: 24px;
 }
 
-.prev-group {
-    border: 1px solid #ccc;
+.image-groupe {
+    max-width: 100px;
+    margin-top: 10px;
+}
+
+.membres-list {
+    list-style-type: none;
+}
+
+.membre {
+    margin-bottom: 5px;
+}
+
+.form-quitter,
+.form-modifier-groupe,
+.form-rejoindre-groupe {
+    margin-top: 20px;
+}
+
+.btn {
     padding: 10px;
-    border-radius: 5px;
-}
-
-.liste-eleve p.eleve {
-    margin: 5px 0;
-    padding: 5px;
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-}
-
-
-.custom-dropdown {
-    position: relative;
-    display: inline-block;
-    width: 200px;
-}
-
-.dropdown-btn {
-    width: 100%;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
     cursor: pointer;
+}
+
+.quitter-btn {
+    background-color: red;
+    color: white;
+}
+
+.modifier-btn {
+    background-color: orange;
+    color: white;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 400px;
+}
+
+.modal-titre {
+    margin-bottom: 20px;
+}
+
+.input-groupe {
+    width: 100%;
+}
+
+.select-membres {
+    width: 100%;
+    height: 100px;
+}
+
+.enregistrer-btn {
+    background-color: green;
+    color: white;
+}
+
+.fermer-btn {
+    background-color: grey;
+    color: white;
+}
+
+.groupes-container {
+    padding: 20px;
+}
+
+.titre-groupes {
+    font-size: 24px;
+}
+
+.table-groupes {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.col-groupe, .col-action {
+    padding: 10px;
     text-align: left;
 }
 
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: white;
-    border: 1px solid #ccc;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    max-height: 200px;
-    overflow-y: auto;
-    width: 100%;
-    z-index: 99;
+.ligne-groupe {
+    border-bottom: 1px solid #ddd;
 }
 
-.dropdown-content label {
-    display: block;
-    padding: 5px;
-    cursor: pointer;
+.cell-groupe {
+    padding: 10px;
 }
 
-.dropdown-content label:hover {
-    background-color: #f0f0f0;
+.cell-action {
+    text-align: center;
 }
 
-.eleve{
-    display: block;
-    position:  relative;
+.rejoindre-btn {
+    background-color: blue;
+    color: white;
+}
 
+.rejoindre-btn[disabled] {
+    background-color: grey;
 }
