@@ -15,20 +15,21 @@ body {
     height: 100vh;
 }
 
-/* Barre de navigation verticale */
+
 .nav {
     position: fixed;
     top: 0;
-    background-color: #000080; /* Couleur bleu marine */
-    width: 5%; /* Ajustement pour un design plus compact */
+    background-color: #000080; 
+    width: 5%; 
     padding: 10px 0;
     height: 100vh;
     color: #f1f1f1;
-    height: 100vh; /* S'assure que la barre occupe toute la hauteur de la fenêtre */
+    height: 100vh; 
     display: flex;
-    justify-content: center; /* Centrer horizontalement */
-    flex-wrap: wrap; /* Permet de passer à la ligne sur petits écrans */
+    justify-content: center;
+    flex-wrap: wrap; 
     gap: 10px; 
+    z-index: 999;
     
 }
 
@@ -61,26 +62,26 @@ body {
     text-align: center;
 }
 
-/* Header horizontal */
+
 .header {
-    background-color: #ffffff; /* Bleu marine */
+    background-color: #ffffff;
     color: #000000;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    height: 10vh; /* Taille proportionnelle */
-    width: 95%; /* Reste de la largeur */
-    position: fixed; /* Fixé en haut */
+    height: 10vh; 
+    width: 95%;
+    position: fixed;
     top: 0;
     right: 0;   
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Ombre subtile */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); 
     z-index: 100;
 }
 
 
 .header button {
-    background-color: #007BFF; /* Bleu clair pour les boutons */
+    background-color: #007BFF; 
     border: none;
     border-radius: 5px;
     color: #fff;
@@ -90,27 +91,27 @@ body {
 }
 
 .header button:hover {
-    background-color: #0056b3; /* Variation plus sombre au survol */
+    background-color: #0056b3; 
 }
 
 
 #listeIcones {
-    list-style: none; /* Supprime les puces par défaut */
-    padding: 0; /* Supprime le padding par défaut */
-    display: flex; /* Permet d'aligner les éléments en flexbox */
-    flex-direction: column; /* Aligne les éléments verticalement */
-    align-items: center; /* Centre les éléments horizontalement */
+    list-style: none; 
+    padding: 0; 
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
 }
 
 #listeIcones li {
-    margin: 10px 0; /* Marge de 10px en haut et en bas de chaque élément */
+    margin: 10px 0; 
 }
 
 
 
 #decoIcon {
     display: flex;
-    flex-direction: column; /* Organisation verticale */
+    flex-direction: column; 
     align-items: center;
     position: fixed;
     bottom: 0;

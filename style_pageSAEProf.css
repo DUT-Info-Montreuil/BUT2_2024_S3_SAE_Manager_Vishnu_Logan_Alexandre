@@ -14,7 +14,7 @@
 
 .description h2, .resources h2, .deposits h2 {
     font-size: 18px;
-    color: #000080; /* leu marine */
+    color: #000080; 
     margin-bottom: 10px;
 }
 
@@ -31,7 +31,7 @@
 
 .resources a {
     text-decoration: none;
-    color: #007BFF; /* bleu clair */
+    color: #007BFF; 
 }
 
 .resources a:hover {

@@ -19,14 +19,20 @@ class Cont_Groupe_Prof {
             case 'formulaire':
                 $this->afficherFormulaire();
                 break;
-            case 'creer':
-                $this->creerGroupe(); 
-                break;
+            
             case 'ajouter':
      
                 $this->creerGroupe(); 
                 header("Location: index.php?module=groupeProf");
                 
+                break;
+            case 'supprimer':
+                $this->supprimerGroupe(); 
+                header("Location: index.php?module=groupeProf");
+                break;
+            case 'modifier':
+                $this->modifGroupe();
+                header("Location: index.php?module=groupeProf");
                 break;
         }
     }
@@ -42,12 +48,15 @@ class Cont_Groupe_Prof {
 
             $modifNom = isset($_POST['modifier_nom']) ? 1 : 0;
             $modifImage = isset($_POST['modifier_image']) ? 1 : 0;
-        
-            // Pour chaque groupe, on appelle la méthode createGroupe
             for ($i = 1; $i <= $nombreGroupes; $i++) {
                 $this->model->createGroupe($projetId, $limiteGroupe, $modifNom, $modifImage);
             }
         
+    }
+
+    public function supprimerGroupe(){
+        $groupId=isset($_GET['id']) ? htmlspecialchars(strip_tags($_GET['id'])) : 5;
+        $this->model->deleteGroupe($groupId);
     }
     
     
@@ -58,6 +67,16 @@ class Cont_Groupe_Prof {
         $groupes=$this->model->getGroupes($projetId);
         $this->vue->afficherFormulaire($groupes); 
 
+    }
+
+    public function modifGroupe(){
+        $groupId=isset($_POST['groupeId']) ? htmlspecialchars(strip_tags($_POST['groupeId'])) : 5;
+        $projetId=isset($_GET['projetId']) ? htmlspecialchars(strip_tags($_GET['projetId'])) : 5;
+        $nomGroup = isset($_POST['groupeNom']) ? htmlspecialchars(strip_tags($_POST['groupeNom'])) : '';
+        $limiteGroupe = isset($_POST['groupeLimite']) ? htmlspecialchars(strip_tags($_POST['groupeLimite'])) : 0;
+        $modifNom = isset($_POST['changeNom']) ? 1 : 0;
+        $modifImage = isset($_POST['changeImage']) ? 1 : 0;
+        $this->model->modifGroupe($groupId,$projetId,$nomGroup,$limiteGroupe,$modifNom,$modifImage);
     }
     
 

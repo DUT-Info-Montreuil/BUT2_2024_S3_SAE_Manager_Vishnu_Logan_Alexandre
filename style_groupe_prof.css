@@ -1,9 +1,64 @@
-.group-container{
-    margin: 20px 0;
-    position: absolute;
-    top:300px;
-    left:300px;
+.groupeProf {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+    width: 100%;
 }
+.groupes{
+    position: absolute;
+    top: 15%;
+    left: 7%;
+    width: 93%;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: stretch;
+}
+
+.group-container,#groupesList{
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px;
+    width: 100%;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+
+.table-container {
+    max-height: 400px; 
+    overflow-y: auto;  
+    display: block;  
+    border: 2px solid #ddd;
+    background-color: white;
+}
+
+.table-container table {
+    width: 100%; 
+    border-collapse: collapse;
+}
+
+.table-container thead {
+    position: sticky;
+    top: 0;
+    background-color: white; 
+    z-index: 2; 
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
 
 .prev-group {
     border: 1px solid #ccc;
@@ -64,8 +119,291 @@
 }
 
 
-#groupesList{
-    position: absolute;
+#ajouterGroupeBtn{
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+button.supprimer-btn , button.modifier-btn{
+    padding: 8px 12px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+button.supprimer-btn {
+    background-color: #f44336; 
+}
+button.modifier-btn {
+    background-color: #4CAF50; 
+}
+
+button:hover {
+    opacity: 0.8; 
+}
+
+button:focus {
+    outline: none; 
+}
+
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+label {
+    font-weight: 500;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
+
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fafafa;
+    color: #333;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border 0.3s ease;
+}
+
+input[type="number"]:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+
+.input-group input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+
+#menuContextuel {
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    overflow: hidden;
+    position: fixed;
     top: 50%;
-    left: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; 
+    display: none; 
+}
+
+#menuContextuel h3 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+#menuContextuel label {
+    font-weight: 500;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
+
+#menuContextuel .input-group {
+    margin-bottom: 20px;
+}
+
+#menuContextuel input[type="text"], #menuContextuel input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fafafa;
+    color: #333;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border 0.3s ease;
+}
+
+#menuContextuel input[type="text"]:focus, #menuContextuel input[type="number"]:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+#menuContextuel button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#menuContextuel button#fermerMenu {
+    background-color: #f44336; 
+}
+
+#menuContextuel button:hover {
+    opacity: 0.8;
+}
+
+#menuContextuel button:focus {
+    outline: none;
+}
+
+#menuContextuel input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+
+#menuContextuel.show {
+    display: block;
+}
+
+#aperçuGroupes {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+
+.groupe-aperçu span {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.groupe-aperçu .modifier-info {
+    font-weight: 500;
+}
+
+
+
+.groupe-aperçu {
+    background-color: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    color: #333;
+}
+
+.groupe-header {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #4CAF50; 
+}
+
+.groupe-details p {
+    margin: 5px 0;
+}
+
+.groupe-details strong {
+    color: #333; 
+}
+
+.groupe-details p {
+    font-size: 1rem;
+    color: #555; 
+}
+
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 2px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+
+}
+
+
+input[type="checkbox"]:checked {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+
+input[type="checkbox"]:checked::after {
+
+    color: white;
+    position: relative;
+
+}
+
+input[type="checkbox"]:hover {
+    border-color: #5ae55f;
+}
+
+#btnConfirmer {
+    padding: 8px 12px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+#btnConfirmer:hover {
+    opacity: 0.8;
+}
+
+#btnConfirmer:focus {
+    outline: none;
+}
+.btn-annuler {
+    padding: 8px 12px;
+    background-color: #f44336; 
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-annuler:hover {
+    background-color: #e53935;
 }

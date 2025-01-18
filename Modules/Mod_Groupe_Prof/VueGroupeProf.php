@@ -10,90 +10,105 @@ class Vue_Groupe_Prof extends VueGenerique {
 
     public function afficherFormulaire($groupes) {
         ?>
-        <div class="group-container">
-            <form id="formGroupe" method='POST' action='index.php?module=groupeProf&action=ajouter'>
-                <div class="input-group">
-                    <label for="nombre_groupes">Nombre de groupes</label>
-                    <input type="number" id="nombre_groupes" name="nombre_groupes" placeholder="Nombre de groupes" min="1" required>
-                </div>
+        <div class="groupes">
+            <div class="group-container">
+                <h2>Ajouter des groupes</h2>
+                <form id="formGroupe" method='POST' action='index.php?module=groupeProf&action=ajouter'>
+                    <div class="input-group">
+                        <label for="nombre_groupes">Nombre de groupes</label>
+                        <input type="number" id="nombre_groupes" name="nombre_groupes" placeholder="Nombre de groupes" min="1" required>
+                    </div>
 
-                <div class="input-group">
-                    <label for="limite_groupe">Limite d'étudiants</label>
-                    <input type="number" id="limite_groupe" name="limite_groupe" placeholder="Limite des groupes" min="1" required>
-                </div>
-
-
-                <div class="input-group">
-                    <label>Modification possible</label><br>
-                    <label for="modifier_nom">
-                        <input type="checkbox" id="modifier_nom" name="modifier_nom" /> Modifier le nom
-                    </label>
-                    <label for="modifier_image">
-                        <input type="checkbox" id="modifier_image" name="modifier_image" /> Modifier l'image
-                    </label>
-                </div>
-
-                <button type="button" id="ajouterGroupeBtn" class="btn" onclick="afficherApercuGroupes()">Ajouter Groupes</button>
-
-                <div id="aperçuGroupes" class="group-preview">
-
-                </div>
+                    <div class="input-group">
+                        <label for="limite_groupe">Limite d'étudiants</label>
+                        <input type="number" id="limite_groupe" name="limite_groupe" placeholder="Limite des groupes" min="1" required>
+                    </div>
 
 
-                <button type='submit' id="btnConfirmer" style="display:none;" class="btn">Confirmer la création</button>
-            </form>
+                    <div class="input-group">
+                        <label>Modification possible</label><br>
+                        <label for="modifier_nom">
+                            <input type="checkbox" id="modifier_nom" name="modifier_nom" /> Nom
+                        </label>
+                        <label for="modifier_image">
+                            <input type="checkbox" id="modifier_image" name="modifier_image" /> Image
+                        </label>
+                    </div>
+
+                    <button type="button" id="ajouterGroupeBtn" class="btn" onclick="afficherApercuGroupes()">Ajouter Groupes</button>
+
+                    <div id="aperçuGroupes" class="group-preview">
+
+                    </div>
+
+
+                </form>
+            </div>
+
+
+            <div id="groupesList">
+                <h2>Groupes existants</h2>
+                <table border="2" class="table-container">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Limite</th>
+                            <th>Nom Modifiable</th>
+                            <th>Image Modifiable</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($groupes as $groupe): ?>
+                            <tr id="groupe_<?= $groupe['id'] ?>">
+                                <td><?= !empty($groupe['nom']) ? $groupe['nom'] : "Groupe " . $groupe['id'] ?></td>
+                                <td><?= $groupe['limiteGroupe'] ?> </td>
+                                <td><?= $groupe['nom_modifiable'] ? 'Oui' : 'Non' ?></td>
+                                <td><?= $groupe['image_modifiable'] ? 'Oui' : 'Non' ?></td>
+                                <td>
+                                <button class="modifier-btn" 
+                                        data-id="<?= $groupe['id'] ?>" 
+                                        data-nom="<?= $groupe['nom'] ?>" 
+                                        data-limite="<?= $groupe['limiteGroupe'] ?>" 
+                                        data-change-nom="<?= $groupe['nom_modifiable'] ?>" 
+                                        data-change-image="<?= $groupe['image_modifiable'] ?>">
+                                    Modifier
+                                </button>
+                                
+                                <button class="supprimer-btn" 
+                                        data-id="<?= $groupe['id'] ?>">
+                                    Supprimer
+                                </button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
 
-        <div id="groupesList">
-            <h2>Groupes existants</h2>
-            <ul>
-                <?php
+<div id="menuContextuel" class="hidden">
+    <h3>Modifier Groupe</h3>
+    <form id="modifierForm"method='POST' action='index.php?module=groupeProf&action=modifier' >
+        <input type="hidden" id="groupeId" name="groupeId">
+        
+        <label for="groupeNom">Nom du Groupe :</label>
+        <input type="text" id="groupeNom" name="groupeNom" >
 
-                foreach ($groupes as $groupe) {
-                    echo '<li id="groupe_' . $groupe['id'] . '">';
-                    echo "Groupe " . $groupe['id'] . " | Limite: " . $groupe['limiteGroupe'] . " étudiants";
-                    echo ' | <a href="index.php?module=groupeProf&action=modifier&id=' . $groupe['id'] . '">Modifier</a>';
-                    echo ' | <a href="index.php?module=groupeProf&action=supprimer&id=' . $groupe['id'] . '">Supprimer</a>';
-                    echo '</li>';
-                }
-                ?>
-            </ul>
-        </div>
+        <label for="groupeLimite">Taille Max :</label>
+        <input type="number" id="groupeLimite" min="1" name="groupeLimite" >
 
-        <script>
+        <label for="changeNom">Nom Modifiable :</label>
+        <input type="checkbox" id="changeNom" name="changeNom">
 
-            function afficherApercuGroupes() {
-                const nombreGroupes = document.getElementById('nombre_groupes').value;
-                const limiteGroupe = document.getElementById('limite_groupe').value;
-                const modifNom = document.getElementById('modifier_nom').checked;
-                const modifImage = document.getElementById('modifier_image').checked;
-                const apercuDiv = document.getElementById('aperçuGroupes');
-                const btnConfirmer = document.getElementById('btnConfirmer');
-                
+        <label for="changeImage">Image Modifiable :</label>
+        <input type="checkbox" id="changeImage" name="changeImage">
 
-                apercuDiv.innerHTML = '';
-                
-
-                if (nombreGroupes && limiteGroupe) {
-                    for (let i = 1; i <= nombreGroupes; i++) {
-                        const divGroupe = document.createElement('div');
-                        divGroupe.classList.add('groupe-aperçu');
-                        divGroupe.innerHTML = `Groupe ${i}: ${limiteGroupe} étudiants. Modifier Nom : ${modifNom ? 'Oui' : 'Non'}, Modifier Image : ${modifImage ? 'Oui' : 'Non'}`;
-                        apercuDiv.appendChild(divGroupe);
-                    }
-                    btnConfirmer.style.display = 'inline-block'; 
-                } else {
-                    btnConfirmer.style.display = 'none'; 
-                }
-            }
-
-
-            
-
-
-            
-        </script>
+        <button type="submit">Enregistrer</button>
+        <button type="button" id="fermerMenu" >Annuler</button>
+    </form>
+</div>
         <?php
     }
 }

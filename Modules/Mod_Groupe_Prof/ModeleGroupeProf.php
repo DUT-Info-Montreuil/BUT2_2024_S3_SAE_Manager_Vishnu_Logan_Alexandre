@@ -30,6 +30,26 @@ class Modele_Groupe_Prof extends Connexion {
 
     }
 
+    public function deleteGroupe($groupeId){
+        $stmt = self::getBdd()->prepare("DELETE FROM groupes WHERE id=:groupeId");
+        $stmt->execute([':groupeId' => $groupeId]);
+    }
+
+    public function modifGroupe($groupeId,$projetId,$nomGroup,$limiteGroupe,$modifNom,$modifImage){
+        $stmt = self::getBdd()->prepare("UPDATE groupes 
+                                        SET nom=:nom, nom_modifiable=:nom_modifiable, image_modifiable=:image_modifiable, limiteGroupe=:limiteGroupe 
+                                        WHERE projet_id=:projetId AND id=:groupeId");
+
+        $stmt->execute([
+            ':groupeId' => $groupeId,
+            ':projetId' => $projetId,
+            ':nom' => $nomGroup, 
+            ':nom_modifiable' => $modifNom, 
+            ':image_modifiable' => $modifImage, 
+            ':limiteGroupe' => $limiteGroupe
+        ]);
+    }
+
     public function addEtudiantsToGroupe($groupeId, $etudiants) {
         foreach ($etudiants as $etudiantId) {
             $stmt = self::getBdd()->prepare("INSERT INTO groupe_etudiants (groupe_id, etudiant_id) VALUES (:groupe_id, :etudiant_id)");
