@@ -18,7 +18,7 @@ class VueAccueil extends VueGenerique {
                     <li class="Icon"><img src="Modules/Mod_accueil/imgAccueil/utilisateur.png" alt="Profile Icon"></li>
                     <li class="Icon"><img src="Modules/Mod_accueil/imgAccueil/chercher.png" alt="Search Icon"></li>
                     <li class="Icon"><img src="Modules/Mod_accueil/imgAccueil/cloche.png" alt="Settings Icon"></li>
-                    <li class="Icon"><a href="index.php?module=accueil"><img src="Modules/Mod_accueil/imgAccueil/maison.png" alt="Home Icon"></a></li>
+                    <li class="Icon"><a href="index.php?module=menuAccueil"><img src="Modules/Mod_accueil/imgAccueil/maison.png" alt="Home Icon"></a></li>
                 </ul>
                 <div id="decoIcon">
                     <a href='index.php?module=connexion&action=deconnexion'><img src="Modules/Mod_accueil/imgAccueil/se-deconnecter.png" alt="Deconnexion Icon"></a>    

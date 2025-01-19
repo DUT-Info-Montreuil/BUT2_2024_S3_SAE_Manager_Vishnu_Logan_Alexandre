@@ -27,9 +27,20 @@ class Modele_Groupe extends Connexion {
         return $stmt->fetch();
     }
 
-    public function getGroupes($projetId){
-        $stmt = self::getBdd()->prepare("SELECT * FROM groupes WHERE projet_id=:projetId");
-        $stmt->execute([':projetId'=>$projetId]);
+    public function getGroupes($projetId) {
+        $stmt = self::getBdd()->prepare("
+            SELECT g.*
+            FROM groupes g
+            LEFT JOIN (
+                SELECT groupe_id, COUNT(*) as nb_etudiants
+                FROM groupe_etudiants
+                GROUP BY groupe_id
+            ) ge ON g.id = ge.groupe_id
+            WHERE g.projet_id = :projetId
+            AND (ge.nb_etudiants IS NULL OR ge.nb_etudiants <= g.limiteGroupe)
+
+        ");
+        $stmt->execute([':projetId' => $projetId]);
         return $stmt->fetchAll();
     }
 
@@ -84,42 +95,72 @@ class Modele_Groupe extends Connexion {
     }
     
 
-    public function deleteEtudiantFromGroupe($groupeId, $etudiants) {
-        
-            $stmt = self::getBdd()->prepare("DELETE FROM groupe_etudiants  WHERE (groupe_id=:groupe_id AND etudiant_id=:etudiant_id)");
-            $stmt->execute([
-                ':groupe_id' => $groupeId,
-                ':etudiant_id' => $etudiants
-            ]);
-        
+        public function deleteEtudiantFromGroupe($groupeId, $etudiants) {
+        $stmt = self::getBdd()->prepare("DELETE FROM groupe_etudiants WHERE (groupe_id=:groupe_id AND etudiant_id=:etudiant_id)");
+        $stmt->execute([
+            ':groupe_id' => $groupeId,
+            ':etudiant_id' => $etudiants
+        ]);
+    
+        // Vérifier si le groupe était validé
+        $stmt = self::getBdd()->prepare("SELECT groupeValide FROM groupes WHERE id = :groupe_id");
+        $stmt->execute([':groupe_id' => $groupeId]);
+        $groupeValide = $stmt->fetchColumn();
+    
+        // Remettre le groupe en non validé si il était validé
+        if ($groupeValide) {
+            $stmt = self::getBdd()->prepare("UPDATE groupes SET groupeValide = 0 WHERE id = :groupe_id");
+            $stmt->execute([':groupe_id' => $groupeId]);
+        }
     }
+    
     public function getGroupeById($groupeId){
         $stmt = self::getBdd()->prepare("SELECT * FROM groupes WHERE id=:groupeId");
         $stmt->execute([':groupeId'=>$groupeId]);
         return $stmt->fetch();
     }
 
-    public function updateNomGroupe($groupeId, $nom) {
-        $stmt = self::getBdd()->prepare("UPDATE groupes SET nom = :nom WHERE id = :groupe_id");
+    public function updateNomGroupe($groupeId, $nomGroup) {
+        $stmt = self::getBdd()->prepare("UPDATE groupes 
+        SET nom=:nom
+        WHERE id=:groupeId");
+
         $stmt->execute([
-            ':groupe_id' => $groupeId,
-            ':nom' => $nom
+        ':groupeId' => $groupeId,
+        ':nom' => $nomGroup, 
+        
         ]);
     }
 
     public function updateImageGroupe($groupeId, $imagePath) {
+        // Récupérer l'ancienne image
+        $stmt = self::getBdd()->prepare("SELECT image_titre FROM groupes WHERE id = :groupe_id");
+        $stmt->execute([':groupe_id' => $groupeId]);
+        $oldImage = $stmt->fetchColumn();
+    
+        // Supprimer l'ancienne image si elle existe
+        if ($oldImage && file_exists($oldImage)) {
+            unlink($oldImage);
+        }
+    
+        // Mettre à jour avec la nouvelle image
         $stmt = self::getBdd()->prepare("UPDATE groupes SET image_titre = :image WHERE id = :groupe_id");
         $stmt->execute([
-            ':groupe_id' => $groupeId,
-            ':image' => $imagePath
+            ':image' => $imagePath,
+            ':groupe_id' => $groupeId
         ]);
     }
 
     public function getGroupeByEtudiantId($userId, $projetId) {
-        $stmt = self::getBdd()->prepare("SELECT groupe_id,projet_id,nom,image_titre,nom_modifiable,image_modifiable,limiteGroupe FROM groupe_etudiants JOIN groupes on (groupe_id=groupes.id) WHERE etudiant_id = :etudiant_id AND projet_id = :projet_id");
+        $stmt = self::getBdd()->prepare("SELECT groupe_id,projet_id,nom,image_titre,nom_modifiable,image_modifiable,limiteGroupe,groupeValide FROM groupe_etudiants JOIN groupes on (groupe_id=groupes.id) WHERE etudiant_id = :etudiant_id AND projet_id = :projet_id");
         $stmt->execute([':etudiant_id' => $userId,
                         ':projet_id' => $projetId]);
         return $stmt->fetch();
+    }
+
+    public function valideGroupe($groupeId) {
+        $stmt = self::getBdd()->prepare("UPDATE groupes SET groupeValide = 1 WHERE id = :groupe_id");
+        $stmt->execute([':groupe_id' => $groupeId]);
     }
 }
 ?>

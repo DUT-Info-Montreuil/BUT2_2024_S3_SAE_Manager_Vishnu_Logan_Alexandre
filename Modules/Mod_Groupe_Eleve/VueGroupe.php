@@ -17,8 +17,8 @@ class Vue_Groupe extends VueGenerique {
         <div id="groupe-container" class="groupe-container">
             <?php if ($groupeUtilisateur): ?>
                 <h2 class="titre-groupe">Votre Groupe</h2>
-                <p><strong>Nom du groupe :</strong> <?= !empty($groupe['nom']) ? $groupeUtilisateur['nom'] : "Groupe " . $groupeUtilisateur['groupe_id'] ?></p>
-                <p><strong>Limite du groupe :</strong> <?= htmlspecialchars($groupeUtilisateur['limiteGroupe']) ?></p>
+                <p><strong>Nom du groupe :</strong> <?= !empty($groupeUtilisateur['nom']) ? $groupeUtilisateur['nom'] : "Groupe " . $groupeUtilisateur['groupe_id'] ?></p>
+                <p><strong>Limite du groupe :</strong> <?= count($etudiantsParGroupe[$groupeUtilisateur['groupe_id']])?>/<?= htmlspecialchars($groupeUtilisateur['limiteGroupe']) ?></p>
                     
                 <?php if (!empty($groupeUtilisateur['image_titre'])): ?>
                     <img src="<?= htmlspecialchars($groupeUtilisateur['image_titre']) ?>" alt="Image du groupe" class="image-groupe">
@@ -30,48 +30,78 @@ class Vue_Groupe extends VueGenerique {
                         <li class="membre"><?= htmlspecialchars($membre['nom'] . ' ' . $membre['prenom']) ?></li>
                     <?php endforeach; ?>
                 </ul>
+                <div>
+                        <?php if ($groupeUtilisateur['groupeValide']): ?>
+                            <p class="message-confirmation">Le groupe est validé.</p>
+                        <?php else: ?>
+                            <?php if (isset($etudiantsParGroupe[$groupeUtilisateur['groupe_id']]) && count($etudiantsParGroupe[$groupeUtilisateur['groupe_id']]) === (int) $groupeUtilisateur['limiteGroupe']): ?>
+                                <form method="POST" action="index.php?module=groupe&action=confirmer" class="form-confirm">
+                                    <input type="hidden" name="groupe_id" value="<?= htmlspecialchars($groupeUtilisateur['groupe_id']) ?>">
+                                    <button type="submit" class="btn confirm-btn">
+                                        Confirmer
+                                    </button>
+                                </form>
+                            <?php else: ?>
+                                <p class="message-confirmation">Le groupe n'est pas complet.</p>
+                                <div class="custom-dropdown">
+                                    <button type="button" class="dropdown-btn" onclick="toggleDropdown()">
+                                        Sélectionnez les étudiants
+                                        <span class="dropdown-icon">▼</span>
+                                    </button>
+                                        <div class="dropdown-content">
+                                            <?php foreach ($etudiants as $etudiant) : ?>
+                                                <label>
+                                                    <input type="checkbox" class="etudiant-checkbox" value="<?php echo $etudiant['id']; ?>" 
+                                                        data-nom="<?php echo $etudiant['nom']; ?>" 
+                                                        data-prenom="<?php echo $etudiant['prenom']; ?>">
+                                                    <?php echo $etudiant['nom'] . ' ' . $etudiant['prenom']; ?>
+                                                </label><br>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+
+                                   
+
+                                    <script>
+                                    function toggleDropdown() {
+                                        var dropdown = document.querySelector(".custom-dropdown");
+                                        dropdown.classList.toggle("active");
+                                    }
+                                    </script>
+                            <?php endif; ?>
+
+                                
+                        <?php endif; ?>
+                        <button id="btnModifierGroupe" class="btn modifier-btn">
+                                    Modifier le groupe
+                        </button>
+                        <form method="POST" action="index.php?module=groupe&action=quitter" class="form-quitter">
+                            <input type="hidden" name="groupe_id" value="<?= $groupeUtilisateur['groupe_id'] ?>">
+                            <button type="submit" class="btn quitter-btn">
+                                Quitter le groupe
+                            </button>
+                        </form>
+                </div>
             
-                <form method="POST" action="index.php?module=groupe&action=quitter" class="form-quitter">
-                    <input type="hidden" name="groupe_id" value="<?= $groupeUtilisateur['groupe_id'] ?>">
-                    <button type="submit" class="btn quitter-btn">
-                        Quitter le groupe
-                    </button>
-                </form>
-        
                 
-                    <button id="btnModifierGroupe" class="btn modifier-btn">
-                        Modifier le groupe
-                    </button>
                 
                     <div id="modifierGroupeModal" class="modal">
                     <div class="modal-content">
                             <h3 class="modal-titre">Modifier le groupe</h3>
-                            <form method="POST" action="index.php?module=groupe&action=modifier" class="form-modifier-groupe">
+                            <form method="POST" action="index.php?module=groupe&action=modifier" enctype="multipart/form-data" class="form-modifier-groupe">
                                 <input type="hidden" name="groupe_id" value="<?= $groupeUtilisateur['groupe_id'] ?>">
 
                                 <?php if ($nomModifiable): ?>
                                     <label for="nom_groupe" class="label-groupe">Nom du groupe :</label><br>
-                                    <input type="text" id="nom_groupe" name="nom_groupe" value="<?= !empty($groupe['nom']) ? $groupeUtilisateur['nom'] : "Groupe " . $groupeUtilisateur['groupe_id'] ?>" required class="input-groupe"><br><br>
+                                    <input type="text" id="nom_groupe" name="nom_groupe" value="<?= !empty($groupeUtilisateur['nom']) ? $groupeUtilisateur['nom'] : "Groupe " . $groupeUtilisateur['groupe_id'] ?>" required class="input-groupe"><br><br>
                                 <?php endif; ?>
 
                                 <?php if ($imageModifiable): ?>
                                     <label for="image_groupe" class="label-groupe">Image du groupe (PNG) :</label><br>
-                                    <input type="file" id="image_groupe" name="image_groupe" accept=".png" class="input-groupe"><br><br>
+                                    <input type="file" name="image_groupe" accept="image/png" class="input-groupe"><br><br>
                                 <?php endif; ?>
 
-                                <div class="custom-dropdown">
-                                    <button type="button" class="dropdown-btn">Sélectionnez les étudiants</button>
-                                    <div class="dropdown-content">
-                                        <?php foreach ($etudiants as $etudiant) : ?>
-                                            <label>
-                                                <input type="checkbox" class="etudiant-checkbox" value="<?php echo $etudiant['id']; ?>" 
-                                                    data-nom="<?php echo $etudiant['nom']; ?>" 
-                                                    data-prenom="<?php echo $etudiant['prenom']; ?>">
-                                                <?php echo $etudiant['nom'] . ' ' . $etudiant['prenom']; ?>
-                                            </label><br>
-                                        <?php endforeach; ?>
-                                    </div>
-                                </div>
+                                
 
                                 <button type="submit" class="btn enregistrer-btn">
                                     Enregistrer les modifications
@@ -106,23 +136,29 @@ class Vue_Groupe extends VueGenerique {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($groupes as $groupe): ?>
-                            <tr class="ligne-groupe">
-                                <td class="cell-groupe"><?= !empty($groupe['nom']) ? $groupe['nom'] : "Groupe " . $groupe['id'] ?></td>
-                                <td class="cell-action">
-                                    <?php 
-                                    $isMember = in_array($userId, array_column($etudiantsParGroupe[$groupe['id']] ?? [], 'user_id')) || $groupeUtilisateur;
-                                    ?>
-                                    
-                                    <form method="POST" action="index.php?module=groupe&action=rejoindre" class="form-rejoindre-groupe">
-                                        <input type="hidden" name="groupe_id" value="<?= $groupe['id'] ?>">
-                                        <button type="submit" class="btn rejoindre-btn" <?= $isMember ? 'disabled' : '' ?>>
-                                            <?= $isMember ? 'Déjà membre' : 'Rejoindre' ?>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
+                    <?php foreach ($groupes as $groupe): ?>
+                        <?php
+                        $isFull = count($etudiantsParGroupe[$groupe['id']] ?? []) >= $groupe['limiteGroupe'];
+                        if ($groupe['groupeValide'] || $isFull) {
+                            continue;
+                        }
+                        ?>
+                        <tr class="ligne-groupe">
+                            <td class="cell-groupe"><?= !empty($groupe['nom']) ? $groupe['nom'] : "Groupe " . $groupe['id'] ?></td>
+                            <td class="cell-action">
+                                <?php 
+                            
+                                ?>
+                                
+                                <form method="POST" action="index.php?module=groupe&action=rejoindre" class="form-rejoindre-groupe">
+                                    <input type="hidden" name="groupe_id" value="<?= $groupe['id'] ?>">
+                                    <button type="submit" class="btn rejoindre-btn"?>
+                                        Rejoindre
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>

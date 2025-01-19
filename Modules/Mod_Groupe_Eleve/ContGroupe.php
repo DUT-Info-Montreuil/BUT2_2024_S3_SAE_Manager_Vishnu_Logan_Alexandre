@@ -21,7 +21,7 @@ class Cont_Groupe {
                 $this->afficherFormulaire();
                 break;
 
-            case 'update':
+            case 'modifier':
                 $this->updateGroupe();
                 break;
 
@@ -32,7 +32,9 @@ class Cont_Groupe {
             case 'rejoindre':
                 $this->rejoindreGroupe();
                 break;
-
+            case 'confirmer':
+                $this->confirmerGroupe();
+                break;
             default:
                 $this->afficherFormulaire();
         }
@@ -65,7 +67,6 @@ class Cont_Groupe {
         $groupeId = intval($_POST['groupe_id']);
         $userId = intval($_SESSION['id']);
 
-        // Vérifier si l'utilisateur est déjà dans un groupe
         if ($this->model->getGroupeByEtudiantId($userId, $groupeId)) {
             die("Erreur : Vous êtes déjà dans un groupe.");
         }
@@ -74,7 +75,7 @@ class Cont_Groupe {
         $groupe = $this->model->getGroupeById($groupeId);
         $etudiantsGroupe = $this->model->getEtudiantsByGroupeId($groupeId);
 
-        if (count($etudiantsGroupe) >= $groupe['limiteGroupe']) {
+        if (count($etudiantsGroupe) > $groupe['limiteGroupe']) {
             die("Erreur : Ce groupe est complet.");
         }
 
@@ -101,30 +102,54 @@ class Cont_Groupe {
     }
 
     public function updateGroupe() {
+        var_dump($_POST, $_FILES);  // Debugging (À retirer après test)
+    
+        $groupeId = isset($_POST['groupe_id']) ? intval($_POST['groupe_id']) : -1;
+        $nom = isset($_POST['nom_groupe']) ? htmlspecialchars(strip_tags($_POST['nom_groupe'])) : '';
+    
+        $this->model->updateNomGroupe($groupeId, $nom);
+    
+        if (isset($_FILES['image_groupe']) && $_FILES['image_groupe']['error'] === UPLOAD_ERR_OK) {
+            $dossierCible = 'uploads/groupe/'; 
+    
+
+            $typesAutorises = ['image/jpeg', 'image/png', 'image/gif'];
+            $tailleMax = 2 * 1024 * 1024; // 2 Mo
+    
+            if (!in_array($_FILES['image_groupe']['type'], $typesAutorises)) {
+                die("Erreur : Format d'image non autorisé.");
+            }
+    
+            if ($_FILES['image_groupe']['size'] > $tailleMax) {
+                die("Erreur : Fichier trop volumineux.");
+            }
+    
+            $extension = pathinfo($_FILES['image_groupe']['name'], PATHINFO_EXTENSION);
+            $nomFichierUnique = uniqid('img_') . '.' . $extension;
+            $cheminFichier = $dossierCible . $nomFichierUnique;
+    
+            // Déplacer le fichier uploadé vers le dossier cible
+            if (move_uploaded_file($_FILES['image_groupe']['tmp_name'], $cheminFichier)) {
+                // Mettre à jour l'image dans la base de données
+                $this->model->updateImageGroupe($groupeId, $cheminFichier);
+            } else {
+                echo "Erreur lors du téléchargement du fichier.";
+            }
+        }
+    
+        header("Location: index.php?module=groupe&action=formulaire");
+        exit();
+    }
+    
+    
+
+    public function confirmerGroupe() {
         if (!isset($_POST['groupe_id'])) {
             die("Erreur : Données manquantes.");
         }
-
         $groupeId = intval($_POST['groupe_id']);
-        $nom = htmlspecialchars($_POST['nom']);
-        $image = $_FILES['image'];
-
-        // Mettre à jour le nom du groupe
-        $this->model->updateNomGroupe($groupeId, $nom);
-
-        // Mettre à jour l'image si elle est fournie
-        if ($image['error'] === UPLOAD_ERR_OK) {
-            $imagePath = 'uploads/groupes/' . basename($image['name']);
-            move_uploaded_file($image['tmp_name'], $imagePath);
-            $this->model->updateImageGroupe($groupeId, $imagePath);
-        }
-
-        // Ajouter des étudiants
-        if (isset($_POST['etudiants'])) {
-            $etudiants = array_map('intval', $_POST['etudiants']);
-            $this->model->addEtudiantToGroupe($groupeId, $etudiants);
-        }
-
+        
+        $this->model->valideGroupe($groupeId);
         header("Location: index.php?module=groupe&action=formulaire");
         exit();
     }

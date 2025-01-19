@@ -34,7 +34,7 @@ class ContConnexion {
     private function connexion() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($this->modele->connexion()) {
-                header("Location: index.php?module=accueil&action=accueil");
+                header("Location: index.php?module=menuAccueil&action=menuAccueil");
                 exit;
             } else {
                 $this->vue->form_connexion();
@@ -49,7 +49,7 @@ class ContConnexion {
     private function inscription() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($this->modele->ajoutUtilisateur()) {
-                header("Location: index.php?module=accueil&action=accueil");
+                header("Location: index.php?module=menuAccueil&action=menuAccueil");
             }
             else{
                 
@@ -63,6 +63,6 @@ class ContConnexion {
 
     private function deconnexion() {
         $this->modele->deconnexion();
-        header("Location: index.php?module=connexion&action=connexion");
+        header("Location: index.php?module=menuAccueil&action=menuAccueil");
     }
 }
