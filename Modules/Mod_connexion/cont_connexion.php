@@ -63,6 +63,6 @@ class ContConnexion {
 
     private function deconnexion() {
         $this->modele->deconnexion();
-        header("Location: index.php?module=menuAccueil&action=menuAccueil");
+        header("Location: index.php?module=connexion&action=connexion");
     }
 }

@@ -56,6 +56,7 @@ th, td {
 }
 
 th {
+    width: 100%;
     background-color: #f4f4f4;
 }
 
@@ -406,4 +407,67 @@ input[type="checkbox"]:hover {
 
 .btn-annuler:hover {
     background-color: #e53935;
+}
+
+#menuContextuelSupp {
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    overflow: hidden;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    display: none; 
+}
+
+#menuContextuelSupp h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+#menuContextuelSupp button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#menuContextuelSupp button#fermerMenusupp {
+    background-color: #f44336;
+}
+
+#menuContextuelSupp button:hover {
+    opacity: 0.8;
+}
+
+#menuContextuelSupp button:focus {
+    outline: none;
+}
+
+#menuContextuelSupp .btn-annuler {
+    background-color: #f44336;
+}
+
+#menuContextuelSupp .btn-annuler:hover {
+    background-color: #e53935;
+}
+
+#menuContextuelSupp.show {
+    display: block;
 }

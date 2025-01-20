@@ -14,7 +14,7 @@ class Cont_Groupe_Prof {
 
     public function action(){
         $action = isset($_GET['action']) ? htmlspecialchars(strip_tags($_GET['action'])) : 'formulaire';
-    
+        $projetId = isset($_GET['projetId']) ? htmlspecialchars(strip_tags($_GET['projetId'])) : -1;
         switch ($action) {
             case 'formulaire':
                 $this->afficherFormulaire();
@@ -23,16 +23,16 @@ class Cont_Groupe_Prof {
             case 'ajouter':
      
                 $this->creerGroupe(); 
-                header("Location: index.php?module=groupeProf");
+                header("Location: index.php?module=groupeProf&action=formulaire&projetId=$projetId");
                 
                 break;
             case 'supprimer':
                 $this->supprimerGroupe(); 
-                header("Location: index.php?module=groupeProf");
+                header("Location: index.php?module=groupeProf&action=formulaire&projetId=$projetId");
                 break;
             case 'modifier':
                 $this->modifGroupe();
-                header("Location: index.php?module=groupeProf");
+                header("Location: index.php?module=groupeProf&action=formulaire&projetId=$projetId");
                 break;
         }
     }
@@ -55,7 +55,7 @@ class Cont_Groupe_Prof {
     }
 
     public function supprimerGroupe(){
-        $groupId=isset($_GET['id']) ? htmlspecialchars(strip_tags($_GET['id'])) : -1;
+        $groupId=isset($_POST['groupId']) ? htmlspecialchars(strip_tags($_POST['groupId'])) : -1;
         $this->model->deleteGroupe($groupId);
     }
     

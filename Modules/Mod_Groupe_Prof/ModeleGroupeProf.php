@@ -18,16 +18,28 @@ class Modele_Groupe_Prof extends Connexion {
     }
 
 
-    public function createGroupe($projetId,$limiteGroupe,$modifNom,$modifImage) {
-        $stmt = self::getBdd()->prepare("INSERT INTO groupes (projet_id,nom_modifiable ,image_modifiable,limiteGroupe) VALUES (:projet_id,:modifNom,:modifImage,:limiteGroupe)");
+    public function createGroupe($projetId, $limiteGroupe, $modifNom, $modifImage) {
+        $bdd = self::getBdd();
+    
+ 
+        $stmt = $bdd->prepare("INSERT INTO groupes (projet_id, nom_modifiable, image_modifiable, limiteGroupe) 
+                               VALUES (:projet_id, :modifNom, :modifImage, :limiteGroupe)");
         $stmt->execute([
             ':projet_id' => $projetId,
-            ':modifNom'=>$modifNom,
-            ':modifImage'=>$modifImage,
-            ':limiteGroupe' =>$limiteGroupe
-
+            ':modifNom' => $modifNom,
+            ':modifImage' => $modifImage,
+            ':limiteGroupe' => $limiteGroupe
         ]);
+    
+        $groupeId = $bdd->lastInsertId();
 
+        $stmt = $bdd->prepare("UPDATE groupes SET nom = :nom WHERE id = :id");
+        $stmt->execute([
+            ':nom' => "groupe " . $groupeId,
+            ':id' => $groupeId
+        ]);
+    
+        return $groupeId; 
     }
 
     public function deleteGroupe($groupeId){

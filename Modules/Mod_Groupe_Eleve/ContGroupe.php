@@ -15,7 +15,7 @@ class Cont_Groupe {
 
     public function action() {
         $action = isset($_GET['action']) ? htmlspecialchars(strip_tags($_GET['action'])) : 'formulaire';
-
+        $projetId = isset($_GET['projetId']) ? htmlspecialchars(strip_tags($_GET['projetId'])) : -1;
         switch ($action) {
             case 'formulaire':
                 $this->afficherFormulaire();
@@ -23,28 +23,33 @@ class Cont_Groupe {
 
             case 'modifier':
                 $this->updateGroupe();
+                header("Location: index.php?module=groupe&action=formulaire&projetId=$projetId");
                 break;
 
             case 'quitter':
                 $this->quitterGroupe();
+                header("Location: index.php?module=groupe&action=formulaire&projetId=$projetId");
                 break;
 
             case 'rejoindre':
                 $this->rejoindreGroupe();
+                header("Location: index.php?module=groupe&action=formulaire&projetId=$projetId");
                 break;
             case 'confirmer':
                 $this->confirmerGroupe();
+                header("Location: index.php?module=groupe&action=formulaire&projetId=$projetId");
                 break;
             default:
                 $this->afficherFormulaire();
+                break;
         }
     }
 
     public function afficherFormulaire() {
-        $projetId = isset($_GET['projetId']) ? intval($_GET['projetId']) : 5;
+        $projetId = isset($_GET['projetId']) ? intval($_GET['projetId']) : -1;
         $userId = $_SESSION['id'];
         $semestre = $this->model->getEtudiantsById($userId)['semestre_id'];
-        // Récupérer les étudiants, groupes et l'utilisateur actuel
+
         $etudiants = $this->model->getEtudiantsSansGroupeBySemestre($semestre);
         $groupes = $this->model->getGroupes($projetId);
         $etudiantsParGroupe = [];
@@ -55,7 +60,6 @@ class Cont_Groupe {
 
         $groupeUtilisateur = $this->model->getGroupeByEtudiantId($userId, $projetId);
 
-        // Afficher le formulaire avec les données récupérées
         $this->vue->afficherFormulaire($etudiants, $groupes, $etudiantsParGroupe, $userId, $groupeUtilisateur);
     }
 
@@ -71,7 +75,7 @@ class Cont_Groupe {
             die("Erreur : Vous êtes déjà dans un groupe.");
         }
 
-        // Vérifier la capacité du groupe
+
         $groupe = $this->model->getGroupeById($groupeId);
         $etudiantsGroupe = $this->model->getEtudiantsByGroupeId($groupeId);
 
@@ -79,7 +83,6 @@ class Cont_Groupe {
             die("Erreur : Ce groupe est complet.");
         }
 
-        // Ajouter l'utilisateur au groupe
         $this->model->addEtudiantToGroupe($groupeId, $userId);
 
         header("Location: index.php?module=groupe&action=formulaire");
@@ -94,15 +97,12 @@ class Cont_Groupe {
         $groupeId = intval($_POST['groupe_id']);
         $userId = intval($_SESSION['id']);
 
-        // Supprimer l'utilisateur du groupe
         $this->model->deleteEtudiantFromGroupe($groupeId, $userId);
 
-        header("Location: index.php?module=groupe&action=formulaire");
-        exit();
+
     }
 
     public function updateGroupe() {
-        var_dump($_POST, $_FILES);  // Debugging (À retirer après test)
     
         $groupeId = isset($_POST['groupe_id']) ? intval($_POST['groupe_id']) : -1;
         $nom = isset($_POST['nom_groupe']) ? htmlspecialchars(strip_tags($_POST['nom_groupe'])) : '';
@@ -114,7 +114,7 @@ class Cont_Groupe {
     
 
             $typesAutorises = ['image/jpeg', 'image/png', 'image/gif'];
-            $tailleMax = 2 * 1024 * 1024; // 2 Mo
+            $tailleMax = 2 * 1024 * 1024; 
     
             if (!in_array($_FILES['image_groupe']['type'], $typesAutorises)) {
                 die("Erreur : Format d'image non autorisé.");
@@ -128,17 +128,15 @@ class Cont_Groupe {
             $nomFichierUnique = uniqid('img_') . '.' . $extension;
             $cheminFichier = $dossierCible . $nomFichierUnique;
     
-            // Déplacer le fichier uploadé vers le dossier cible
+
             if (move_uploaded_file($_FILES['image_groupe']['tmp_name'], $cheminFichier)) {
-                // Mettre à jour l'image dans la base de données
                 $this->model->updateImageGroupe($groupeId, $cheminFichier);
             } else {
                 echo "Erreur lors du téléchargement du fichier.";
             }
         }
-    
-        header("Location: index.php?module=groupe&action=formulaire");
-        exit();
+
+
     }
     
     
@@ -150,8 +148,7 @@ class Cont_Groupe {
         $groupeId = intval($_POST['groupe_id']);
         
         $this->model->valideGroupe($groupeId);
-        header("Location: index.php?module=groupe&action=formulaire");
-        exit();
+
     }
 }
 ?>

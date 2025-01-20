@@ -13,6 +13,7 @@ class Vue_Groupe extends VueGenerique {
     public function afficherFormulaire($etudiants, $groupes, $etudiantsParGroupe, $userId, $groupeUtilisateur) {
         $nomModifiable = !empty($groupeUtilisateur['nom_modifiable']) ? $groupeUtilisateur['nom_modifiable'] : 0;
         $imageModifiable = !empty($groupeUtilisateur['image_modifiable']) ? $groupeUtilisateur['image_modifiable'] : 0;
+        $projetId = isset($_GET['projetId']) ? htmlspecialchars(strip_tags($_GET['projetId'])) : -1;
         ?>
         <div id="groupe-container" class="groupe-container">
             <?php if ($groupeUtilisateur): ?>
@@ -150,7 +151,7 @@ class Vue_Groupe extends VueGenerique {
                             
                                 ?>
                                 
-                                <form method="POST" action="index.php?module=groupe&action=rejoindre" class="form-rejoindre-groupe">
+                                <form method="POST" action="index.php?module=groupe&action=rejoindre&projetId=<?$projetId?>" class="form-rejoindre-groupe">
                                     <input type="hidden" name="groupe_id" value="<?= $groupe['id'] ?>">
                                     <button type="submit" class="btn rejoindre-btn"?>
                                         Rejoindre

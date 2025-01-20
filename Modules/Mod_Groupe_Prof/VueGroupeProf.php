@@ -9,11 +9,12 @@ class Vue_Groupe_Prof extends VueGenerique {
     }
 
     public function afficherFormulaire($groupes) {
+        $projetId = isset($_GET['projetId']) ? htmlspecialchars(strip_tags($_GET['projetId'])) : -1;
         ?>
         <div class="groupes">
             <div class="group-container">
                 <h2>Ajouter des groupes</h2>
-                <form id="formGroupe" method='POST' action='index.php?module=groupeProf&action=ajouter'>
+                <form id="formGroupe" method='POST' action='index.php?module=groupeProf&action=ajouter&projetId=<?= $projetId ?>'>
                     <div class="input-group">
                         <label for="nombre_groupes">Nombre de groupes</label>
                         <input type="number" id="nombre_groupes" name="nombre_groupes" placeholder="Nombre de groupes" min="1" required>
@@ -76,7 +77,7 @@ class Vue_Groupe_Prof extends VueGenerique {
                                 </button>
                                 
                                 <button class="supprimer-btn" 
-                                        data-id="<?= $groupe['id'] ?>">
+                                        data-idgroupe="<?= $groupe['id'] ?>">
                                     Supprimer
                                 </button>
                                 </td>
@@ -90,7 +91,7 @@ class Vue_Groupe_Prof extends VueGenerique {
 
 <div id="menuContextuel" class="hidden">
     <h3>Modifier Groupe</h3>
-    <form id="modifierForm"method='POST' action='index.php?module=groupeProf&action=modifier' >
+    <form id="modifierForm"method='POST' action='index.php?module=groupeProf&action=modifier&projetId=<?= $projetId ?>' >
         <input type="hidden" id="groupeId" name="groupeId">
         
         <label for="groupeNom">Nom du Groupe :</label>
@@ -109,6 +110,17 @@ class Vue_Groupe_Prof extends VueGenerique {
         <button type="button" id="fermerMenu" >Annuler</button>
     </form>
 </div>
+
+<div id="menuContextuelSupp">
+    <h1>Voulez-vous vraiment supprimer ce groupe ?</h1>
+    <form id="supprimerForm" method="POST" action="index.php?module=groupeProf&action=supprimer&projetId=<?= $projetId ?>">
+        <input type="hidden" id="groupId" name="groupId">
+        <button type="submit">Oui</button>
+        <button type="button" id="fermerMenusupp">Annuler</button>
+    </form>
+</div>  
+
+
         <?php
     }
 }
