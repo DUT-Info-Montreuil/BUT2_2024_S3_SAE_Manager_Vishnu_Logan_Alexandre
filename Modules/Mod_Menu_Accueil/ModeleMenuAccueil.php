@@ -30,5 +30,21 @@ public function getDataAccueil() {
 
     return $annees;
 }
+public function ajouterAnnee($annee_debut, $annee_fin) {
+    if ($annee_debut >= $annee_fin) {
+        throw new Exception("L'année de début doit être inférieure à l'année de fin.");
+    }
+    $query = self::getBdd()->prepare("INSERT INTO annees_universitaires (annee_debut, annee_fin) VALUES (:annee_debut, :annee_fin)");
+    $query->execute([
+        ':annee_debut' => $annee_debut,
+        ':annee_fin' => $annee_fin
+    ]);
+}
+public function supprimerAnnee($annee_id) {
+    $query = self::getBdd()->prepare("DELETE FROM annees_universitaires WHERE id = :id");
+    $query->execute([':id' => $annee_id]);
+}
+
+
 }
 ?>
