@@ -56,7 +56,7 @@ class Vue_SAE_etudiant extends VueGenerique {
                             $titre = htmlspecialchars($rendu['titre']);
                             $description = htmlspecialchars($rendu['description']);
                             $date_limite = htmlspecialchars($rendu['date_limite']);
-                            $type = isset($rendu['type']) ? htmlspecialchars($rendu['type']) : 'Type non défini';
+                            $type = $rendu['TYPE'];
                     
                             echo "
                             <div class='deposit-item'>
