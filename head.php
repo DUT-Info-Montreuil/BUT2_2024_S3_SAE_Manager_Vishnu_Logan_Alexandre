@@ -23,15 +23,24 @@
             echo "<title>Accueil</title>";
             echo '<link rel="stylesheet" href="style_menu_accueil.css">';
             echo '<script src="script.js"></script>';
+            break;
+
         case 'groupe':
             echo "<title>Groupe</title>";
             echo '<link rel="stylesheet" href="style_accueil.css">';
             echo '<link rel="stylesheet" href="style_groupe.css">';
             echo '<script src="script_groupe.js"></script>';
+            break;
+
         case 'sae':
             echo '<link rel="stylesheet" href="style_pageSAEProf.css">';
             echo '<link rel="stylesheet" href="style_accueil.css">';
-
+            break;
+        
+            case 'evaluation':
+                echo '<link rel="stylesheet" href="style_evaluation.css">';
+                break;
+                
         default:
             echo "<title>Mon Application</title>";
             echo '<link rel="stylesheet" href="styles.css">';

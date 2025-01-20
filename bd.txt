@@ -49,7 +49,7 @@ CREATE TABLE projet_membres (
 CREATE TABLE groupes (
     id SERIAL PRIMARY KEY,
     projet_id INT NOT NULL REFERENCES projets(id) ON DELETE CASCADE,
-    nom VARCHAR(100) NOT NULL,
+    nom VARCHAR(100),
     image_titre TEXT,
     nom_modifiable BOOLEAN DEFAULT TRUE,
     image_modifiable BOOLEAN DEFAULT TRUE,
@@ -97,13 +97,13 @@ CREATE TABLE fichiers_rendus (
 -- Création de la table des évaluations
 CREATE TABLE evaluations (
     id SERIAL PRIMARY KEY,
-    rendu_id INT NOT NULL REFERENCES rendus(id) ON DELETE CASCADE,
     evaluateur_id INT NOT NULL REFERENCES utilisateurs(id) ON DELETE CASCADE,
     groupe_id INT REFERENCES groupes(id) ON DELETE CASCADE,
     etudiant_id INT REFERENCES utilisateurs(id) ON DELETE CASCADE,
     note DECIMAL(5, 2),
     commentaire TEXT,
-    date_evaluation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    date_evaluation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    projet_id BIGINT UNSIGNED REFERENCES projet(id) ON DELETE CASCADE
 );
 
 -- Création de la table des ressources

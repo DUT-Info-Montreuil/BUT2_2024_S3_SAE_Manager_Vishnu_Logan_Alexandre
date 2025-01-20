@@ -66,7 +66,7 @@ class VueSAEProf extends VueGenerique {
                     </div>
                 </div>
 
-                <button class='evaluation-button'>Accéder aux évaluations</button>
+                <button class='evaluation-button'><a href='index.php?module=evaluation&projet_id=$id_projet'>Accéder aux évaluations</a></button>
             </div>
         </div>";
     }

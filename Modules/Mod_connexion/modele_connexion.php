@@ -8,13 +8,14 @@ class ModeleConnexion extends Connexion {
             $login = htmlspecialchars(strip_tags($_POST['login']));
             $motDePasse = $_POST['mot_de_passe'];
 
-            $query = self::getBdd()->prepare("SELECT login, mot_de_passe FROM utilisateurs WHERE login = :login");
+            $query = self::getBdd()->prepare("SELECT * FROM utilisateurs WHERE login = :login");
             $query->execute([':login' => $login]);
 
             $user = $query->fetch();
 
             if ($user && password_verify($motDePasse, $user['mot_de_passe'])) {
                 $_SESSION['login'] = $login;
+                $_SESSION['id'] = $user['id'];
                 return true;
             } 
         }
