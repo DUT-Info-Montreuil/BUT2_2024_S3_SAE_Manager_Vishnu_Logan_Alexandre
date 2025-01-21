@@ -31,6 +31,8 @@
         case 'sae':
             echo '<link rel="stylesheet" href="style_pageSAEProf.css">';
             echo '<link rel="stylesheet" href="style_accueil.css">';
+            echo '<link rel="stylesheet" href="style_depot.css">';
+
 
         default:
             echo "<title>Mon Application</title>";

@@ -50,6 +50,22 @@ class ContSAEProf {
                 $rendus = $this->modele->getRendus($id_projet);
                 $this->vue->afficher_sae($projet, $ressources, $rendus);
                 break;
+                case 'ajouterOuModifierNote':
+                    $fichier_id = isset($_POST['fichier_id']) ? intval($_POST['fichier_id']) : 0;
+                    $note = isset($_POST['note']) ? intval($_POST['note']) : null;
+                
+                    if ($fichier_id > 0 && $note !== null) {
+                        $this->modele->ajouterOuModifierNote($fichier_id, $note);
+                    }
+                
+                    $id_rendu = isset($_POST['rendu_id']) ? intval($_POST['rendu_id']) : 0;
+                    if ($id_rendu > 0) {
+                        $rendu = $this->modele->getRendu($id_rendu);
+                        $groupes = $this->modele->getFichiersAvecDetails($id_rendu);
+                        $this->vue->afficherDepot($rendu, $groupes);
+                    }
+                    break;
+                
     
             case 'ajouterRessource':
                 $titre = isset($_POST['titre']) ? htmlspecialchars($_POST['titre']) : '';
@@ -105,7 +121,7 @@ class ContSAEProf {
                 $id_rendu = isset($_GET['id_rendu']) ? intval($_GET['id_rendu']) : 0;
                 if ($id_rendu > 0) {
                     $rendu = $this->modele->getRendu($id_rendu);
-                    $groupes = $this->modele->getGroupesAvecFichiers($id_rendu);
+                    $groupes = $this->modele->getFichiersAvecDetails($id_rendu);
                     $this->vue->afficherDepot($rendu, $groupes);
                 } else {
                     header('Location: index.php?module=sae&action=afficher&id=' . $id_projet);

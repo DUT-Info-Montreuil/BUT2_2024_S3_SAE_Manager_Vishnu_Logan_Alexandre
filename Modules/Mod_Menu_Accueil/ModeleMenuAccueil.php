@@ -44,6 +44,45 @@ public function supprimerAnnee($annee_id) {
     $query = self::getBdd()->prepare("DELETE FROM annees_universitaires WHERE id = :id");
     $query->execute([':id' => $annee_id]);
 }
+public function ajouterProjet($titre, $description, $responsable_id, $semestre_id) {
+    $query = self::getBdd()->prepare("
+        INSERT INTO projets (titre, description, responsable_id, semestre_id, date_creation) 
+        VALUES (:titre, :description, :responsable_id, :semestre_id, NOW())
+    ");
+    $query->execute([
+        ':titre' => $titre,
+        ':description' => $description,
+        ':responsable_id' => $responsable_id,
+        ':semestre_id' => $semestre_id
+    ]);
+}
+public function supprimerSemestre($semestre_id) {
+    $query = self::getBdd()->prepare("SELECT COUNT(*) FROM semestres WHERE id = :id");
+    $query->execute([':id' => $semestre_id]);
+
+    if ($query->fetchColumn() > 0) {
+        $queryDeleteProjets = self::getBdd()->prepare("DELETE FROM projets WHERE semestre_id = :id");
+        $queryDeleteProjets->execute([':id' => $semestre_id]);
+        $queryDeleteSemestre = self::getBdd()->prepare("DELETE FROM semestres WHERE id = :id");
+        $queryDeleteSemestre->execute([':id' => $semestre_id]);
+    } else {
+        throw new Exception("Erreur : Semestre introuvable.");
+    }
+}
+
+
+public function supprimerProjet($projet_id) {
+    $query = self::getBdd()->prepare("DELETE FROM projets WHERE id = :id");
+    $query->execute([':id' => $projet_id]);
+}
+
+public function ajouterSemestre($nom, $annee_id) {
+    $query = self::getBdd()->prepare("INSERT INTO semestres (nom, annee_id) VALUES (:nom, :annee_id)");
+    $query->execute([
+        ':nom' => $nom,
+        ':annee_id' => $annee_id
+    ]);
+}
 
 
 }

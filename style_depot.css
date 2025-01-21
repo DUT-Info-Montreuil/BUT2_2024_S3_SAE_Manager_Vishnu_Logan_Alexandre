@@ -1,0 +1,107 @@
+.depot-container {
+  background-color: #ffffff;
+  padding: 20px;
+  position: absolute;
+  left: 10%;
+  top: 15%;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  max-width: 90%;
+  margin: 20px auto;
+}
+
+.depot-header {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.depot-header h1 {
+  font-size: 24px;
+  color: #000080; /* Bleu marine */
+  margin-bottom: 10px;
+}
+
+.depot-header p {
+  font-size: 16px;
+  color: #333;
+  margin: 5px 0;
+}
+
+.depot-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.depot-table th, 
+.depot-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.depot-table th {
+  background-color: #f8f9fa;
+  color: #000080; /* Bleu marine */
+  font-size: 16px;
+}
+
+.depot-table td {
+  font-size: 14px;
+  color: #333;
+  vertical-align: middle;
+}
+
+.depot-table a {
+  color: #007BFF; /* Bleu clair */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.depot-table a:hover {
+  text-decoration: underline;
+}
+
+.depot-table form {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.depot-table input[type="number"] {
+  width: 60px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.depot-table button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.depot-table button:hover {
+  background-color: #0056b3;
+}
+
+.depot-table td:first-child {
+  font-weight: bold;
+  color: #000;
+}
+
+.depot-table td:nth-child(2) a {
+  display: block;
+  margin: 5px 0;
+}
+
+.depot-table td:last-child form button {
+  margin-left: 10px;
+}

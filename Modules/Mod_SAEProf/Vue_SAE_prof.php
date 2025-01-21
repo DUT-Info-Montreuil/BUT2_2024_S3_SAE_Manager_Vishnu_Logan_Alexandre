@@ -150,50 +150,82 @@ class VueSAEProf extends VueGenerique {
         </script>";
     }
     public function afficherDepot($rendu, $groupes) {
-        $titre = $rendu['titre'];
-        $description = $rendu['description'];
-        $date_limite =$rendu['date_limite'];
-    $type = $rendu['TYPE'];
+        $this->vue->afficherAccueil();
+        $titre = htmlspecialchars($rendu['titre']);
+        $description = htmlspecialchars($rendu['description']);
+        $date_limite = htmlspecialchars($rendu['date_limite']);
+        $type = htmlspecialchars($rendu['TYPE']); // Vérifiez le type ici
     
         echo "
         <div class='depot-container'>
             <h1>$titre</h1>
             <div class='depot-header'>
-                <p>Dépôt de $type</p>
+                <p>Type de dépôt : $type</p>
                 <p>Date limite : $date_limite</p>
-                <p>$description</p>
+                <p>Description : $description</p>
             </div>
             <table class='depot-table'>
                 <thead>
-                    <tr>
-                        <th>Nom du groupe</th>
-                        <th>Fichiers déposés</th>
+                    <tr>";
+    
+        if ($type === 'groupe') {
+            echo "<th>Nom du groupe</th>";
+        } else {
+            echo "<th>Nom de l'étudiant</th>";
+        }
+    
+        echo "
+                        <th>Fichier déposé</th>
                         <th>Note</th>
                     </tr>
                 </thead>
                 <tbody>";
-                    if (!empty($groupes)) {
-                        foreach ($groupes as $groupe) {
-                            $groupe_nom = htmlspecialchars($groupe['groupe_nom']);
-                            $fichier_url = htmlspecialchars($groupe['fichier_url']);
-                            $note = $groupe['note'] !== null ? htmlspecialchars($groupe['note']) : '--';
-                            $fichierId = isset($groupe['fichier_id']) ? $groupe['fichier_id'] : 0;
-                            echo "
-                            <tr>
-                                <td>$groupe_nom</td>
-                                <td>
-                                    <a href='$fichier_url' target='_blank'>Télécharger le fichier</a>
-                                </td>
-                                <td>
-                                    $note / 20
-                                    <button onclick='ajouterNote($groupe[fichier_id])'>Ajouter une note</button>
-                                </td>
-                            </tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='3'>Aucun fichier trouvé pour ce dépôt.</td></tr>";
-                    }
+    
+        if (!empty($groupes)) {
+            foreach ($groupes as $groupe) {
+                if ($type === 'groupe') {
+                    // Vérifiez si 'groupe_nom' existe
+                    $nom_affichage = isset($groupe['groupe_nom']) ? htmlspecialchars($groupe['groupe_nom']) : 'Nom de groupe non disponible';
+                } else {
+                    // Vérifiez si 'prenom' et 'nom' existent
+                    $prenom = isset($groupe['prenom']) ? htmlspecialchars($groupe['prenom']) : 'Prénom inconnu';
+                    $nom = isset($groupe['nom']) ? htmlspecialchars($groupe['nom']) : 'Nom inconnu';
+                    $nom_affichage = $prenom . ' ' . $nom;
+                }
+                
+    
+                $fichier_url = htmlspecialchars($groupe['fichier_url']);
+                $note = isset($groupe['note']) ? htmlspecialchars($groupe['note']) : '--';
+                $date_soumission = isset($groupe['date_soumission']) ? htmlspecialchars($groupe['date_soumission']) : '--';
+    
+                echo "
+                <tr>
+                    <td>$nom_affichage</td>
+                    <td>
+                        <a href='$fichier_url' target='_blank'>Télécharger</a> (soumis le $date_soumission)
+                    </td>
+                    <td>
+                        <form method='POST' action='index.php?module=sae&action=ajouterOuModifierNote'>
+                            <input type='hidden' name='rendu_id' value='{$rendu['id']}'>
+                            <input type='hidden' name='fichier_id' value='{$groupe['fichier_id']}'>
+                            <input type='number' name='note' value='$note' min='0' max='20' required>
+                            <button type='submit'>Enregistrer</button>
+                        </form>
+                    </td>
+                </tr>";
+            }
+        } else {
+            echo "<tr><td colspan='3'>Aucun fichier déposé pour ce rendu.</td></tr>";
+        }
+    
+        echo "
+                </tbody>
+            </table>
+        </div>";
     }
+    
+    
+    
     
 }
 ?>
