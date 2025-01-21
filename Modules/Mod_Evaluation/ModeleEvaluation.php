@@ -1,12 +1,11 @@
 <?php
-// Ctrl_Evalutation.php
 
 require_once 'connexion.php';
 
 class ModeleEvaluation extends Connexion{
 
     public function getGroupEvaluations($projet_id) {
-        $stmt = self::getBdd()->prepare("SELECT groupes.nom, evaluations.note 
+        $stmt = self::getBdd()->prepare("SELECT evaluations.id, groupes.nom, evaluations.note 
             FROM evaluations 
             INNER JOIN groupes ON evaluations.groupe_id = groupes.id
             WHERE evaluations.etudiant_id IS NULL 
@@ -17,7 +16,7 @@ class ModeleEvaluation extends Connexion{
     }
 
     public function getIndividualEvaluations($projet_id) {
-        $stmt = self::getBdd()->prepare("SELECT utilisateurs.nom, utilisateurs.prenom, evaluations.note 
+        $stmt = self::getBdd()->prepare("SELECT evaluations.id, utilisateurs.nom, utilisateurs.prenom, evaluations.note 
             FROM evaluations 
             INNER JOIN utilisateurs ON evaluations.etudiant_id = utilisateurs.id 
             WHERE evaluations.groupe_id IS NULL 
@@ -79,18 +78,36 @@ class ModeleEvaluation extends Connexion{
         $stmt->bindParam(':login', $login, PDO::PARAM_STR);
         $stmt->execute();
     
-        // Vérifie si un utilisateur a été trouvé et retourne son id
         $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        return $utilisateur ? $utilisateur['id'] : null; // Retourne l'id ou null si aucun utilisateur n'est trouvé
+        return $utilisateur ? $utilisateur['id'] : null;
     }
     
 
     public function supprimerEvaluation($id) {
-        $stmt = $this->bdd->prepare('DELETE FROM evaluations WHERE id = :id');
+        $stmt = self::getBdd()->prepare('DELETE FROM evaluations WHERE id = :id');
         $stmt->execute(['id' => $id]);
     }
-    
 
+    public function modifierEvaluationGroupe($evaluation_id, $note) {
+        $stmt = self::getBdd()->prepare(
+            "UPDATE evaluations SET note = :note WHERE id = :id AND groupe_id IS NOT NULL"
+        );
+        $stmt->execute([
+            'note' => $note,
+            'id' => $evaluation_id
+        ]);
+    }
+
+    public function modifierEvaluationIndividuelle($evaluation_id, $note) {
+        $stmt = self::getBdd()->prepare(
+            "UPDATE evaluations SET note = :note WHERE id = :id AND etudiant_id IS NOT NULL"
+        );
+        $stmt->execute([
+            'note' => $note,
+            'id' => $evaluation_id
+        ]);
+    }    
+    
 }
 ?>

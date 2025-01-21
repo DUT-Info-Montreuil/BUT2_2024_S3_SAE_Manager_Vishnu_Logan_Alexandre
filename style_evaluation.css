@@ -1,94 +1,58 @@
-/* Style général */
+
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    background-color: #f9f9f9;
     margin: 0;
     padding: 0;
     color: #333;
 }
 
-/* Barre de navigation */
-.nav {
-    background-color: #2c3e50;
-    padding: 10px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-}
-
-.nav ul li {
-    margin: 0 15px;
-}
-
-.nav ul li a {
-    color: #ecf0f1;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s;
-}
-
-.nav ul li a:hover {
-    color: #1abc9c;
-}
-
-/* Contenu principal */
 .main-content {
     max-width: 900px;
     margin: 20px auto;
     padding: 20px;
     background: #ffffff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: none;
     border-radius: 8px;
-}
-
-.main-content .header {
-    text-align: center;
-    margin-bottom: 20px;
 }
 
 .main-content h1 {
     font-size: 28px;
-    color: #34495e;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-.main-content h2 {
+h2 {
     font-size: 22px;
-    color: #2c3e50;
-    margin-bottom: 10px;
-    border-bottom: 2px solid #1abc9c;
+    color: #34495e;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #16a085;
     display: inline-block;
     padding-bottom: 5px;
 }
 
-/* Tableaux */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 table th, table td {
-    text-align: left;
     padding: 10px;
+    text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
 table th {
-    background-color: #1abc9c;
-    color: #ffffff;
+    background-color: #16a085;
+    color: white;
 }
 
 tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-/* Formulaires */
 form {
     margin-top: 20px;
 }
@@ -97,7 +61,7 @@ form label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
-    color: #2c3e50;
+    color: #34495e;
 }
 
 form input[type="number"],
@@ -109,12 +73,12 @@ form select {
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
-    background-color: #f4f4f9;
+    background-color: #f9f9f9;
 }
 
 form button {
-    background-color: #1abc9c;
-    color: #ffffff;
+    background-color: #16a085;
+    color: white;
     border: none;
     padding: 10px 15px;
     font-size: 16px;
@@ -125,5 +89,34 @@ form button {
 }
 
 form button:hover {
-    background-color: #16a085;
+    background-color: #1abc9c;
 }
+
+.popup {
+    display: none; /* Le popup est caché par défaut */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+}
+
+#popup-modifier {
+    display: none;
+}
+
+.overlay {
+    display: none; /* Cacher l'overlay par défaut */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+
