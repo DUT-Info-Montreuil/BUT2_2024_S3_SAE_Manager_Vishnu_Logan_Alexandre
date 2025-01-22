@@ -10,6 +10,22 @@ CREATE TABLE utilisateurs (
     role ENUM('enseignant', 'etudiant', 'intervenant') NOT NULL,
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE TABLE etudiants (
+    id INT PRIMARY KEY REFERENCES utilisateurs(id) ON DELETE CASCADE,
+    annee_id INT NOT NULL REFERENCES annees_universitaires(id) ON DELETE CASCADE,
+    semestre_id INT NOT NULL REFERENCES semestres(id) ON DELETE CASCADE,
+
+);
+CREATE TABLE enseignants (
+    id SERIAL PRIMARY KEY REFERENCES utilisateurs(id) ON DELETE CASCADE,
+    departement VARCHAR(100) NOT NULL
+) 
+
+CREATE TABLE intervenants (
+    id INT PRIMARY KEY REFERENCES utilisateurs(id) ON DELETE CASCADE,
+    departement VARCHAR(100) NOT NULL
+);
+
 
 -- Création de la table des années universitaires
 CREATE TABLE annees_universitaires (
@@ -49,10 +65,11 @@ CREATE TABLE projet_membres (
 CREATE TABLE groupes (
     id SERIAL PRIMARY KEY,
     projet_id INT NOT NULL REFERENCES projets(id) ON DELETE CASCADE,
-    nom VARCHAR(100) NOT NULL,
+    nom VARCHAR(100),
     image_titre TEXT,
     nom_modifiable BOOLEAN DEFAULT TRUE,
     image_modifiable BOOLEAN DEFAULT TRUE,
+    limiteGroupe INT,
     UNIQUE(projet_id, nom)
 );
 
@@ -97,13 +114,13 @@ CREATE TABLE fichiers_rendus (
 -- Création de la table des évaluations
 CREATE TABLE evaluations (
     id SERIAL PRIMARY KEY,
-    rendu_id INT NOT NULL REFERENCES rendus(id) ON DELETE CASCADE,
     evaluateur_id INT NOT NULL REFERENCES utilisateurs(id) ON DELETE CASCADE,
     groupe_id INT REFERENCES groupes(id) ON DELETE CASCADE,
     etudiant_id INT REFERENCES utilisateurs(id) ON DELETE CASCADE,
     note DECIMAL(5, 2),
     commentaire TEXT,
-    date_evaluation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    date_evaluation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    projet_id BIGINT UNSIGNED REFERENCES projet(id) ON DELETE CASCADE
 );
 
 -- Création de la table des ressources

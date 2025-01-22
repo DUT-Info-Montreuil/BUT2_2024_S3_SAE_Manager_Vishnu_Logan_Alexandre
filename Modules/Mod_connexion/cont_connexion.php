@@ -19,9 +19,7 @@ class ContConnexion {
             case 'connexion':
                 $this->connexion();
                 break;
-            case 'inscription':
-                $this->inscription();
-                break;
+
             case 'deconnexion':
                 $this->deconnexion();
                 break;
@@ -34,7 +32,7 @@ class ContConnexion {
     private function connexion() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($this->modele->connexion()) {
-                header("Location: index.php?module=accueil&action=accueil");
+                header("Location: index.php?module=menuAccueil&action=menuAccueil");
                 exit;
             } else {
                 $this->vue->form_connexion();
@@ -46,20 +44,7 @@ class ContConnexion {
         }
     }
 
-    private function inscription() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($this->modele->ajoutUtilisateur()) {
-                header("Location: index.php?module=accueil&action=accueil");
-            }
-            else{
-                
-                $this->vue->form_inscription();
-                echo "<p>Erreur lors de l'inscription</p>";
-            }
-        } else {
-            $this->vue->form_inscription();
-        }
-    }
+    
 
     private function deconnexion() {
         $this->modele->deconnexion();

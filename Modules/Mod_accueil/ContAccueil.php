@@ -21,6 +21,9 @@ class ContAccueil {
         $action = isset($_GET['action']) ? htmlspecialchars(strip_tags($_GET['action'])) : 'accueil';
 
         switch ($action) {
+            case 'afficherUtilisateur':
+                $this->afficherUtilisateur();
+                break;
             case 'connexion':
                 echo "connexion";
                 break;
@@ -30,6 +33,16 @@ class ContAccueil {
                 
         }
 
+    }
+    private function afficherUtilisateur() {
+        $userId = $_SESSION['id'];
+        $utilisateur = $this->modele->getUtilisateur($userId);
+        
+        if ($utilisateur) {
+            $this->vue->afficherUtilisateur($utilisateur);
+        } else {
+            echo "Utilisateur non trouvé.";
+        }
     }
 
     

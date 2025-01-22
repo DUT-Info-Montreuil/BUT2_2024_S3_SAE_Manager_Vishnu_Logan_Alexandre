@@ -3,7 +3,7 @@
     position: absolute;
     width: 600px;
     left: 10%;
-    top: 100px;
+    top: 150px;
     margin: 20px auto;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -65,4 +65,15 @@
   .delete:hover {
     opacity: 0.8;
   }
-  
+
+  .form-container{
+    position: absolute;
+    top: 15%;
+    left: 10%;
+  }
+
+  .form-ajoutUser{
+    position: absolute;
+    top:20%;
+    right: 10%;
+  }

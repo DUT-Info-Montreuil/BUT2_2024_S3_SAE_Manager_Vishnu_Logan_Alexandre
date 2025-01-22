@@ -7,7 +7,7 @@
     <?php
 
     $module = isset($_GET['module']) ? htmlspecialchars(strip_tags($_GET['module'])) : 'connexion';
-
+    $role = isset($_SESSION['role']) ? htmlspecialchars($_SESSION['role'], ENT_QUOTES, 'UTF-8'): 'etudiant';
 
     switch ($module) {
         case 'accueil':
@@ -19,24 +19,44 @@
             echo "<title>Connexion</title>";
             echo '<link rel="stylesheet" href="style.css">';
             break;
-        case 'mod':
+        case 'menuAccueil':
             echo "<title>Accueil</title>";
+            echo '<link rel="stylesheet" href="style_accueil.css">';
             echo '<link rel="stylesheet" href="style_menu_accueil.css">';
             echo '<script src="script.js"></script>';
+            break;
+
         case 'groupe':
             echo "<title>Groupe</title>";
-            echo '<link rel="stylesheet" href="style_accueil.css">';
-            echo '<link rel="stylesheet" href="style_groupe.css">';
-            echo '<script src="script_groupe.js"></script>';
-        case 'sae':
-            echo '<link rel="stylesheet" href="style_pageSAEProf.css">';
-            echo '<link rel="stylesheet" href="style_accueil.css">';
-
-        default:
-            echo "<title>Mon Application</title>";
-            echo '<link rel="stylesheet" href="styles.css">';
-            echo '<link rel="stylesheet" href="style_accueil.css">';
+                echo '<link rel="stylesheet" href="style_accueil.css">';
+            if($role === 'enseignant'){
+                echo '<link rel="stylesheet" href="style_groupe_prof.css">';
+                echo '<script src="script_groupe_prof.js"></script>';
+            }else{
+                echo '<link rel="stylesheet" href="style_groupe.css">';
+                echo '<script src="script_groupe.js"></script>';
+            }
             break;
+        case 'sae':
+            echo '<link rel="stylesheet" href="style_accueil.css">';
+            if($role === 'enseignant'){
+                echo '<link rel="stylesheet" href="style_pageSAE_prof.css">';
+                echo '<link rel="stylesheet" href="style_depot.css">';
+
+            }else{
+                echo '<link rel="stylesheet" href="style_pageSAE_etudiant.css">';
+                
+            }
+            break;
+        case 'evaluation':
+            echo '<link rel="stylesheet" href="style_accueil.css">';
+            echo '<link rel="stylesheet" href="style_evaluation.css">';
+            break;
+        case 'admin':
+            echo '<link rel="stylesheet" href="style_accueil.css">';
+            echo '<link rel="stylesheet" href="style_admin.css">';
+            break;
+
         
     }
     ?>
