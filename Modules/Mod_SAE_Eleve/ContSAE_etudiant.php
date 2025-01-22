@@ -64,19 +64,13 @@ class ContSAEtudiant {
                 $extension = pathinfo($_FILES['fichier']['name'], PATHINFO_EXTENSION);
                 $nomFichierUnique = uniqid('rendu_') . '.' . $extension;
             
-               
-                $ressourceId = uniqid('rendu_'); 
-                $dossierRessource = $dossierCible . $ressourceId . '/';
-
             
-                if (!is_dir($dossierRessource)) {
-                    mkdir($dossierRessource, 0777, true);
-                }
+                $cheminFichier = $dossierCible.$nomFichierUnique;
             
-                $cheminFichier = $dossierRessource . $nomFichierUnique;
-            
-                if (!move_uploaded_file($_FILES['fichier']['tmp_name'], $cheminFichier)) {
-                    die("Erreur lors du téléchargement du fichier.");
+                if (!copy($_FILES['fichier']['tmp_name'], $cheminFichier)) {
+                    die("Erreur : impossible de copier le fichier.");
+                } else {
+                    echo "Copie réussie.";
                 }
             }
             if(isset($_POST['type']) && $_POST['type'] == 'groupe'){

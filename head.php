@@ -40,6 +40,7 @@
             echo '<link rel="stylesheet" href="style_accueil.css">';
             if($role === 'enseignant'){
                 echo '<link rel="stylesheet" href="style_pageSAE_prof.css">';
+                echo '<link rel="stylesheet" href="style_depot.css">';
 
             }else{
                 echo '<link rel="stylesheet" href="style_pageSAE_etudiant.css">';

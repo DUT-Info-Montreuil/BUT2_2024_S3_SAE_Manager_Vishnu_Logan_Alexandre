@@ -88,6 +88,18 @@ class Modele_sae extends Connexion{
             $pdo_req->bindParam(':type', $type);
             $pdo_req->execute();
         }
+
+        public function ajouterOuModifierNote($fichier_id, $note) {
+            $pdo_req = self::getBdd()->prepare("
+                UPDATE fichiers_rendus 
+                SET note = :note
+                WHERE id = :fichier_id
+            ");
+            $pdo_req->bindParam(':note', $note, PDO::PARAM_INT);
+            $pdo_req->bindParam(':fichier_id', $fichier_id, PDO::PARAM_INT);
+            $pdo_req->execute();
+        }
+        
         
         public function modifierRendu($id_rendu, $titre, $description, $date_limite, $type) {
             $pdo_req = self::getBdd()->prepare("
@@ -103,26 +115,55 @@ class Modele_sae extends Connexion{
             $pdo_req->execute();
         }
 
-
-            public function getGroupesAvecFichiers($id_rendu) {
-                $pdo_req = self::getBdd()->prepare("
-                    SELECT 
-                        g.nom AS groupe_nom, 
-                        f.fichier_url, 
-                        f.date_soumission, 
-                        f.id AS fichier_id, 
-                        e.note,
-                        e.commentaire
-                    FROM groupes g
-                    LEFT JOIN fichiers_rendus f ON f.groupe_id = g.id
-                    LEFT JOIN evaluations e ON e.groupe_id = g.id
-                    WHERE f.rendu_id = :id_rendu
-                    ORDER BY g.nom
-                ");
-                $pdo_req->bindParam(':id_rendu', $id_rendu);
-                $pdo_req->execute();
-                return $pdo_req->fetchAll();
+        public function getGroupesAvecFichiers($id_rendu) {
+            $pdo_req = self::getBdd()->prepare("
+                SELECT 
+                    g.nom AS groupe_nom, 
+                    f.fichier_url, 
+                    f.date_soumission, 
+                    f.id AS fichier_id, 
+                    f.note
+                FROM groupes g
+                INNER JOIN fichiers_rendus f ON f.groupe_id = g.id
+                WHERE f.rendu_id = :id_rendu
+                ORDER BY g.nom
+            ");
+            $pdo_req->bindParam(':id_rendu', $id_rendu, PDO::PARAM_INT);
+            $pdo_req->execute();
+            return $pdo_req->fetchAll(PDO::FETCH_ASSOC);
         }
+        
+        public function getFichiersAvecDetails($id_rendu) {
+            $pdo_req = self::getBdd()->prepare("
+                SELECT 
+                    CASE 
+                        WHEN r.TYPE = 'individuel' THEN CONCAT(u.prenom, ' ', u.nom)
+                        ELSE g.nom
+                    END AS nom_affichage,
+                    u.prenom,
+                    u.nom,
+                    g.nom AS groupe_nom, -- Assurez-vous que g.nom est inclus pour les rendus de type groupe
+                    f.fichier_url,
+                    f.date_soumission,
+                    f.id AS fichier_id,
+                    f.note
+                FROM fichiers_rendus f
+                LEFT JOIN rendus r ON f.rendu_id = r.id
+                LEFT JOIN groupes g ON f.groupe_id = g.id
+                LEFT JOIN utilisateurs u ON f.etudiant_id = u.id
+                WHERE f.rendu_id = :id_rendu
+                ORDER BY nom_affichage;
+            ");
+            $pdo_req->bindParam(':id_rendu', $id_rendu, PDO::PARAM_INT);
+            $pdo_req->execute();
+            return $pdo_req->fetchAll(PDO::FETCH_ASSOC);
+        }
+        
+        
+
+
+
+        
         
         public function getGroupeEtudiant($id_rendu, $etudiant_id) {
             $pdo_req = self::getBdd()->prepare("
@@ -137,6 +178,7 @@ class Modele_sae extends Connexion{
             $pdo_req->execute();
             return $pdo_req->fetchColumn();
         }
+        
         
 
         public function ajouterFichierRendu($id_rendu, $groupe_id, $etudiant_id, $fichier_url) {
