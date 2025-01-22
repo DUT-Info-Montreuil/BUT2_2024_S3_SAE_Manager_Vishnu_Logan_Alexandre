@@ -77,7 +77,7 @@ class Modele_Groupe_Prof extends Connexion {
                 ':limiteGroupe' => $limiteGroupe
             ]);
         } else {
-            // Si pas d'image, on met à jour sans l'image
+
             $stmt = self::getBdd()->prepare("UPDATE groupes 
                                             SET nom=:nom, nom_modifiable=:nom_modifiable, image_modifiable=:image_modifiable, limiteGroupe=:limiteGroupe 
                                             WHERE projet_id=:projetId AND id=:groupeId");

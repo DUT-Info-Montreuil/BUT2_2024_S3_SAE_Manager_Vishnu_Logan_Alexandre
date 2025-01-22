@@ -25,68 +25,79 @@
     include_once 'Modules/Mod_Menu_Accueil/ModMenuAccueil.php';
     include_once 'Modules/Mod_Groupe_Eleve/ModGroupe.php';
     include_once 'Modules/Mod_Groupe_Prof/ModGroupeProf.php';
+    include_once 'Modules/Mod_Evaluation/ModEvaluation.php';
+    include_once 'Modules/Mod_Admin/mod_admin.php';
+
 
     Connexion::initConnexion();
 
     $module = isset($_GET['module']) ? htmlspecialchars(strip_tags($_GET['module'])) : 'connexion';
-    $action = isset($_GET['action']) ? htmlspecialchars(strip_tags($_GET['action'])) : 'connexion';
+$action = isset($_GET['action']) ? htmlspecialchars(strip_tags($_GET['action'])) : 'connexion';
 
-    try {
-        $modulesValides = ['accueil', 'connexion','menuAccueil','groupe','groupeProf','groupeEtudiant','sae','saeEtudiant','saeProf'];
-        if (in_array($module, $modulesValides)) {
-            if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
-                if ($_SESSION['role'] == 'enseignant') {
-                    switch ($module) {
-                        case 'accueil':
-                            $mod = new ModAccueil();
-                            break;
-                        case 'menuAccueil':
-                            $mod=new ModMenuAccueil();
-                            break;
-                        case 'connexion':
-                            $modConnexion = new ModConnexion();
-                            break;
-                        case 'sae' : 
-                            $sae = new ModSAEProf();
-                            break;
-                        case 'groupe':
-                            $modGroupeProf= new ModGroupeProf();
-                            break;
-                    
-                    }
-                    
-                } else {
-                    switch ($module) {
-                        case 'accueil':
-                            $mod = new ModAccueil();
-                            break;
-                        case 'menuAccueil':
-                            $mod=new ModMenuAccueil();
-                            break;
-                        case 'connexion':
-                            $modConnexion = new ModConnexion();
-                            break;
-                        case 'sae' : 
-                            $sae = new ModSAEEtudiant();
-                            break;
-                        case 'groupe':
-                            $modGroupe = new ModGroupe();
-                            break;
-                    
-                    }
-                }
-            }else{
-                $modConnexion = new ModConnexion();
-                
-            } 
+try {
+    // Modules accessibles à tous
+    $modulesCommuns = ['accueil', 'connexion', 'menuAccueil'];
+    
+    // Modules spécifiques par rôle
+    $modulesSpecifiques = [
+        'enseignant' => ['sae', 'groupe', 'evaluation'],
+        'admin' => ['admin', 'sae', 'groupe'],
+        'etudiant' => ['sae', 'groupe']
+    ];
 
-        } else {
-            die("Module inconnu ou invalide.");
-        }
-       
-    } catch (Exception $e) {
-        echo "Erreur : " . $e->getMessage();
+    // Vérification si le module est valide
+    $modulesValides = array_merge($modulesCommuns, ...array_values($modulesSpecifiques));
+    if (!in_array($module, $modulesValides)) {
+        die("Module inconnu ou invalide.");
     }
+
+    // Gestion des rôles
+    if (isset($_SESSION['id']) && isset($_SESSION['role'])) {
+        $role = $_SESSION['role'];
+
+        // Vérification d'accès aux modules spécifiques
+        if (!in_array($module, $modulesCommuns) && (!isset($modulesSpecifiques[$role]) || !in_array($module, $modulesSpecifiques[$role]))) {
+            session_destroy(); // Déconnexion forcée
+            header("Location: index.php?module=connexion");
+            exit();
+        }
+
+        // Chargement du bon module
+        switch ($module) {
+            case 'accueil':
+                $mod = new ModAccueil();
+                break;
+            case 'menuAccueil':
+                $mod = new ModMenuAccueil();
+                break;
+            case 'connexion':
+                $modConnexion = new ModConnexion();
+                break;
+            case 'sae':
+                $modSae = ($role === 'enseignant') ? new ModSAEProf() : new ModSAEEtudiant();
+                break;
+            case 'groupe':
+                $modGroupe = ($role === 'enseignant') ? new ModGroupeProf() : new ModGroupe();
+                break;
+            case 'evaluation':
+                if ($role === 'enseignant') {
+                    $modEvaluation = new ModEvaluation();
+                }
+                break;
+            case 'admin':
+                if ($role === 'admin') {
+                    $modAdmin = new ModAdmin();
+                }
+                break;
+        }
+    } else {
+        // Par défaut, si l'utilisateur n'est pas connecté
+        $modConnexion = new ModConnexion();
+    }
+
+} catch (Exception $e) {
+    die("Erreur : " . $e->getMessage());
+}
 ?>
 </body>
 

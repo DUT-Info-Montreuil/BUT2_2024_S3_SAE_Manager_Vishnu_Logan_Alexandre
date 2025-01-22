@@ -364,3 +364,72 @@ form input[type="file"] {
 #edit-description-form button:hover {
     opacity: 0.8;
 }
+
+
+.rendu-edit {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+
+.rendu-edit input[type="text"],
+.rendu-edit textarea,
+.rendu-edit input[type="datetime-local"],
+.rendu-edit select {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+
+.rendu-edit select {
+    cursor: pointer;
+}
+
+
+.rendu-edit button {
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.rendu-edit button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+}
+
+.rendu-edit button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+.rendu-edit button[type="button"] {
+    background-color: #dc3545;
+    color: white;
+}
+
+.rendu-edit button[type="button"]:hover {
+    background-color: #c82333;
+}
+
+.hidden {
+    display: none;
+}
+
+.form-visible {
+    display: block;
+}

@@ -1,0 +1,168 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.main-content {
+    position: absolute;
+    top:10%;
+    left:25%;
+    width: 50%;
+   
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: none;
+    border-radius: 8px;
+}
+
+.main-content h1 {
+    font-size: 28px;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h2 {
+    font-size: 22px;
+    color: #34495e;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #4285F4;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #1111b0;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+form {
+    margin-top: 20px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #34495e;
+}
+
+form input[type="number"],
+form textarea,
+form select {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+}
+
+form button {
+    background-color: #4285F4;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #3e73cc;
+}
+
+.btn-supprimer {
+    background-color: #ee4365 !important; 
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-supprimer:hover {
+    background-color: #8B0000;
+    transform: scale(1.05);
+}
+
+.btn-modifier {
+    background-color: #4285F4 !important; 
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-modifier:hover {
+    background-color:  #3e73cc; 
+    transform: scale(1.05); 
+}
+
+.popup {
+    display: none; 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+}
+
+#popup-modifier {
+    display: none;
+}
+
+.overlay {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+
+.btn{
+    display: flex;
+    justify-content: end;
+}
+
+.btn button{
+    margin-left: 10px;
+}

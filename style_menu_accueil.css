@@ -71,3 +71,9 @@
     top: 15%;
     left: 10%;
   }
+
+  .form-ajoutUser{
+    position: absolute;
+    top:20%;
+    right: 10%;
+  }

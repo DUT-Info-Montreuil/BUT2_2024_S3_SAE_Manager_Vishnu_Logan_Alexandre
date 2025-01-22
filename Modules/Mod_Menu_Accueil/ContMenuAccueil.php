@@ -3,6 +3,7 @@
 require_once 'ModeleMenuAccueil.php';
 require_once 'VueMenuAccueil.php';
 require_once 'VueMenuAccueilEtudiant.php';
+require_once 'VueMenuAccueilAdmin.php';
 
 
 class ContMenuAccueil {
@@ -25,21 +26,13 @@ class ContMenuAccueil {
         $vueEtudiant = new VueMenuAccueilEtudiant();
         $vueEtudiant->afficherAccueil();
     }
-
-    public function action() {
-
-        if ($_SESSION['role'] === 'etudiant') {
-            $this->actionEtudiant(); 
-            return;
-        }
-
+    public function actionAdmin(){
+        $vueAdmin=new VueMenuAccueilAdmin();
+        
         switch ($this->action) {
 
-            case 'connexion':
-                echo "connexion";
-                break;
             case 'supprimer':
-            
+                
                 if (isset($_GET['id'])) {
                     $annee_id = intval($_GET['id']);
                     $this->modele->supprimerAnnee($annee_id);
@@ -47,9 +40,8 @@ class ContMenuAccueil {
                 }
                 break;
 
-
             case 'ajouter':
-                    $this->vue->afficherFormulaireAjoutAnnee();
+                    $vueAdmin->afficherFormulaireAjoutAnnee();
                     break;
             case 'enregistrer':
                     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -62,9 +54,9 @@ class ContMenuAccueil {
                 case 'ajouterProjet':
                     if (isset($_GET['semestre_id'])) {
                         $semestre_id = intval($_GET['semestre_id']);
-                        $this->vue->afficherFormulaireAjoutProjet($semestre_id);
+                        $vueAdmin->afficherFormulaireAjoutProjet($semestre_id);
                     }
-                      break;                    
+                    break;                    
                 case 'enregistrerProjet':
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $titre = htmlspecialchars($_POST['titre']);
@@ -83,7 +75,7 @@ class ContMenuAccueil {
                 case 'ajouterSemestre':
                     if (isset($_GET['annee_id'])) {
                         $annee_id = intval($_GET['annee_id']);
-                        $this->vue->afficherFormulaireAjoutSemestre($annee_id);
+                        $vueAdmin->afficherFormulaireAjoutSemestre($annee_id);
                     } else {
                         echo "Erreur : ID de l'année manquant.";
                     }
@@ -93,19 +85,19 @@ class ContMenuAccueil {
         
                     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $nom = htmlspecialchars($_POST['nom']);
-                       $annee_id = intval($_POST['annee_id']);
+                    $annee_id = intval($_POST['annee_id']);
                 
-                       if ($this->modele) {
-                           $this->modele->ajouterSemestre($nom, $annee_id);
-                           header('Location: index.php?module=menuAccueil'); 
-                       } else {
+                    if ($this->modele) {
+                        $this->modele->ajouterSemestre($nom, $annee_id);
+                        header('Location: index.php?module=menuAccueil'); 
+                    } else {
                             die("Erreur : Le modèle n'est pas initialisé.");
                         }
                     }
-                   break;
-                   case 'supprimerSemestre':
-                    if (isset($_GET['id'])) {
-                        $semestre_id = intval($_GET['id']);
+                break;
+                case 'supprimerSemestre':
+                    if (isset($_GET['semestre_id'])) {
+                        $semestre_id = intval($_GET['semestre_id']);
                         $this->modele->supprimerSemestre($semestre_id);
                         header('Location: index.php?module=menuAccueil'); 
                     } else {
@@ -126,11 +118,29 @@ class ContMenuAccueil {
                         echo "Erreur : ID du projet manquant.";
                     }
                     break;
-                
-                    
-                    
-                    
-                
+                default:
+                    $vueAdmin->afficher();
+                    break;
+                }
+    }
+
+    public function action() {
+
+        if ($_SESSION['role'] === 'etudiant') {
+            $this->actionEtudiant(); 
+            return;
+        }
+        elseif($_SESSION['role']==="admin"){
+            $this->actionAdmin();
+            return;
+        }
+
+        switch ($this->action) {
+
+            case 'connexion':
+                echo "connexion";
+                break;
+
             default:
                 $this->vue->afficherAccueil();
                 break;

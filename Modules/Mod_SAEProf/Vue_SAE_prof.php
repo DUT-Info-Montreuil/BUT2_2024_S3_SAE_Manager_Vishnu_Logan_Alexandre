@@ -38,7 +38,14 @@ class VueSAEProf extends VueGenerique {
                     <div class='description-ressource'>
                         <h2>Ressources</h2>
                         <img src='Modules/Mod_SAEProf/imgSAEProf/ajouter.png' alt='Ajouter' class='icon-ajouter' onclick='toggleAddResourceForm()'> 
-                    </div>";
+                    </div>
+                    <form id='add-resource-form' style='display: none;' method='POST' action='index.php?module=sae&action=ajouterRessource&id=$id_projet' enctype='multipart/form-data'>
+                        <input type='text' name='titre' placeholder='Titre de la ressource' required>
+                        <textarea name='description' placeholder='Description' rows='3'></textarea>
+                        <input type='file' name='fichier_ressource' class='input-file'>
+                        <button type='submit'>Ajouter</button>
+                        <button type='button' onclick='toggleAddResourceForm()'>Annuler</button>
+                    </form>";
                     foreach ($ressource as $ress) {
                         $titre = $ress['titre'];
                         $url = $ress['url'];
@@ -46,13 +53,6 @@ class VueSAEProf extends VueGenerique {
                     }
                     
                     echo "
-                    <form id='add-resource-form' style='display: none;' method='POST' action='index.php?module=sae&action=ajouterRessource&id=$id_projet' enctype='multipart/form-data'>
-                        <input type='text' name='titre' placeholder='Titre de la ressource' required>
-                        <textarea name='description' placeholder='Description' rows='3'></textarea>
-                        <input type='file' name='fichier_ressource' class='input-file'>
-                        <button type='submit'>Ajouter</button>
-                        <button type='button' onclick='toggleAddResourceForm()'>Annuler</button>
-                    </form>
                 </div>";
 
         echo "
@@ -85,25 +85,29 @@ class VueSAEProf extends VueGenerique {
                     
                             echo "
                             <div class='deposit-item'>
-                                <a href='index.php?module=sae&action=afficherDepot&id_rendu=$id_rendu' class='rendu-link'>
+                                
                                     <p><strong>$titre</strong></p>
                                     <p>Description : $description</p>
                                     <p>Date limite : $date_limite</p> 
                                     <p>Type : $type</p>
-                                </a>
+                                
                                 <button onclick='toggleEditRenduForm($id_rendu)'>Modifier</button>
+                                <button class='btn-acceder-rendu' onclick=\"window.location.href='index.php?module=sae&action=afficherDepot&id_rendu=$id_rendu'\">Acceder</button>
+                                
                             </div>
                             <form id='edit-rendu-form-$id_rendu' style='display: none;' method='POST' action='index.php?module=sae&action=modifierRendu&id_rendu=$id_rendu'>
-                                <input type='hidden' name='projet_id' value='$id_projet'>    
-                                <input type='text' name='titre' value='$titre' required>
-                                <textarea name='description' rows='3'>$description</textarea>
-                                <input type='datetime-local' name='date_limite' value='" . date('Y-m-d\TH:i', strtotime($date_limite)) . "' required>
-                                <select name='type'>
-                                    <option value='groupe' " . ($type === 'groupe' ? 'selected' : '') . ">Groupe</option>
-                                    <option value='individuel' " . ($type === 'individuel' ? 'selected' : '') . ">Individuel</option>
-                                </select>
-                                <button type='submit'>Enregistrer</button>
-                                <button type='button' onclick='toggleEditRenduForm($id_rendu)'>Annuler</button>
+                                <div class='rendu-edit'>
+                                    <input type='hidden' name='projet_id' value='$id_projet'>    
+                                    <input type='text' name='titre' value='$titre' required>
+                                    <textarea name='description' rows='3'>$description</textarea>
+                                    <input type='datetime-local' name='date_limite' value='" . date('Y-m-d\TH:i', strtotime($date_limite)) . "' required>
+                                    <select name='type'>
+                                        <option value='groupe' " . ($type === 'groupe' ? 'selected' : '') . ">Groupe</option>
+                                        <option value='individuel' " . ($type === 'individuel' ? 'selected' : '') . ">Individuel</option>
+                                    </select>
+                                    <button type='submit'>Enregistrer</button>
+                                    <button type='button' onclick='toggleEditRenduForm($id_rendu)'>Annuler</button>
+                                </div>
                             </form>";
                         }
                     
@@ -115,7 +119,7 @@ class VueSAEProf extends VueGenerique {
                     
         echo "
                 </div>
-                <button class='evaluation-button'>Accéder aux évaluations</button>
+                <button class='evaluation-button'onclick=\"window.location.href='index.php?module=evaluation&projet_id=$id_projet'\">Accéder aux évaluations</a></button>
                 <button class='groupe-button' onclick=\"window.location.href='index.php?module=groupe&action=formulaire&id=$id_projet'\">Groupes</button>
             </div>
         </div>
@@ -154,7 +158,7 @@ class VueSAEProf extends VueGenerique {
         $titre = htmlspecialchars($rendu['titre']);
         $description = htmlspecialchars($rendu['description']);
         $date_limite = htmlspecialchars($rendu['date_limite']);
-        $type = htmlspecialchars($rendu['TYPE']); // Vérifiez le type ici
+        $type = htmlspecialchars($rendu['TYPE']);
     
         echo "
         <div class='depot-container'>
@@ -184,10 +188,10 @@ class VueSAEProf extends VueGenerique {
         if (!empty($groupes)) {
             foreach ($groupes as $groupe) {
                 if ($type === 'groupe') {
-                    // Vérifiez si 'groupe_nom' existe
+                   
                     $nom_affichage = isset($groupe['groupe_nom']) ? htmlspecialchars($groupe['groupe_nom']) : 'Nom de groupe non disponible';
                 } else {
-                    // Vérifiez si 'prenom' et 'nom' existent
+                 
                     $prenom = isset($groupe['prenom']) ? htmlspecialchars($groupe['prenom']) : 'Prénom inconnu';
                     $nom = isset($groupe['nom']) ? htmlspecialchars($groupe['nom']) : 'Nom inconnu';
                     $nom_affichage = $prenom . ' ' . $nom;

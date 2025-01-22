@@ -102,12 +102,12 @@ class Modele_Groupe extends Connexion {
             ':etudiant_id' => $etudiants
         ]);
     
-        // Vérifier si le groupe était validé
+ 
         $stmt = self::getBdd()->prepare("SELECT groupeValide FROM groupes WHERE id = :groupe_id");
         $stmt->execute([':groupe_id' => $groupeId]);
         $groupeValide = $stmt->fetchColumn();
     
-        // Remettre le groupe en non validé si il était validé
+
         if ($groupeValide) {
             $stmt = self::getBdd()->prepare("UPDATE groupes SET groupeValide = 0 WHERE id = :groupe_id");
             $stmt->execute([':groupe_id' => $groupeId]);
@@ -133,17 +133,15 @@ class Modele_Groupe extends Connexion {
     }
 
     public function updateImageGroupe($groupeId, $imagePath) {
-        // Récupérer l'ancienne image
+  
         $stmt = self::getBdd()->prepare("SELECT image_titre FROM groupes WHERE id = :groupe_id");
         $stmt->execute([':groupe_id' => $groupeId]);
         $oldImage = $stmt->fetchColumn();
-    
-        // Supprimer l'ancienne image si elle existe
+  
         if ($oldImage && file_exists($oldImage)) {
             unlink($oldImage);
         }
-    
-        // Mettre à jour avec la nouvelle image
+
         $stmt = self::getBdd()->prepare("UPDATE groupes SET image_titre = :image WHERE id = :groupe_id");
         $stmt->execute([
             ':image' => $imagePath,

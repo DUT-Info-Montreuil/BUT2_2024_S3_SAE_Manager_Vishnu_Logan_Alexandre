@@ -82,7 +82,7 @@ class Cont_Groupe_Prof {
             $typesAutorises = ['image/jpeg', 'image/png', 'image/gif'];
             $tailleMax = 2 * 1024 * 1024; // 2 Mo
     
-            // Vérification du type et de la taille du fichier
+  
             if (!in_array($_FILES['image_groupe']['type'], $typesAutorises)) {
                 die("Erreur : Format d'image non autorisé.");
             }
@@ -100,7 +100,7 @@ class Cont_Groupe_Prof {
             }
         }
     
-        // Appel de la méthode de mise à jour du groupe dans le modèle
+
         $this->model->modifGroupe($groupId, $cheminFichier, $projetId, $nomGroup, $limiteGroupe, $modifNom, $modifImage);
     }
     

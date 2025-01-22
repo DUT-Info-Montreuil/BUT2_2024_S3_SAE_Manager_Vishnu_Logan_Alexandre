@@ -142,8 +142,8 @@ class Modele_sae_etudiant extends Connexion{
                
         public function ajouterFichierRenduGroupe($id_rendu, $groupe_id, $fichier_url) {
             $pdo_req = self::getBdd()->prepare("
-                INSERT INTO fichiers_rendus (rendu_id, groupe_id, etudiant_id, fichier_url)
-                VALUES (:rendu_id, :groupe_id, 0, :fichier_url)
+                INSERT INTO fichiers_rendus (rendu_id, groupe_id, fichier_url)
+                VALUES (:rendu_id, :groupe_id,  :fichier_url)
             ");
             $pdo_req->bindParam(':rendu_id', $id_rendu);
             $pdo_req->bindParam(':groupe_id', $groupe_id);
@@ -153,8 +153,8 @@ class Modele_sae_etudiant extends Connexion{
 
         public function ajouterFichierRenduEtudiant($id_rendu, $etudiant_id, $fichier_url) {
             $pdo_req = self::getBdd()->prepare("
-                INSERT INTO fichiers_rendus (rendu_id, groupe_id, etudiant_id, fichier_url)
-                VALUES (:rendu_id, 0, :etudiant_id, :fichier_url)
+                INSERT INTO fichiers_rendus (rendu_id, etudiant_id, fichier_url)
+                VALUES (:rendu_id,  :etudiant_id, :fichier_url)
             ");
             $pdo_req->bindParam(':rendu_id', $id_rendu);
             $pdo_req->bindParam(':etudiant_id', $etudiant_id);
@@ -199,9 +199,9 @@ class Modele_sae_etudiant extends Connexion{
             $pdo_req->bindParam(':groupe_id', $groupe_id);
             $pdo_req->execute();
             
-            $result = $pdo_req->fetch(PDO::FETCH_ASSOC); // Récupère une seule ligne sous forme de tableau associatif
+            $result = $pdo_req->fetch(PDO::FETCH_ASSOC); 
             
-            return $result ? $result['fichier_url'] : null; // Retourne la valeur ou null si aucun résultat
+            return $result ? $result['fichier_url'] : null; 
         }
 
         public function getGroupeByEtudiantId($userId, $projetId) {
