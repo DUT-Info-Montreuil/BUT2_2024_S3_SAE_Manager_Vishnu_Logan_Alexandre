@@ -9,12 +9,12 @@ class Vue_Groupe_Prof extends VueGenerique {
     }
 
     public function afficherFormulaire($groupes) {
-        $projetId = isset($_GET['projetId']) ? htmlspecialchars(strip_tags($_GET['projetId'])) : -1;
+        $projetId = isset($_GET['id']) ? htmlspecialchars(strip_tags($_GET['id'])) : -1;
         ?>
         <div class="groupes">
             <div class="group-container">
                 <h2>Ajouter des groupes</h2>
-                <form id="formGroupe" method='POST' action='index.php?module=groupeProf&action=ajouter&projetId=<?= $projetId ?>'>
+                <form id="formGroupe" method='POST' action='index.php?module=groupe&action=ajouter&id=<?= $projetId ?>'>
                     <div class="input-group">
                         <label for="nombre_groupes">Nombre de groupes</label>
                         <input type="number" id="nombre_groupes" name="nombre_groupes" placeholder="Nombre de groupes" min="1" required>
@@ -52,6 +52,7 @@ class Vue_Groupe_Prof extends VueGenerique {
                 <table border="2" class="table-container">
                     <thead>
                         <tr>
+                            <th>Image</th>
                             <th>Nom</th>
                             <th>Limite</th>
                             <th>Nom Modifiable</th>
@@ -62,6 +63,7 @@ class Vue_Groupe_Prof extends VueGenerique {
                     <tbody>
                         <?php foreach ($groupes as $groupe): ?>
                             <tr id="groupe_<?= $groupe['id'] ?>">
+                                <td><img src="<?= $groupe['image_titre'] ?>" alt="groupeImage" width="50" height="50"></td>
                                 <td><?= !empty($groupe['nom']) ? $groupe['nom'] : "Groupe " . $groupe['id'] ?></td>
                                 <td><?= $groupe['limiteGroupe'] ?> </td>
                                 <td><?= $groupe['nom_modifiable'] ? 'Oui' : 'Non' ?></td>
@@ -91,8 +93,11 @@ class Vue_Groupe_Prof extends VueGenerique {
 
 <div id="menuContextuel" class="hidden">
     <h3>Modifier Groupe</h3>
-    <form id="modifierForm"method='POST' action='index.php?module=groupeProf&action=modifier&projetId=<?= $projetId ?>' >
+    <form id="modifierForm"method='POST' action='index.php?module=groupe&action=modifier&id=<?= $projetId ?>' enctype="multipart/form-data">
         <input type="hidden" id="groupeId" name="groupeId">
+
+        <label for="image_groupe">Image du Groupe :</label>
+        <input type="file" name="image_groupe" class="input-groupe">
         
         <label for="groupeNom">Nom du Groupe :</label>
         <input type="text" id="groupeNom" name="groupeNom" >
@@ -113,7 +118,7 @@ class Vue_Groupe_Prof extends VueGenerique {
 
 <div id="menuContextuelSupp">
     <h1>Voulez-vous vraiment supprimer ce groupe ?</h1>
-    <form id="supprimerForm" method="POST" action="index.php?module=groupeProf&action=supprimer&projetId=<?= $projetId ?>">
+    <form id="supprimerForm" method="POST" action="index.php?module=groupe&action=supprimer&id=<?= $projetId ?>">
         <input type="hidden" id="groupId" name="groupId">
         <button type="submit">Oui</button>
         <button type="button" id="fermerMenusupp">Annuler</button>

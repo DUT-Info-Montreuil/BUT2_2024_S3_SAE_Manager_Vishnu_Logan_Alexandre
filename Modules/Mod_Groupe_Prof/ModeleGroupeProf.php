@@ -22,10 +22,11 @@ class Modele_Groupe_Prof extends Connexion {
         $bdd = self::getBdd();
     
  
-        $stmt = $bdd->prepare("INSERT INTO groupes (projet_id, nom_modifiable, image_modifiable, limiteGroupe) 
-                               VALUES (:projet_id, :modifNom, :modifImage, :limiteGroupe)");
+        $stmt = $bdd->prepare("INSERT INTO groupes (projet_id,image_titre, nom_modifiable, image_modifiable, limiteGroupe) 
+                               VALUES (:projet_id,:image_titre, :modifNom, :modifImage, :limiteGroupe)");
         $stmt->execute([
             ':projet_id' => $projetId,
+            ':image_titre' => 'uploads/groupe/default.png',
             ':modifNom' => $modifNom,
             ':modifImage' => $modifImage,
             ':limiteGroupe' => $limiteGroupe
@@ -47,19 +48,48 @@ class Modele_Groupe_Prof extends Connexion {
         $stmt->execute([':groupeId' => $groupeId]);
     }
 
-    public function modifGroupe($groupeId,$projetId,$nomGroup,$limiteGroupe,$modifNom,$modifImage){
-        $stmt = self::getBdd()->prepare("UPDATE groupes 
-                                        SET nom=:nom, nom_modifiable=:nom_modifiable, image_modifiable=:image_modifiable, limiteGroupe=:limiteGroupe 
-                                        WHERE projet_id=:projetId AND id=:groupeId");
+    public function modifGroupe($groupeId, $cheminFichier, $projetId, $nomGroup, $limiteGroupe, $modifNom, $modifImage){
 
-        $stmt->execute([
-            ':groupeId' => $groupeId,
-            ':projetId' => $projetId,
-            ':nom' => $nomGroup, 
-            ':nom_modifiable' => $modifNom, 
-            ':image_modifiable' => $modifImage, 
-            ':limiteGroupe' => $limiteGroupe
-        ]);
+        if ($cheminFichier != '') {
+
+            $stmt = self::getBdd()->prepare("SELECT image_titre FROM groupes WHERE projet_id=:projetId AND id=:groupeId");
+            $stmt->execute([
+                ':projetId' => $projetId,
+                ':groupeId' => $groupeId
+            ]);
+            $ancienFichier = $stmt->fetchColumn();
+        
+            if ($ancienFichier && file_exists($ancienFichier) && $ancienFichier != 'uploads/groupe/default.png') {
+                unlink($ancienFichier);
+            }
+        
+            $stmt = self::getBdd()->prepare("UPDATE groupes 
+                                            SET nom=:nom, image_titre=:image, nom_modifiable=:nom_modifiable, image_modifiable=:image_modifiable, limiteGroupe=:limiteGroupe 
+                                            WHERE projet_id=:projetId AND id=:groupeId");
+        
+            $stmt->execute([
+                ':groupeId' => $groupeId,
+                ':image' => $cheminFichier,
+                ':projetId' => $projetId,
+                ':nom' => $nomGroup,
+                ':nom_modifiable' => $modifNom,
+                ':image_modifiable' => $modifImage,
+                ':limiteGroupe' => $limiteGroupe
+            ]);
+        } else {
+            // Si pas d'image, on met à jour sans l'image
+            $stmt = self::getBdd()->prepare("UPDATE groupes 
+                                            SET nom=:nom, nom_modifiable=:nom_modifiable, image_modifiable=:image_modifiable, limiteGroupe=:limiteGroupe 
+                                            WHERE projet_id=:projetId AND id=:groupeId");
+            $stmt->execute([
+                ':groupeId' => $groupeId,
+                ':projetId' => $projetId,
+                ':nom' => $nomGroup,
+                ':nom_modifiable' => $modifNom,
+                ':image_modifiable' => $modifImage,
+                ':limiteGroupe' => $limiteGroupe
+            ]);
+        }
     }
 
     public function addEtudiantsToGroupe($groupeId, $etudiants) {

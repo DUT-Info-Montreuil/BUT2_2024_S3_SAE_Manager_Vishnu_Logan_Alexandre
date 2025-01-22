@@ -1,0 +1,366 @@
+.main-content {
+    padding: 1rem;
+    margin: 10vh auto 5vh auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 80%;
+    margin-left: 10%;
+}
+
+.description, .resources, .deposits {
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 18px;
+    color: #000080; 
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style: none;
+    padding-left: 20px;
+}
+
+li {
+    margin-bottom: 5px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.resources a {
+    text-decoration: none;
+    color: #007BFF; 
+}
+
+.resources a:hover {
+    text-decoration: underline;
+}
+
+.deposit-item {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.deposit-item p {
+    font-size: 16px;
+    margin: 5px 0;
+    color: #333;
+}
+
+.deposit-item strong {
+    font-size: 1.2em;
+}
+
+.deposit-item a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.deposit-item a:hover {
+    text-decoration: underline;
+}
+
+.deposit-item form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+    display: block;
+    margin: 10px auto;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+button.supprimer-btn {
+    background-color: #dc3545;
+}
+
+button.supprimer-btn:hover {
+    background-color: #a31322;
+}
+
+button.rendre-btn {
+    background-color: #007bff;
+}
+
+button.rendre-btn:hover {
+    background-color: #0056b3;
+}
+
+.sae-container {
+    position: absolute;
+    width: 95%;
+    top: 5%;
+    left: 5%;
+}
+
+.description-header, .description-depot, .description-ressource {
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+}
+
+.icon-modify, .icon-ajouter {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.ressource {
+    border: 1px solid #dee2e6;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+form label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+form input[type="file"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    display: block;
+    width: 100%;
+}
+
+.groupe-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.groupe-button:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.groupe-button:active {
+    background-color: #3e8e41;
+    transform: scale(0.95);
+}
+
+#edit-description-form {
+    display: none;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 20px auto;
+    font-family: 'Arial', sans-serif;
+}
+
+#edit-description-form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #fafafa;
+    resize: vertical;
+}
+
+#edit-description-form button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#edit-description-form button[type="submit"] {
+    background: #28a745;
+    color: white;
+}
+
+#edit-description-form button[type="button"] {
+    background: #d9534f;
+    color: white;
+}
+
+#edit-description-form button:hover {
+    opacity: 0.8;
+}
+
+#add-resource-form {
+    display: none;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 20px auto;
+    font-family: 'Arial', sans-serif;
+}
+
+#add-resource-form input,
+#add-resource-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#add-resource-form textarea {
+    resize: none;
+}
+
+#add-resource-form .input-file {
+    border: none;
+    background: none;
+}
+
+#add-resource-form button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#add-resource-form button[type="submit"] {
+    background: #4CAF50;
+    color: white;
+}
+
+#add-resource-form button[type="button"] {
+    background: #d9534f;
+    color: white;
+}
+
+#add-resource-form button:hover {
+    opacity: 0.8;
+}
+
+#add-rendu-form {
+    display: none;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 20px auto;
+    font-family: 'Arial', sans-serif;
+}
+
+#add-rendu-form input,
+#add-rendu-form textarea,
+#add-rendu-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#add-rendu-form textarea {
+    resize: none;
+}
+
+#add-rendu-form button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+#add-rendu-form button[type="submit"] {
+    background: #4CAF50;
+    color: white;
+}
+
+#add-rendu-form button[type="button"] {
+    background: #d9534f;
+    color: white;
+}
+
+#add-rendu-form button:hover {
+    opacity: 0.8;
+}
+
+#edit-description-form {
+    display: none;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 20px auto;
+    font-family: 'Arial', sans-serif;
+}
+
+#edit-description-form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #fafafa;
+    resize: vertical;
+}
+
+#edit-description-form button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#edit-description-form button[type="submit"] {
+    background: #28a745;
+    color: white;
+}
+
+#edit-description-form button[type="button"] {
+    background: #d9534f;
+    color: white;
+}
+
+#edit-description-form button:hover {
+    opacity: 0.8;
+}

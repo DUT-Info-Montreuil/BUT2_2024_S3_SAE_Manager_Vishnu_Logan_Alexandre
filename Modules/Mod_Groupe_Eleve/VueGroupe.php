@@ -10,10 +10,10 @@ class Vue_Groupe extends VueGenerique {
         $this->vueAccueil->afficherAccueil();
     }
 
-    public function afficherFormulaire($etudiants, $groupes, $etudiantsParGroupe, $userId, $groupeUtilisateur) {
+    public function afficherFormulaire($etudiants, $groupes, $etudiantsParGroupe, $projetId, $groupeUtilisateur) {
         $nomModifiable = !empty($groupeUtilisateur['nom_modifiable']) ? $groupeUtilisateur['nom_modifiable'] : 0;
         $imageModifiable = !empty($groupeUtilisateur['image_modifiable']) ? $groupeUtilisateur['image_modifiable'] : 0;
-        $projetId = isset($_GET['projetId']) ? htmlspecialchars(strip_tags($_GET['projetId'])) : -1;
+        
         ?>
         <div id="groupe-container" class="groupe-container">
             <?php if ($groupeUtilisateur): ?>
@@ -76,7 +76,7 @@ class Vue_Groupe extends VueGenerique {
                         <button id="btnModifierGroupe" class="btn modifier-btn">
                                     Modifier le groupe
                         </button>
-                        <form method="POST" action="index.php?module=groupe&action=quitter" class="form-quitter">
+                        <form method="POST" action="index.php?module=groupe&action=quitter&id=<?=$projetId?>" class="form-quitter">
                             <input type="hidden" name="groupe_id" value="<?= $groupeUtilisateur['groupe_id'] ?>">
                             <button type="submit" class="btn quitter-btn">
                                 Quitter le groupe
@@ -151,7 +151,7 @@ class Vue_Groupe extends VueGenerique {
                             
                                 ?>
                                 
-                                <form method="POST" action="index.php?module=groupe&action=rejoindre&projetId=<?$projetId?>" class="form-rejoindre-groupe">
+                                <form method="POST" action="index.php?module=groupe&action=rejoindre&id=<?= $projetId ?>" class="form-rejoindre-groupe">
                                     <input type="hidden" name="groupe_id" value="<?= $groupe['id'] ?>">
                                     <button type="submit" class="btn rejoindre-btn"?>
                                         Rejoindre

@@ -15,7 +15,7 @@ class Cont_Groupe {
 
     public function action() {
         $action = isset($_GET['action']) ? htmlspecialchars(strip_tags($_GET['action'])) : 'formulaire';
-        $projetId = isset($_GET['projetId']) ? htmlspecialchars(strip_tags($_GET['projetId'])) : -1;
+        $projetId = isset($_GET['id']) ? intval($_GET['id']) : -1;
         switch ($action) {
             case 'formulaire':
                 $this->afficherFormulaire();
@@ -23,21 +23,21 @@ class Cont_Groupe {
 
             case 'modifier':
                 $this->updateGroupe();
-                header("Location: index.php?module=groupe&action=formulaire&projetId=$projetId");
+                header("Location: index.php?module=groupe&action=formulaire&id=$projetId");
                 break;
 
             case 'quitter':
                 $this->quitterGroupe();
-                header("Location: index.php?module=groupe&action=formulaire&projetId=$projetId");
+                header("Location: index.php?module=groupe&action=formulaire&id=$projetId");
                 break;
 
             case 'rejoindre':
                 $this->rejoindreGroupe();
-                header("Location: index.php?module=groupe&action=formulaire&projetId=$projetId");
+                header("Location: index.php?module=groupe&action=formulaire&id=$projetId");
                 break;
             case 'confirmer':
                 $this->confirmerGroupe();
-                header("Location: index.php?module=groupe&action=formulaire&projetId=$projetId");
+                header("Location: index.php?module=groupe&action=formulaire&id=$projetId");
                 break;
             default:
                 $this->afficherFormulaire();
@@ -46,7 +46,7 @@ class Cont_Groupe {
     }
 
     public function afficherFormulaire() {
-        $projetId = isset($_GET['projetId']) ? intval($_GET['projetId']) : -1;
+        $projetId = isset($_GET['id']) ? intval($_GET['id']) : -1;
         $userId = $_SESSION['id'];
         $semestre = $this->model->getEtudiantsById($userId)['semestre_id'];
 
@@ -60,7 +60,7 @@ class Cont_Groupe {
 
         $groupeUtilisateur = $this->model->getGroupeByEtudiantId($userId, $projetId);
 
-        $this->vue->afficherFormulaire($etudiants, $groupes, $etudiantsParGroupe, $userId, $groupeUtilisateur);
+        $this->vue->afficherFormulaire($etudiants, $groupes, $etudiantsParGroupe, $projetId, $groupeUtilisateur);
     }
 
     public function rejoindreGroupe() {
@@ -70,11 +70,11 @@ class Cont_Groupe {
 
         $groupeId = intval($_POST['groupe_id']);
         $userId = intval($_SESSION['id']);
-
-        if ($this->model->getGroupeByEtudiantId($userId, $groupeId)) {
+        $projetId = isset($_GET['id']) ? intval($_GET['id']) : -1;
+        
+        if ($this->model->getGroupeByEtudiantId($userId, $projetId)) {
             die("Erreur : Vous êtes déjà dans un groupe.");
         }
-
 
         $groupe = $this->model->getGroupeById($groupeId);
         $etudiantsGroupe = $this->model->getEtudiantsByGroupeId($groupeId);
@@ -84,9 +84,8 @@ class Cont_Groupe {
         }
 
         $this->model->addEtudiantToGroupe($groupeId, $userId);
+ 
 
-        header("Location: index.php?module=groupe&action=formulaire");
-        exit();
     }
 
     public function quitterGroupe() {

@@ -42,14 +42,14 @@ class VueSAEProf extends VueGenerique {
                     foreach ($ressource as $ress) {
                         $titre = $ress['titre'];
                         $url = $ress['url'];
-                        echo "<p><a href='$url' target='_blank'>$titre</a></p>";
+                        echo "<p class='ressource'><a href='$url' target='_blank'>$titre</a></p>";
                     }
                     
                     echo "
-                    <form id='add-resource-form' style='display: none;' method='POST' action='index.php?module=sae&action=ajouterRessource&id=$id_projet'>
+                    <form id='add-resource-form' style='display: none;' method='POST' action='index.php?module=sae&action=ajouterRessource&id=$id_projet' enctype='multipart/form-data'>
                         <input type='text' name='titre' placeholder='Titre de la ressource' required>
                         <textarea name='description' placeholder='Description' rows='3'></textarea>
-                        <input type='text' name='url' placeholder='URL de ressource'>
+                        <input type='file' name='fichier_ressource' class='input-file'>
                         <button type='submit'>Ajouter</button>
                         <button type='button' onclick='toggleAddResourceForm()'>Annuler</button>
                     </form>
@@ -93,7 +93,7 @@ class VueSAEProf extends VueGenerique {
                                 </a>
                                 <button onclick='toggleEditRenduForm($id_rendu)'>Modifier</button>
                             </div>
-                            <form id='edit-rendu-form-$id_rendu' style='display: none;' method='POST' action='index.php?module=sae&action=modifierRendu&id=$id_rendu'>
+                            <form id='edit-rendu-form-$id_rendu' style='display: none;' method='POST' action='index.php?module=sae&action=modifierRendu&id_rendu=$id_rendu'>
                                 <input type='hidden' name='projet_id' value='$id_projet'>    
                                 <input type='text' name='titre' value='$titre' required>
                                 <textarea name='description' rows='3'>$description</textarea>
@@ -116,7 +116,7 @@ class VueSAEProf extends VueGenerique {
         echo "
                 </div>
                 <button class='evaluation-button'>Accéder aux évaluations</button>
-                <button class='groupe-button'><a href='index.php?module=groupeProf&action=formulaire&projetId=$id_projet'>Groupes</button>
+                <button class='groupe-button' onclick=\"window.location.href='index.php?module=groupe&action=formulaire&id=$id_projet'\">Groupes</button>
             </div>
         </div>
 
@@ -177,7 +177,6 @@ class VueSAEProf extends VueGenerique {
                             $groupe_nom = htmlspecialchars($groupe['groupe_nom']);
                             $fichier_url = htmlspecialchars($groupe['fichier_url']);
                             $note = $groupe['note'] !== null ? htmlspecialchars($groupe['note']) : '--';
-                            $fichierId = isset($groupe['fichier_id']) ? $groupe['fichier_id'] : 0;
                             echo "
                             <tr>
                                 <td>$groupe_nom</td>

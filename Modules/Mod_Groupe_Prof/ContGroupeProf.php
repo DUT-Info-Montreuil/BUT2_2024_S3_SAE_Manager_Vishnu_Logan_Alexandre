@@ -14,7 +14,7 @@ class Cont_Groupe_Prof {
 
     public function action(){
         $action = isset($_GET['action']) ? htmlspecialchars(strip_tags($_GET['action'])) : 'formulaire';
-        $projetId = isset($_GET['projetId']) ? htmlspecialchars(strip_tags($_GET['projetId'])) : -1;
+        $projetId = isset($_GET['id']) ? htmlspecialchars(strip_tags($_GET['id'])) : -1;
         switch ($action) {
             case 'formulaire':
                 $this->afficherFormulaire();
@@ -23,16 +23,16 @@ class Cont_Groupe_Prof {
             case 'ajouter':
      
                 $this->creerGroupe(); 
-                header("Location: index.php?module=groupeProf&action=formulaire&projetId=$projetId");
+                header("Location: index.php?module=groupe&action=formulaire&id=$projetId");
                 
                 break;
             case 'supprimer':
                 $this->supprimerGroupe(); 
-                header("Location: index.php?module=groupeProf&action=formulaire&projetId=$projetId");
+                header("Location: index.php?module=groupe&action=formulaire&id=$projetId");
                 break;
             case 'modifier':
                 $this->modifGroupe();
-                header("Location: index.php?module=groupeProf&action=formulaire&projetId=$projetId");
+                header("Location: index.php?module=groupe&action=formulaire&id=$projetId");
                 break;
         }
     }
@@ -76,7 +76,32 @@ class Cont_Groupe_Prof {
         $limiteGroupe = isset($_POST['groupeLimite']) ? htmlspecialchars(strip_tags($_POST['groupeLimite'])) : 0;
         $modifNom = isset($_POST['changeNom']) ? 1 : 0;
         $modifImage = isset($_POST['changeImage']) ? 1 : 0;
-        $this->model->modifGroupe($groupId,$projetId,$nomGroup,$limiteGroupe,$modifNom,$modifImage);
+        $cheminFichier = '';
+        if (isset($_FILES['image_groupe']) && $_FILES['image_groupe']['error'] === UPLOAD_ERR_OK) {
+            $dossierCible = 'uploads/groupe/';
+            $typesAutorises = ['image/jpeg', 'image/png', 'image/gif'];
+            $tailleMax = 2 * 1024 * 1024; // 2 Mo
+    
+            // Vérification du type et de la taille du fichier
+            if (!in_array($_FILES['image_groupe']['type'], $typesAutorises)) {
+                die("Erreur : Format d'image non autorisé.");
+            }
+    
+            if ($_FILES['image_groupe']['size'] > $tailleMax) {
+                die("Erreur : Fichier trop volumineux.");
+            }
+    
+            $extension = pathinfo($_FILES['image_groupe']['name'], PATHINFO_EXTENSION);
+            $nomFichierUnique = uniqid('img_') . '.' . $extension;
+            $cheminFichier = $dossierCible . $nomFichierUnique;
+    
+            if (!move_uploaded_file($_FILES['image_groupe']['tmp_name'], $cheminFichier)) {
+                die("Erreur lors du téléchargement du fichier.");
+            }
+        }
+    
+        // Appel de la méthode de mise à jour du groupe dans le modèle
+        $this->model->modifGroupe($groupId, $cheminFichier, $projetId, $nomGroup, $limiteGroupe, $modifNom, $modifImage);
     }
     
 
