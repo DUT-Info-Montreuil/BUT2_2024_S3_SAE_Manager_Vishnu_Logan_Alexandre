@@ -160,5 +160,15 @@ class Modele_Groupe extends Connexion {
         $stmt = self::getBdd()->prepare("UPDATE groupes SET groupeValide = 1 WHERE id = :groupe_id");
         $stmt->execute([':groupe_id' => $groupeId]);
     }
+
+    public function ajouterEtudiantAuGroupe($etudiant_id, $groupe_id) {
+        $pdo_req = self::getBdd()->prepare("
+            INSERT INTO groupe_etudiants (etudiant_id, groupe_id)
+            VALUES (:etudiant_id, :groupe_id)
+        ");
+        $pdo_req->bindParam(':etudiant_id', $etudiant_id, PDO::PARAM_INT);
+        $pdo_req->bindParam(':groupe_id', $groupe_id, PDO::PARAM_INT);
+        $pdo_req->execute();
+    }
 }
 ?>

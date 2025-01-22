@@ -37,38 +37,60 @@ class Vue_Groupe extends VueGenerique {
                         <?php else: ?>
                             <?php if (isset($etudiantsParGroupe[$groupeUtilisateur['groupe_id']]) && count($etudiantsParGroupe[$groupeUtilisateur['groupe_id']]) === (int) $groupeUtilisateur['limiteGroupe']): ?>
                                 <form method="POST" action="index.php?module=groupe&action=confirmer&id=<?=$projetId?>" class="form-confirm">
-                                    <input type="hidden" name="groupe_id" value="<?= htmlspecialchars($groupeUtilisateur['groupe_id']) ?>">
+                                    <input type="hidden" name="groupe_id" value="<?= $groupeUtilisateur['groupe_id'] ?>">
                                     <button type="submit" class="btn confirm-btn">
                                         Confirmer
                                     </button>
                                 </form>
                             <?php else: ?>
                                 <p class="message-confirmation">Le groupe n'est pas complet.</p>
-                                <div class="custom-dropdown">
-                                    <button type="button" class="dropdown-btn" onclick="toggleDropdown()">
-                                        Sélectionnez les étudiants
-                                        <span class="dropdown-icon">▼</span>
-                                    </button>
-                                        <div class="dropdown-content">
-                                            <?php foreach ($etudiants as $etudiant) : ?>
-                                                <label>
-                                                    <input type="checkbox" class="etudiant-checkbox" value="<?php echo $etudiant['id']; ?>" 
-                                                        data-nom="<?php echo $etudiant['nom']; ?>" 
-                                                        data-prenom="<?php echo $etudiant['prenom']; ?>">
-                                                    <?php echo $etudiant['nom'] . ' ' . $etudiant['prenom']; ?>
-                                                </label><br>
-                                            <?php endforeach; ?>
+                                <form method="POST" action="index.php?module=groupe&action=ajouterEtudiantsGroupe&id=<?=$projetId?>">
+                                    <input type="hidden" name="groupe_id" value="<?= $groupeUtilisateur['groupe_id'] ?>">
+                                        <div class="custom-dropdown">
+                                            <button type="button" class="dropdown-btn" onclick="toggleDropdown()">
+                                                Sélectionnez les étudiants
+                                                <span class="dropdown-icon">▼</span>
+                                            </button>
+                                            <div class="dropdown-content">
+                                                <?php foreach ($etudiants as $etudiant) : ?>
+                                                    <label>
+                                                        <input type="checkbox" class="etudiant-checkbox" value="<?php echo $etudiant['id']; ?>" 
+                                                            data-nom="<?php echo $etudiant['nom']; ?>" 
+                                                            data-prenom="<?php echo $etudiant['prenom']; ?>">
+                                                        <?php echo $etudiant['nom'] . ' ' . $etudiant['prenom']; ?>
+                                                    </label><br>
+                                                <?php endforeach; ?>
+                                            </div>
                                         </div>
-                                    </div>
+
+                                        <!-- Champ caché pour stocker les IDs des étudiants sélectionnés -->
+                                        <input type="hidden" name="etudiants_selectionnes" id="etudiants_selectionnes">
+
+                                        <button type="submit">Ajouter au groupe</button>
+                                    </form>
 
                                    
 
                                     <script>
+                                    // Fonction qui collecte les IDs des étudiants sélectionnés et les ajoute au champ caché
+                                    document.querySelector("form").addEventListener("submit", function(event) {
+                                        var selectedStudents = [];
+                                        var checkboxes = document.querySelectorAll(".etudiant-checkbox:checked");
+
+                                        checkboxes.forEach(function(checkbox) {
+                                            selectedStudents.push(checkbox.value);
+                                        });
+
+                                        // Ajout des IDs sélectionnés dans le champ caché
+                                        document.getElementById("etudiants_selectionnes").value = selectedStudents.join(",");
+                                    });
+
+                                    // Fonction pour ouvrir/fermer le dropdown
                                     function toggleDropdown() {
                                         var dropdown = document.querySelector(".custom-dropdown");
                                         dropdown.classList.toggle("active");
                                     }
-                                    </script>
+                                </script>
                             <?php endif; ?>
 
                                 

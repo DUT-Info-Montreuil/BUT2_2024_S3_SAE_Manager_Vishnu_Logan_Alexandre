@@ -196,12 +196,13 @@ class Modele_sae_etudiant extends Connexion{
             ");
             $pdo_req->bindParam(':rendu_id', $id_rendu);
             $pdo_req->bindParam(':etudiant_id', $etudiant_id);
-            $pdo_req->bindParam(':groupe_id', $groupe_id);
+            if ($groupe_id === null) {
+                $pdo_req->bindValue(':groupe_id', null, PDO::PARAM_NULL);
+            } else {
+                $pdo_req->bindParam(':groupe_id', $groupe_id, PDO::PARAM_INT);
+            }
             $pdo_req->execute();
-            
-            $result = $pdo_req->fetch(PDO::FETCH_ASSOC); 
-            
-            return $result ? $result['fichier_url'] : null; 
+            return $pdo_req->fetchColumn(); 
         }
 
         public function getGroupeByEtudiantId($userId, $projetId) {
@@ -218,8 +219,14 @@ class Modele_sae_etudiant extends Connexion{
             ");
             $pdo_req->bindParam(':id_rendu', $id_rendu);
             $pdo_req->bindParam(':etudiant_id', $etudiant_id);
-            $pdo_req->bindParam(':groupe_id', $groupe_id);
+            if ($groupe_id === null) {
+                $pdo_req->bindValue(':groupe_id', null, PDO::PARAM_NULL);
+            } else {
+                $pdo_req->bindParam(':groupe_id', $groupe_id, PDO::PARAM_INT);
+            }
             $pdo_req->execute();
-        }       
+        }   
+        
+        
     }
 ?>

@@ -53,6 +53,21 @@ document.querySelector('.custom-dropdown .dropdown-btn').addEventListener('click
     dropdown.classList.toggle('open');
 });
 
+document.addEventListener("DOMContentLoaded", function() {
+    const checkboxes = document.querySelectorAll(".etudiant-checkbox");
+    const hiddenInput = document.getElementById("etudiants_selectionnes");
 
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", function() {
+            let selectedIds = [];
+            checkboxes.forEach(box => {
+                if (box.checked) {
+                    selectedIds.push(box.value);
+                }
+            });
+            hiddenInput.value = selectedIds.join(",");
+        });
+    });
+});
 
 

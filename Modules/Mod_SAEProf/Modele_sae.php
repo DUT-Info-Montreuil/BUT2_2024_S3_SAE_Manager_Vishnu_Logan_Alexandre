@@ -115,6 +115,7 @@ class Modele_sae extends Connexion{
             $pdo_req->execute();
         }
 
+        
         public function getGroupesAvecFichiers($id_rendu) {
             $pdo_req = self::getBdd()->prepare("
                 SELECT 
@@ -142,7 +143,7 @@ class Modele_sae extends Connexion{
                     END AS nom_affichage,
                     u.prenom,
                     u.nom,
-                    g.nom AS groupe_nom, -- Assurez-vous que g.nom est inclus pour les rendus de type groupe
+                    g.nom AS groupe_nom,
                     f.fichier_url,
                     f.date_soumission,
                     f.id AS fichier_id,
@@ -158,8 +159,29 @@ class Modele_sae extends Connexion{
             $pdo_req->execute();
             return $pdo_req->fetchAll(PDO::FETCH_ASSOC);
         }
+        public function supprimerRessource($id_ressource) {
+            try {
+                $pdo_req = self::getBdd()->prepare("DELETE FROM ressources WHERE id = :id");
+                $pdo_req->bindParam(':id', $id_ressource);
+                $pdo_req->execute();
+            } catch (Exception $e) {
+                die('Erreur : ' . $e->getMessage());
+            }
+        }
         
-        
+        public function supprimerRendu($id_rendu) {
+            try {
+                $pdo_req = self::getBdd()->prepare("DELETE FROM fichiers_rendus WHERE rendu_id = :id_rendu");
+                $pdo_req->bindParam(':id_rendu', $id_rendu);
+                $pdo_req->execute();
+                $pdo_req = self::getBdd()->prepare("DELETE FROM rendus WHERE id = :id");
+                $pdo_req->bindParam(':id', $id_rendu);
+                $pdo_req->execute();
+            } catch (Exception $e) {
+                die('Erreur : ' . $e->getMessage());
+            }
+        }
+
 
 
 

@@ -5,12 +5,13 @@ include_once __DIR__ . '/../Mod_accueil/VueAccueil.php';
 
 class Vue_SAE_etudiant extends VueGenerique {
     private $vue;
-
+    private $modele;
     public function __construct() {
     parent::__construct();
 
     $this->vue = new VueAccueil();
     $this->vue->afficherAccueil();
+    $this->modele = new Modele_sae_etudiant();
     }
 public function afficher_sae_etudiant($projet, $ressources, $rendus) {
        
@@ -75,20 +76,29 @@ public function afficher_sae_etudiant($projet, $ressources, $rendus) {
                                         </div>
                                       </div>";
                             } else {
+                                $groupe = $this->modele->getGroupeByEtudiantId($_SESSION['id'], $id_projet); 
+
                                 echo "<div class='deposit-item'>
                                         <div class='deposit-info'>
                                             <p><strong>$titre</strong></p>
                                             <p>Description : $description</p>
                                             <p>Date limite : $date_limite</p>
-                                            <p>Type : $type</p>
-                                            <!-- Formulaire pour rendre un fichier -->
-                                            <form method='POST' action='index.php?module=sae&action=rendreFichier&id_rendu=$id_rendu&id=$id_projet' enctype='multipart/form-data'>
-                                                <label for='fichier-$id_rendu'>Déposer un fichier :</label>
-                                                <input type='file' name='fichier' id='fichier-$id_rendu' required>
-                                                <button class='rendre-btn' type='submit'>Rendre</button>
-                                            </form>
-                                        </div>
-                                      </div>";
+                                            <p>Type : $type</p>";
+
+                                if ($type == "groupe" && !$groupe) {
+                                    echo "<p style='color: red;'>Veuillez rejoindre un groupe pour faire le rendu de groupe.</p>";
+                                } else {
+                                   
+                                    echo "<form method='POST' action='index.php?module=sae&action=rendreFichier&id_rendu=$id_rendu&id=$id_projet' enctype='multipart/form-data'>
+                                            <label for='fichier-$id_rendu'>Déposer un fichier :</label>
+                                            <input type='file' name='fichier' id='fichier-$id_rendu' required>
+                                            <input type='hidden' name='type' value='$type'>
+                                            <button class='rendre-btn' type='submit'>Rendre</button>
+                                        </form>";
+                                }
+
+                                echo "  </div>
+                                    </div>";
                             }
                         }
                     } else {

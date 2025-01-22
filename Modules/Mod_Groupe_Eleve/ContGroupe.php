@@ -39,6 +39,10 @@ class Cont_Groupe {
                 $this->confirmerGroupe();
                 header("Location: index.php?module=groupe&action=formulaire&id=$projetId");
                 break;
+            case 'ajouterEtudiantsGroupe':
+                $this->ajouterEtudiantsGroupe();
+                header("Location: index.php?module=groupe&action=formulaire&id=$projetId");
+                break;
             default:
                 $this->afficherFormulaire();
                 break;
@@ -136,6 +140,19 @@ class Cont_Groupe {
         }
 
 
+    }
+
+    public function ajouterEtudiantsGroupe() {
+        if (isset($_POST['etudiants_selectionnes'])) {
+            $groupeId = isset($_POST['groupe_id']) ? intval($_POST['groupe_id']) : null;
+            
+            $etudiants = explode(",", $_POST['etudiants_selectionnes']); 
+            foreach ($etudiants as $etudiant_id) {
+                $this->model->ajouterEtudiantAuGroupe($etudiant_id, $groupeId);
+            }
+
+        } 
+        
     }
     
     
