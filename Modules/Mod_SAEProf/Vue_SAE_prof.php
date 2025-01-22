@@ -153,52 +153,63 @@ class VueSAEProf extends VueGenerique {
 
     public function afficherDepot($rendu, $groupes) {
         $titre = htmlspecialchars($rendu['titre']);
-        $description = htmlspecialchars($rendu['description']);
-        $date_limite = htmlspecialchars($rendu['date_limite']);
-        $type = htmlspecialchars($rendu['type']);
-        
-        echo "
-        <div class='depot-container'>
-            <h1>$titre</h1>
-            <div class='depot-header'>
-                <p>Dépôt de type : $type</p>
-                <p>Date limite : $date_limite</p>
-                <p>Description : $description</p>
-            </div>
-            <table class='depot-table'>
-                <thead>
-                    <tr>
-                        <th>Nom du groupe</th>
-                        <th>Fichiers déposés</th>
-                        <th>Date de soumission</th>
-                    </tr>
-                </thead>
-                <tbody>";
-        if (!empty($groupes)) {
-            foreach ($groupes as $groupe) {
-                if ($type === 'groupe') {
-                    $nom_affichage = htmlspecialchars($groupe['groupe_nom']);
-                } else {
-                    $prenom = htmlspecialchars($groupe['prenom']);
-                    $nom = htmlspecialchars($groupe['nom']);
-                    $nom_affichage = "$prenom $nom";
-                }
-                $fichier_url = 'rendus/' . htmlspecialchars($groupe['fichier_url']);
-                $date_soumission = htmlspecialchars($groupe['date_soumission']);
-                echo "
+    $description = htmlspecialchars($rendu['description']);
+    $date_limite = htmlspecialchars($rendu['date_limite']);
+    $type = htmlspecialchars($rendu['TYPE']);
+    
+    echo "
+    <div class='depot-container'>
+        <h1>$titre</h1>
+        <div class='depot-header'>
+            <p>Dépôt de type : $type</p>
+            <p>Date limite : $date_limite</p>
+            <p>Description : $description</p>
+        </div>
+        <table class='depot-table'>
+            <thead>
                 <tr>
-                    <td>$nom_affichage</td>
-                    <td><a href='$fichier_url' target='_blank'>Télécharger</a></td>
-                    <td>$date_soumission</td>
-                </tr>";
+                    <th>Nom du groupe</th>
+                    <th>Fichiers déposés</th>
+                    <th>Date de soumission</th>
+                    <th>Note</th>
+                </tr>
+            </thead>
+            <tbody>";
+    if (!empty($groupes)) {
+        foreach ($groupes as $groupe) {
+            if ($type === 'groupe') {
+                $nom_affichage = isset($groupe['groupe_nom']) ? htmlspecialchars($groupe['groupe_nom']) : 'Sans groupe';
+            } else {
+                $prenom = htmlspecialchars($groupe['prenom']);
+                $nom = htmlspecialchars($groupe['nom']);
+                $nom_affichage = "$prenom $nom";
             }
-        } else {
-            echo "<tr><td colspan='3'>Aucun fichier déposé pour ce rendu.</td></tr>";
+            $fichier_url = 'rendus/' . htmlspecialchars($groupe['fichier_url']);
+            $date_soumission = htmlspecialchars($groupe['date_soumission']);
+            $note = isset($groupe['note']) ? htmlspecialchars($groupe['note']) : '';
+
+            echo "
+            <tr>
+                <td>$nom_affichage</td>
+                <td><a href='$fichier_url' target='_blank'>Télécharger</a></td>
+                <td>$date_soumission</td>
+                <td>
+                    <form method='POST' action='index.php?module=sae&action=ajouterOuModifierNote'>
+                        <input type='hidden' name='fichier_id' value='" . intval($groupe['fichier_id']) . "'>
+                        <input type='hidden' name='rendu_id' value='" . intval($rendu['id']) . "'>
+                        <input type='number' name='note' value='$note' min='0' max='20' required>
+                        <button type='submit'>Enregistrer</button>
+                    </form>
+                </td>
+            </tr>";
         }
-        echo "
-                </tbody>
-            </table>
-        </div>";
+    } else {
+        echo "<tr><td colspan='4'>Aucun fichier déposé pour ce rendu.</td></tr>";
+    }
+    echo "
+            </tbody>
+        </table>
+    </div>";
     }
 }
 ?>

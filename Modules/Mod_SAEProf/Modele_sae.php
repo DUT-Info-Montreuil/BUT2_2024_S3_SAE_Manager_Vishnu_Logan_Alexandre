@@ -143,7 +143,7 @@ class Modele_sae extends Connexion{
                     END AS nom_affichage,
                     u.prenom,
                     u.nom,
-                    g.nom AS groupe_nom, -- Assurez-vous que g.nom est inclus pour les rendus de type groupe
+                    g.nom AS groupe_nom,
                     f.fichier_url,
                     f.date_soumission,
                     f.id AS fichier_id,
