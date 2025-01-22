@@ -197,9 +197,9 @@ class Modele_sae_etudiant extends Connexion{
             $pdo_req->bindParam(':rendu_id', $id_rendu);
             $pdo_req->bindParam(':etudiant_id', $etudiant_id);
             if ($groupe_id === null) {
-                $pdo_req->bindValue(':groupe_id', null);
+                $pdo_req->bindValue(':groupe_id', null, PDO::PARAM_NULL);
             } else {
-                $pdo_req->bindParam(':groupe_id', $groupe_id);
+                $pdo_req->bindParam(':groupe_id', $groupe_id, PDO::PARAM_INT);
             }
                         $pdo_req->execute();
             return $pdo_req->fetchColumn(); 
