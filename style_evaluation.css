@@ -27,7 +27,7 @@ h2 {
     font-size: 22px;
     color: #34495e;
     margin-bottom: 20px;
-    border-bottom: 2px solid #16a085;
+    border-bottom: 2px solid #4285F4;
     display: inline-block;
     padding-bottom: 5px;
 }
@@ -45,7 +45,7 @@ table th, table td {
 }
 
 table th {
-    background-color: #16a085;
+    background-color: #1111b0;
     color: white;
 }
 
@@ -77,7 +77,7 @@ form select {
 }
 
 form button {
-    background-color: #16a085;
+    background-color: #4285F4;
     color: white;
     border: none;
     padding: 10px 15px;
@@ -89,12 +89,11 @@ form button {
 }
 
 form button:hover {
-    background-color: #1abc9c;
+    background-color: #3e73cc;
 }
 
-/* Styles pour le bouton Supprimer */
 .btn-supprimer {
-    background-color: #e74c3c !important; 
+    background-color: #ee4365 !important; 
     color: white;
     border: none;
     padding: 8px 12px;
@@ -106,13 +105,12 @@ form button:hover {
 }
 
 .btn-supprimer:hover {
-    background-color: #c0392b; /* Rouge plus foncé */
-    transform: scale(1.05); /* Légère mise en avant */
+    background-color: #8B0000;
+    transform: scale(1.05);
 }
 
-/* Styles pour le bouton Modifier */
 .btn-modifier {
-    background-color: #3498db !important; 
+    background-color: #4285F4 !important; 
     color: white;
     border: none;
     padding: 8px 12px;
@@ -124,12 +122,12 @@ form button:hover {
 }
 
 .btn-modifier:hover {
-    background-color: #2980b9; /* Bleu plus foncé */
-    transform: scale(1.05); /* Légère mise en avant */
+    background-color:  #3e73cc; 
+    transform: scale(1.05); 
 }
 
 .popup {
-    display: none; /* Le popup est caché par défaut */
+    display: none; 
     position: fixed;
     top: 50%;
     left: 50%;
@@ -145,7 +143,7 @@ form button:hover {
 }
 
 .overlay {
-    display: none; /* Cacher l'overlay par défaut */
+    display: none; 
     position: fixed;
     top: 0;
     left: 0;
