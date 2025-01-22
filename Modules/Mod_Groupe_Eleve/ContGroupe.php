@@ -15,7 +15,7 @@ class Cont_Groupe {
 
     public function action() {
         $action = isset($_GET['action']) ? htmlspecialchars(strip_tags($_GET['action'])) : 'formulaire';
-        $projetId = isset($_GET['id']) ? intval($_GET['id']) : -1;
+        $projetId = isset($_GET['id']) ? intval($_GET['id']) : null;
         switch ($action) {
             case 'formulaire':
                 $this->afficherFormulaire();
@@ -46,7 +46,7 @@ class Cont_Groupe {
     }
 
     public function afficherFormulaire() {
-        $projetId = isset($_GET['id']) ? intval($_GET['id']) : -1;
+        $projetId = isset($_GET['id']) ? intval($_GET['id']) : null;
         $userId = $_SESSION['id'];
         $semestre = $this->model->getEtudiantsById($userId)['semestre_id'];
 
@@ -70,7 +70,7 @@ class Cont_Groupe {
 
         $groupeId = intval($_POST['groupe_id']);
         $userId = intval($_SESSION['id']);
-        $projetId = isset($_GET['id']) ? intval($_GET['id']) : -1;
+        $projetId = isset($_GET['id']) ? intval($_GET['id']) : null;
         
         if ($this->model->getGroupeByEtudiantId($userId, $projetId)) {
             die("Erreur : Vous êtes déjà dans un groupe.");
@@ -103,7 +103,7 @@ class Cont_Groupe {
 
     public function updateGroupe() {
     
-        $groupeId = isset($_POST['groupe_id']) ? intval($_POST['groupe_id']) : -1;
+        $groupeId = isset($_POST['groupe_id']) ? intval($_POST['groupe_id']) : null;
         $nom = isset($_POST['nom_groupe']) ? htmlspecialchars(strip_tags($_POST['nom_groupe'])) : '';
     
         $this->model->updateNomGroupe($groupeId, $nom);

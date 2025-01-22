@@ -36,7 +36,7 @@ class Vue_Groupe extends VueGenerique {
                             <p class="message-confirmation">Le groupe est validé.</p>
                         <?php else: ?>
                             <?php if (isset($etudiantsParGroupe[$groupeUtilisateur['groupe_id']]) && count($etudiantsParGroupe[$groupeUtilisateur['groupe_id']]) === (int) $groupeUtilisateur['limiteGroupe']): ?>
-                                <form method="POST" action="index.php?module=groupe&action=confirmer" class="form-confirm">
+                                <form method="POST" action="index.php?module=groupe&action=confirmer&id=<?=$projetId?>" class="form-confirm">
                                     <input type="hidden" name="groupe_id" value="<?= htmlspecialchars($groupeUtilisateur['groupe_id']) ?>">
                                     <button type="submit" class="btn confirm-btn">
                                         Confirmer
@@ -89,7 +89,7 @@ class Vue_Groupe extends VueGenerique {
                     <div id="modifierGroupeModal" class="modal">
                     <div class="modal-content">
                             <h3 class="modal-titre">Modifier le groupe</h3>
-                            <form method="POST" action="index.php?module=groupe&action=modifier" enctype="multipart/form-data" class="form-modifier-groupe">
+                            <form method="POST" action="index.php?module=groupe&action=modifier&id=<?=$projetId?>" enctype="multipart/form-data" class="form-modifier-groupe">
                                 <input type="hidden" name="groupe_id" value="<?= $groupeUtilisateur['groupe_id'] ?>">
 
                                 <?php if ($nomModifiable): ?>
