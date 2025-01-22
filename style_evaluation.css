@@ -92,6 +92,42 @@ form button:hover {
     background-color: #1abc9c;
 }
 
+/* Styles pour le bouton Supprimer */
+.btn-supprimer {
+    background-color: #e74c3c !important; 
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-supprimer:hover {
+    background-color: #c0392b; /* Rouge plus foncé */
+    transform: scale(1.05); /* Légère mise en avant */
+}
+
+/* Styles pour le bouton Modifier */
+.btn-modifier {
+    background-color: #3498db !important; 
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-modifier:hover {
+    background-color: #2980b9; /* Bleu plus foncé */
+    transform: scale(1.05); /* Légère mise en avant */
+}
+
 .popup {
     display: none; /* Le popup est caché par défaut */
     position: fixed;

@@ -32,11 +32,12 @@ class VueEvaluation extends VueGenerique {
                                     <td><?= htmlspecialchars($eval['nom']) ?></td>
                                     <td><?= htmlspecialchars($eval['note']) ?>/20</td>
                                     <td>
-                                        <a href="index.php?module=evaluation&action=supprimerEvaluation&evaluation_id=<?= htmlspecialchars($eval['id']) ?>&projet_id=<?= htmlspecialchars($projet_id) ?>" 
-                                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette évaluation ?');">
+                                        <button class="btn-supprimer" onclick="if (confirm('Êtes-vous sûr de vouloir supprimer cette évaluation ?')) {
+                                                window.location.href = 'index.php?module=evaluation&action=supprimerEvaluation&evaluation_id=<?= htmlspecialchars($eval['id']) ?>&projet_id=<?= htmlspecialchars($projet_id) ?>';}">
                                             Supprimer
-                                        </a>
-                                        <button onclick="togglePopup('block', '<?= htmlspecialchars($eval['id']) ?>', '<?= htmlspecialchars($eval['note']) ?>', 'groupe')">
+                                        </button>
+
+                                        <button class="btn-modifier" onclick="togglePopup('block', '<?= htmlspecialchars($eval['id']) ?>', '<?= htmlspecialchars($eval['note']) ?>', 'groupe')">
                                             Modifier
                                         </button>
                                     </td>
@@ -64,11 +65,11 @@ class VueEvaluation extends VueGenerique {
                                     <td><?= htmlspecialchars($eval['prenom']) ?></td>
                                     <td><?= htmlspecialchars($eval['note']) ?>/20</td>
                                     <td>
-                                        <a href="index.php?module=evaluation&action=supprimerEvaluation&evaluation_id=<?= htmlspecialchars($eval['id']) ?>&projet_id=<?= htmlspecialchars($projet_id) ?>" 
-                                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette évaluation ?');">
+                                        <button class="btn-supprimer" onclick="if (confirm('Êtes-vous sûr de vouloir supprimer cette évaluation ?')) {
+                                                window.location.href = 'index.php?module=evaluation&action=supprimerEvaluation&evaluation_id=<?= htmlspecialchars($eval['id']) ?>&projet_id=<?= htmlspecialchars($projet_id) ?>';}">
                                             Supprimer
-                                        </a>
-                                        <button onclick="togglePopup('block', '<?= htmlspecialchars($eval['id']) ?>', '<?= htmlspecialchars($eval['note']) ?>', 'individuelle')">
+                                        </button>
+                                        <button class="btn-modifier" onclick="togglePopup('block', '<?= htmlspecialchars($eval['id']) ?>', '<?= htmlspecialchars($eval['note']) ?>', 'individuelle')">
                                             Modifier
                                         </button>
                                     </td>
@@ -78,7 +79,6 @@ class VueEvaluation extends VueGenerique {
                     </table>
                 </section>
 
-                <!-- Le Popup de modification -->
                 <div id="popup-modifier" class="popup">
                     <h2>Modifier l'Évaluation</h2>
                     <form id="form-modifier" method="POST" action="index.php?module=evaluation&action=modifierEvaluation&projet_id=<?= htmlspecialchars($projet_id) ?>">
@@ -93,10 +93,8 @@ class VueEvaluation extends VueGenerique {
                 </div>
 
 
-                <!-- L'Overlay -->
                 <div id="overlay" class="overlay" onclick="fermerPopup()"></div>
 
-                <!-- Formulaires -->
                 <section class="section-form">
                     <h2>Ajouter une Évaluation de Groupe</h2>
                     <form method="POST" action="index.php?module=evaluation&action=ajouterEvaluationGroupe&projet_id=<?= htmlspecialchars($projet_id) ?>">
@@ -135,15 +133,13 @@ class VueEvaluation extends VueGenerique {
         <script>
 
             function togglePopup(display, evaluationId = null, note = null, type = null) {
-                console.log("togglePopup called", display); // Ajoute ceci pour vérifier
+                console.log("togglePopup called", display);
                 const popup = document.getElementById('popup-modifier');
                 const overlay = document.getElementById('overlay');
 
-                // Afficher le popup
                 popup.style.display = display;
                 overlay.style.display = display;
 
-                // Si l'on veut afficher le popup, remplir les valeurs du formulaire
                 if (display === 'block' && evaluationId) {
                     document.getElementById('evaluation-id').value = evaluationId;
                     document.getElementById('evaluation-note').value = note;
@@ -160,9 +156,9 @@ class VueEvaluation extends VueGenerique {
             }
 
             function handleFormSubmit(event) {
-                event.preventDefault();  // Empêche la soumission par défaut du formulaire
-                fermerPopup();  // Ferme le popup
-                document.getElementById('form-modifier').submit();  // Soumet le formulaire manuellement
+                event.preventDefault();
+                fermerPopup();
+                document.getElementById('form-modifier').submit(); 
             }
 
         </script>
