@@ -96,23 +96,35 @@ class ContSAEProf {
                 header('Location: index.php?module=sae&action=afficher&id=' . $id_projet);
                 break;
     
-            case 'modifierRendu':
-                $id_rendu = isset($_GET['id']) ? intval($_GET['id']) : 0;
-                $id_projet = isset($_GET['projet_id']) ? intval($_GET['projet_id']) : (isset($_POST['projet_id']) ? intval($_POST['projet_id']) : 0);
-                
-                $titre = isset($_POST['titre']) ? htmlspecialchars($_POST['titre']) : '';
-                $description = isset($_POST['description']) ? htmlspecialchars($_POST['description']) : '';
-                $date_limite = isset($_POST['date_limite']) ? htmlspecialchars($_POST['date_limite']) : '';
-                $type = isset($_POST['type']) ? htmlspecialchars($_POST['type']) : '';
-                
-                if ($id_rendu > 0) {
-                    $this->modele->modifierRendu($id_rendu, $titre, $description, $date_limite, $type);
-
-                }
-                
-                header('Location: index.php?module=sae&action=afficher&id=' . $id_projet);
-                break;
-                
+                case 'modifierRendu':
+                    $id_rendu = isset($_GET['id']) ? intval($_GET['id']) : 0;
+                    $id_projet = isset($_GET['projet_id']) ? intval($_GET['projet_id']) : (isset($_POST['projet_id']) ? intval($_POST['projet_id']) : 0);
+                    
+                    $titre = isset($_POST['titre']) ? htmlspecialchars($_POST['titre']) : '';
+                    $description = isset($_POST['description']) ? htmlspecialchars($_POST['description']) : '';
+                    $date_limite = isset($_POST['date_limite']) ? htmlspecialchars($_POST['date_limite']) : '';
+                    $type = isset($_POST['type']) ? htmlspecialchars($_POST['type']) : '';
+                    
+                    if ($id_rendu > 0) {
+                        $this->modele->modifierRendu($id_rendu, $titre, $description, $date_limite, $type);
+    
+                    }
+                    
+                    header('Location: index.php?module=sae&action=afficher&id=' . $id_projet);
+                    break;
+        
+                case 'supprimerRessource':
+                    $id_ressource = isset($_GET['id_ressource']) ? intval($_GET['id_ressource']) : 0;
+                    $this->modele->supprimerRessource($id_ressource);
+                    header('Location: index.php?module=sae&action=afficher&id=' . $id_projet);
+                    break;
+        
+                case 'supprimerRendu':
+                    $id_rendu = isset($_GET['id_rendu']) ? intval($_GET['id_rendu']) : 0;
+                    $this->modele->supprimerRendu($id_rendu);
+                    header('Location: index.php?module=sae&action=afficher&id=' . $id_projet);
+                    break;     
+                    
                 
                 
     
