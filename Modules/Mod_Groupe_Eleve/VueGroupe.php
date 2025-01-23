@@ -63,7 +63,7 @@ class Vue_Groupe extends VueGenerique {
                                             </div>
                                         </div>
 
-                                        <!-- Champ caché pour stocker les IDs des étudiants sélectionnés -->
+                                        
                                         <input type="hidden" name="etudiants_selectionnes" id="etudiants_selectionnes">
 
                                         <button type="submit">Ajouter au groupe</button>
@@ -72,7 +72,7 @@ class Vue_Groupe extends VueGenerique {
                                    
 
                                     <script>
-                                    // Fonction qui collecte les IDs des étudiants sélectionnés et les ajoute au champ caché
+                                 
                                     document.querySelector("form").addEventListener("submit", function(event) {
                                         var selectedStudents = [];
                                         var checkboxes = document.querySelectorAll(".etudiant-checkbox:checked");
@@ -81,11 +81,10 @@ class Vue_Groupe extends VueGenerique {
                                             selectedStudents.push(checkbox.value);
                                         });
 
-                                        // Ajout des IDs sélectionnés dans le champ caché
+                                        
                                         document.getElementById("etudiants_selectionnes").value = selectedStudents.join(",");
                                     });
 
-                                    // Fonction pour ouvrir/fermer le dropdown
                                     function toggleDropdown() {
                                         var dropdown = document.querySelector(".custom-dropdown");
                                         dropdown.classList.toggle("active");

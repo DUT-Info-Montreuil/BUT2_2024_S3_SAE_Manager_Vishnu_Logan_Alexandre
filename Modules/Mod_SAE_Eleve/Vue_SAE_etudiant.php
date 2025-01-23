@@ -112,3 +112,4 @@ public function afficher_sae_etudiant($projet, $ressources, $rendus) {
        }
 }
 ?>
+•
