@@ -24,14 +24,12 @@ class ContAdmin {
         
         if($admin_role==="admin"){
             switch ($action){
-                case 'afficher':
-                    $this->vueAdmin->afficher();
-                    break;
+
                 case 'inscription':
                     $this->inscription();
                     break;
                 default:
-                    $this->vueAdmin->afficher();
+
                     break;
             }
         }

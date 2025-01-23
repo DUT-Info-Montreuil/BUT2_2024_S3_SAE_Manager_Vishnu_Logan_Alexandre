@@ -41,7 +41,7 @@ class Cont_Groupe_Prof {
 
     
 
-            $projetId=isset($_GET['projetId']) ? htmlspecialchars(strip_tags($_GET['projetId'])) : -1;
+            $projetId=isset($_GET['id']) ? htmlspecialchars(strip_tags($_GET['id'])) : -1;
             $nombreGroupes = isset($_POST['nombre_groupes']) ? htmlspecialchars(strip_tags($_POST['nombre_groupes'])):0;
             $limiteGroupe = isset($_POST['limite_groupe']) ? htmlspecialchars(strip_tags($_POST['limite_groupe'])):0;
             
@@ -63,7 +63,7 @@ class Cont_Groupe_Prof {
 
     public function afficherFormulaire() {
         
-        $projetId=isset($_GET['projetId']) ? htmlspecialchars(strip_tags($_GET['projetId'])) : -1;
+        $projetId=isset($_GET['id']) ? htmlspecialchars(strip_tags($_GET['id'])) : -1;
         $groupes=$this->model->getGroupes($projetId);
         $this->vue->afficherFormulaire($groupes); 
 
@@ -71,7 +71,7 @@ class Cont_Groupe_Prof {
 
     public function modifGroupe(){
         $groupId=isset($_POST['groupeId']) ? htmlspecialchars(strip_tags($_POST['groupeId'])) : -1;
-        $projetId=isset($_GET['projetId']) ? htmlspecialchars(strip_tags($_GET['projetId'])) : -1;
+        $projetId=isset($_GET['id']) ? htmlspecialchars(strip_tags($_GET['id'])) : -1;
         $nomGroup = isset($_POST['groupeNom']) ? htmlspecialchars(strip_tags($_POST['groupeNom'])) : '';
         $limiteGroupe = isset($_POST['groupeLimite']) ? htmlspecialchars(strip_tags($_POST['groupeLimite'])) : 0;
         $modifNom = isset($_POST['changeNom']) ? 1 : 0;
